@@ -1,0 +1,27 @@
+[
+    {
+        "id": "cat-1",
+        "name": "Electronics",
+        "description": "Gadgets, devices, and accessories"
+    },
+    {
+        "id": "cat-2",
+        "name": "Stationery",
+        "description": "Office supplies and paper products"
+    },
+    {
+        "id": "cat-3",
+        "name": "Furniture",
+        "description": "Tables, chairs, and home decor"
+    },
+    {
+        "id": "cat-4",
+        "name": "Kitchenware",
+        "description": "Cooking tools and appliances"
+    },
+    {
+        "id": "cat-5",
+        "name": "Clothing",
+        "description": "Apparel and fashion accessories"
+    }
+]

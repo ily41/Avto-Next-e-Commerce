@@ -50,6 +50,16 @@ const data = {
       url: "/dashboard/products",
       icon: IconDatabase,
     },
+    {
+      title: "Categories",
+      url: "/dashboard/categories",
+      icon: IconDatabase,
+    },
+    {
+      title: "Brands",
+      url: "/dashboard/brands",
+      icon: IconDatabase,
+    },
 
   ],
   navClouds: [
