@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 export const api = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://evto027-001-site1.ktempurl.com/api/v1/",
+        baseUrl: "https://evto027-001-site1.ktempurl.com/api/v1",
         prepareHeaders: (headers) => {
             const token = Cookies.get("token");
             if (token) {
