@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, ChevronDown, ChevronRight, MoreHorizontal } from "lucide-react"
 import { DropdownMenuTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "../ui/dropdown-menu";
 // ... import your Dropdown components
 
@@ -22,7 +22,7 @@ export function createColumns<T>(
     key: keyof T;
     label: string;
     sortable?: boolean;
-    // Add this optional render function
+    isExpandable?: boolean;
     render?: (value: any, item: T) => React.ReactNode;
   }[],
   onDelete?: (item: T) => void,
@@ -30,6 +30,7 @@ export function createColumns<T>(
 ): ColumnDef<T>[] {
   return [
     // 1. Static Selection Column
+
     {
       id: "select",
       header: ({ table }) => (
@@ -62,12 +63,38 @@ export function createColumns<T>(
       },
       // Override the cell rendering if a render function is provided
       cell: ({ getValue, row }) => {
-        const val = getValue();
-        if (col.render) {
-          return col.render(val, row.original);
-        }
-        return val as React.ReactNode;
-      }
+  const val = getValue();
+  const content = col.render ? col.render(val, row.original) : (val as React.ReactNode);
+
+  if (col.isExpandable) {
+    return (
+      <div 
+        style={{ paddingLeft: `${row.depth * 2}rem` }} // Indent based on depth
+        className="flex items-center gap-2"
+      >
+        {row.getCanExpand() && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-6 w-6 p-0"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent row clicks from triggering other actions
+              row.getToggleExpandedHandler()();
+            }}
+          >
+            {row.getIsExpanded() ? <ChevronDown size={14}/> : <ChevronRight size={14}/>}
+          </Button>
+        )}
+        {/* Placeholder for rows without children to keep text aligned */}
+        {!row.getCanExpand() && <div className="w-6" />} 
+        {content}
+      </div>
+    );
+  }
+
+  return content;
+}
+
     })),
     // 3. Static Actions Column
     {

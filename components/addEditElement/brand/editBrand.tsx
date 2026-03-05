@@ -27,6 +27,15 @@ interface EditBrandPopupProps {
 
 export function EditBrandPopup({ brand, onOpenChange }: EditBrandPopupProps) {
     const [editBrand, { isLoading }] = useEditBrandMutation()
+    const [preview, setPreview] = useState<string | null>(null)
+
+    useEffect(() => {
+        return () => {
+            if (preview && preview.startsWith("blob:")) {
+                URL.revokeObjectURL(preview)
+            }
+        }
+    }, [preview])
 
     const form = useForm<z.infer<typeof editBrandSchema>>({
         resolver: zodResolver(editBrandSchema),
@@ -46,15 +55,14 @@ export function EditBrandPopup({ brand, onOpenChange }: EditBrandPopupProps) {
                 isActive: brand.isActive,
                 imageFile: null,
             })
+            setPreview(brand.logoUrl ? `https://evto027-001-site1.ktempurl.com${brand.logoUrl}` : null)
+        } else {
+            setPreview(null)
         }
     }, [brand, form])
 
     async function onSubmit(values: z.infer<typeof editBrandSchema>) {
         if (!brand) return
-        console.log(brand.id)
-        console.log(values.name)
-        console.log(values.sortOrder)
-        console.log(values.imageFile)
 
         try {
             await editBrand({
@@ -73,7 +81,10 @@ export function EditBrandPopup({ brand, onOpenChange }: EditBrandPopupProps) {
     }
 
     return (
-        <Dialog open={!!brand} onOpenChange={onOpenChange}>
+        <Dialog open={!!brand} onOpenChange={(open) => {
+            onOpenChange(open)
+            if (!open) setPreview(null)
+        }}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Edit Brand: {brand?.name}</DialogTitle>
@@ -141,15 +152,41 @@ export function EditBrandPopup({ brand, onOpenChange }: EditBrandPopupProps) {
                                 <FormItem>
                                     <FormLabel>Brand Logo (Keep empty to keep current logo)</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={(e) => {
-                                                const file = e.target.files?.[0]
-                                                if (file) onChange(file)
-                                            }}
-                                            {...fieldProps}
-                                        />
+                                        <div className="flex flex-col gap-4">
+                                            {preview && (
+                                                <div className="relative h-24 w-24 overflow-hidden rounded-md border bg-slate-100 flex items-center justify-center">
+                                                    <img
+                                                        src={preview}
+                                                        alt="Logo Preview"
+                                                        className="h-full w-full object-contain"
+                                                    />
+                                                    {form.getValues("imageFile") && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                onChange(null);
+                                                                setPreview(brand?.logoUrl ? `https://evto027-001-site1.ktempurl.com${brand.logoUrl}` : null);
+                                                            }}
+                                                            className="absolute right-0 top-0 rounded-bl bg-destructive p-1 text-white shadow-sm hover:bg-destructive/90 transition-colors"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            )}
+                                            <Input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0]
+                                                    if (file) {
+                                                        onChange(file)
+                                                        setPreview(URL.createObjectURL(file))
+                                                    }
+                                                }}
+                                                {...fieldProps}
+                                            />
+                                        </div>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -163,5 +200,6 @@ export function EditBrandPopup({ brand, onOpenChange }: EditBrandPopupProps) {
                 </Form>
             </DialogContent>
         </Dialog>
+
     )
 }

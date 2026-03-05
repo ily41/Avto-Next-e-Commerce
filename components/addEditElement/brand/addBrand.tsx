@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAddProductMutation } from "@/lib/store/products/apislice"
@@ -20,6 +20,15 @@ import { brandSchema } from "./addBrandSchema"
 
 export function AddBrandPopup() {
   const [open, setOpen] = useState(false)
+  const [preview, setPreview] = useState<string | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (preview && preview.startsWith("blob:")) {
+        URL.revokeObjectURL(preview)
+      }
+    }
+  }, [preview])
 
   // 1. Hook into the RTK Mutation
   const [addBrand, { isLoading }] = useCreateBrandWithImageMutation()
@@ -42,6 +51,7 @@ export function AddBrandPopup() {
 
       toast.success("Brand added!")
       form.reset()
+      setPreview(null)
       setOpen(false) // Close the popup only on success
     } catch (err) {
       toast.error("Something went wrong. Please check your inputs.")
@@ -49,7 +59,13 @@ export function AddBrandPopup() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={(val) => {
+      setOpen(val)
+      if (!val) {
+        setPreview(null)
+        form.reset()
+      }
+    }}>
       <DialogTrigger asChild>
         <Button>Add Brand</Button>
       </DialogTrigger>
@@ -92,15 +108,39 @@ export function AddBrandPopup() {
                 <FormItem>
                   <FormLabel>Brand Logo</FormLabel>
                   <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) onChange(file);
-                      }}
-                      {...fieldProps}
-                    />
+                    <div className="flex flex-col gap-4">
+                      {preview && (
+                        <div className="relative h-24 w-24 overflow-hidden rounded-md border bg-slate-100 flex items-center justify-center">
+                          <img
+                            src={preview}
+                            alt="Preview"
+                            className="h-full w-full object-contain"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPreview(null);
+                              onChange(null);
+                            }}
+                            className="absolute right-0 top-0 rounded-bl bg-destructive p-1 text-white shadow-sm hover:bg-destructive/90 transition-colors"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                          </button>
+                        </div>
+                      )}
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            onChange(file);
+                            setPreview(URL.createObjectURL(file));
+                          }
+                        }}
+                        {...fieldProps}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -116,5 +156,6 @@ export function AddBrandPopup() {
         </Form>
       </DialogContent>
     </Dialog>
+
   )
 }

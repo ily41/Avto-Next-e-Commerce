@@ -2,20 +2,30 @@
 
 import * as React from "react"
 import {
+  IconBoxSeam,
+  IconBrandProducthunt,
   IconCamera,
+  IconCertificate,
   IconChartBar,
   IconDashboard,
   IconDatabase,
   IconFileAi,
   IconFileDescription,
   IconFileWord,
+  IconFilter,
+  IconFilterCheck,
   IconFolder,
+  IconGift,
   IconHelp,
+  IconHierarchy2,
   IconInnerShadowTop,
   IconListDetails,
+  IconMoneybag,
   IconReport,
   IconSearch,
   IconSettings,
+  IconShoppingCart,
+  IconTicket,
   IconUsers,
 } from "@tabler/icons-react"
 
@@ -27,6 +37,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -46,20 +57,46 @@ const data = {
       icon: IconDashboard,
     },
     {
+      title: "Users",
+      url: "/dashboard/users",
+      icon: IconUsers,
+    },
+    {
       title: "Products",
       url: "/dashboard/products",
-      icon: IconDatabase,
+      icon: IconBoxSeam,
     },
     {
       title: "Categories",
       url: "/dashboard/categories",
-      icon: IconDatabase,
+      icon: IconHierarchy2,
     },
     {
       title: "Brands",
       url: "/dashboard/brands",
-      icon: IconDatabase,
+      icon: IconCertificate,
     },
+    {
+      title: "Orders",
+      url: "/dashboard/orders",
+      icon: IconShoppingCart,
+    },
+    {
+      title: "Filters",
+      url: "/dashboard/filters",
+      icon: IconFilter,
+    },
+    {
+      title: "Assign Filters",
+      url: "/dashboard/assign-filters",
+      icon: IconFilterCheck,
+    },
+    {
+      title: "Installment Payments",
+      url: "/dashboard/installment-payments",
+      icon: IconMoneybag,
+    },
+    
 
   ],
   navClouds: [
@@ -127,22 +164,17 @@ const data = {
       icon: IconSearch,
     },
   ],
-  documents: [
+  marketing: [
     {
-      name: "Data Library",
-      url: "#",
-      icon: IconDatabase,
+      name: "Promocodes",
+      url: "/dashboard/promocodes",
+      icon: IconTicket,
     },
     {
-      name: "Reports",
-      url: "#",
-      icon: IconReport,
-    },
-    {
-      name: "Word Assistant",
-      url: "#",
-      icon: IconFileWord,
-    },
+      name: "Loyalty",
+      url: "/dashboard/loyalty",
+      icon: IconGift,
+    }
   ],
 }
 
@@ -150,6 +182,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
+
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -158,17 +191,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <a href="#">
                 <IconInnerShadowTop className="size-5!" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <span className="text-base font-semibold">AvtoStore</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
+        <NavDocuments items={data.marketing} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
+
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
