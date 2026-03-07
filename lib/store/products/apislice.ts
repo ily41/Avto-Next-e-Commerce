@@ -1,8 +1,19 @@
 import { api } from "../api";
 
+export type ProductImage = {
+  id: string;
+  imageUrl: string;
+  thumbnailUrl: string;
+  mediumUrl: string;
+  altText: string;
+  isPrimary: boolean;
+  sortOrder: number;
+}
+
 export type Product = {
   id: string;
   name: string;
+  slug?: string;
   description: string;
   shortDescription: string;
   sku: string;
@@ -11,12 +22,21 @@ export type Product = {
   stockQuantity: number;
   categoryId: string;
   categoryName?: string;
+  categorySlug?: string;
+  parentCategoryName?: string;
+  parentCategorySlug?: string;
+  subCategoryName?: string;
+  subCategorySlug?: string;
   brandId: string;
   brandName?: string;
+  imageUrl?: string;
+  detailImageUrl?: string;
   price: number;
   discountedPrice: number;
-  imageUrl: string;
-  productImages?: { id: string; imageUrl: string }[];
+  primaryImageUrl: string;
+  productImages?: { id: string; primaryImageUrl: string }[];
+  images?: ProductImage[];
+  isFavorite?: boolean;
   createdAt?: string;
 };
 
@@ -64,13 +84,14 @@ export const productApi = api.injectEndpoints({
       brandId: string;
       price: number;
       discountedPrice: number;
-      imageFile: File;
+      primaryImageUrl: File;
       detailImageFiles?: File[];
     }>({
-      query: ({ imageFile, detailImageFiles, ...data }) => {
+      query: ({ primaryImageUrl, detailImageFiles, ...data }) => {
         const formData = new FormData();
+        console.log(data)
         formData.append("productData", JSON.stringify(data));
-        formData.append("imageFile", imageFile);
+        formData.append("imageFile", primaryImageUrl);
         if (detailImageFiles) {
           detailImageFiles.forEach((file) => {
             formData.append("detailImageFiles", file);
@@ -98,14 +119,14 @@ export const productApi = api.injectEndpoints({
       price: number;
       discountedPrice: number;
       isActive: boolean;
-      imageFile?: File | null;
+      primaryImageUrl?: File | null;
       detailImageFiles?: File[];
     }>({
-      query: ({ id, imageFile, detailImageFiles, ...data }) => {
+      query: ({ id, primaryImageUrl, detailImageFiles, ...data }) => {
         const formData = new FormData();
         formData.append("productData", JSON.stringify(data));
-        if (imageFile instanceof File) {
-          formData.append("imageFile", imageFile);
+        if (primaryImageUrl instanceof File) {
+          formData.append("primaryImageUrl", primaryImageUrl);
         }
         if (detailImageFiles) {
           detailImageFiles.forEach((file) => {
@@ -128,14 +149,6 @@ export const productApi = api.injectEndpoints({
       }),
       invalidatesTags: ["Product"],
     }),
-
-    deleteProductImage: builder.mutation<void, string>({
-      query: (id) => ({
-        url: `Products/images/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Product"],
-    }),
   }),
 });
 
@@ -144,5 +157,4 @@ export const {
   useCreateProductWithImageMutation,
   useUpdateProductWithImageMutation,
   useDeleteProductMutation,
-  useDeleteProductImageMutation,
 } = productApi;

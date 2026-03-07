@@ -16,9 +16,13 @@ import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
+import { X, Check, ChevronsUpDown, Search } from "lucide-react"
 import { useGetCategoriesQuery } from "@/lib/store/categories/apislice"
 import { useGetBrandsQuery } from "@/lib/store/brands/apislice"
-import { X } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { flattenCategories } from "@/lib/utils/category-flattener"
 
 export function AddProductPopup() {
     const [open, setOpen] = useState(false)
@@ -62,9 +66,12 @@ export function AddProductPopup() {
         }
 
         try {
+            console.log(values)
+            console.log(values.imageFile)
+            console.log(values.detailImageFiles)
             await createProduct({
                 ...values,
-                imageFile: values.imageFile as File,
+                primaryImageUrl: values.imageFile as File,
                 detailImageFiles: values.detailImageFiles as File[],
             }).unwrap()
 
@@ -74,7 +81,7 @@ export function AddProductPopup() {
             setDetailPreviews([])
             setOpen(false)
         } catch (err: any) {
-            toast.error(err?.data?.Message || "Failed to create product")
+            toast.error(err?.data || "Failed to create product")
         }
     }
 
@@ -107,7 +114,7 @@ export function AddProductPopup() {
                                         <FormControl><Input placeholder="T-Shirt" {...field} /></FormControl>
                                         <FormMessage />
                                     </FormItem>
-                                )} 
+                                )}
                             />
                             <FormField
                                 control={form.control}
@@ -150,24 +157,63 @@ export function AddProductPopup() {
                             <FormField
                                 control={form.control}
                                 name="categoryId"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Category</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select category" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                {categories?.map((cat) => (
-                                                    <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                                render={({ field }) => {
+                                    const flattenedCats = categories ? flattenCategories(categories) : [];
+                                    const selectedCat = flattenedCats.find(c => c.id === field.value);
+
+                                    return (
+                                        <FormItem className="flex flex-col">
+                                            <FormLabel>Category</FormLabel>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl>
+                                                        <Button
+                                                            variant="outline"
+                                                            role="combobox"
+                                                            className={cn(
+                                                                "w-full justify-between font-normal",
+                                                                !field.value && "text-muted-foreground"
+                                                            )}
+                                                        >
+                                                            {field.value
+                                                                ? selectedCat?.displayName
+                                                                : "Select category"}
+                                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                                                    <Command>
+                                                        <CommandInput placeholder="Search category..." />
+                                                        <CommandList>
+                                                            <CommandEmpty>No category found.</CommandEmpty>
+                                                            <CommandGroup>
+                                                                {flattenedCats.map((cat) => (
+                                                                    <CommandItem
+                                                                        value={cat.name}
+                                                                        key={cat.id}
+                                                                        onSelect={() => {
+                                                                            form.setValue("categoryId", cat.id)
+                                                                        }}
+                                                                    >
+                                                                        <Check
+                                                                            className={cn(
+                                                                                "mr-2 h-4 w-4",
+                                                                                cat.id === field.value ? "opacity-100" : "opacity-0"
+                                                                            )}
+                                                                        />
+                                                                        {cat.displayName}
+                                                                    </CommandItem>
+                                                                ))}
+                                                            </CommandGroup>
+                                                        </CommandList>
+                                                    </Command>
+                                                </PopoverContent>
+                                            </Popover>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )
+                                }}
                             />
                             <FormField
                                 control={form.control}
@@ -291,15 +337,17 @@ export function AddProductPopup() {
                                             {detailPreviews.map((src, i) => (
                                                 <div key={i} className="relative w-24 h-24 border rounded-md overflow-hidden">
                                                     <img src={src} alt={`Detail ${i}`} className="object-cover w-full h-full" />
+                                                    <button type="button" onClick={() => { setDetailPreviews(prev => prev.filter((_, idx) => idx !== i)); onChange(prev => prev.filter((_, idx) => idx !== i)); }} className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"><X size={12} /></button>
                                                 </div>
                                             ))}
                                         </div>
                                         <FormControl>
                                             <Input type="file" accept="image/*" multiple onChange={(e) => {
                                                 const files = Array.from(e.target.files || [])
+                                                console.log(files)
                                                 if (files.length > 0) {
                                                     onChange(files)
-                                                    setDetailPreviews(files.map(f => URL.createObjectURL(f)))
+                                                    setDetailPreviews(prev => [...prev, ...files.map(f => URL.createObjectURL(f))])
                                                 }
                                             }} {...fieldProps} />
                                         </FormControl>

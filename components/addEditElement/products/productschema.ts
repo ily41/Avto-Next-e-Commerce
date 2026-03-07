@@ -5,15 +5,15 @@ export const productSchema = z.object({
     description: z.string().min(1, "Description is required"),
     shortDescription: z.string().min(1, "Short description is required"),
     sku: z.string().min(1, "SKU is required"),
-    isHotDeal: z.boolean().default(false),
+    isHotDeal: z.boolean(),
     stockQuantity: z.number().int().min(0),
     categoryId: z.string().min(1, "Category is required"),
     brandId: z.string().min(1, "Brand is required"),
     price: z.number().min(0),
     discountedPrice: z.number().min(0),
-    isActive: z.boolean().default(true),
-    imageFile: z.any().optional(),
-    detailImageFiles: z.array(z.any()).optional(),
+    isActive: z.boolean(),
+    imageFile: z.instanceof(File, { message: "Image is required" }).optional(),
+    detailImageFiles: z.array(z.instanceof(File, { message: "Detail image is required" })).optional(),
 });
 
 export type ProductFormValues = z.infer<typeof productSchema>;

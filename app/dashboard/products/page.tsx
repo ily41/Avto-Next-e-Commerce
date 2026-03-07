@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link";
 import { DataTable } from "@/components/data-table/data-tables";
 import { createColumns } from "@/components/data-table/data-table-factory";
 import { useMemo, useState } from "react";
@@ -7,6 +8,8 @@ import { useGetPaginatedProductsQuery, useDeleteProductMutation, type Product } 
 import { toast } from "sonner";
 import { AddProductPopup } from "@/components/addEditElement/products/addProduct";
 import { EditProductPopup } from "@/components/addEditElement/products/editProduct";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 export default function ProductsPage() {
     const [{ pageIndex, pageSize }, setPagination] = useState({
@@ -20,25 +23,28 @@ export default function ProductsPage() {
     });
 
     const [deleteProduct] = useDeleteProductMutation();
-    const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+    const [editingProductId, setEditingProductId] = useState<string | null>(null);
 
     const productColumns = useMemo(() => createColumns<Product>([
+
         {
-            key: "imageUrl",
+            key: "primaryImageUrl",
             label: "Image",
-            render: (value) => (
-                <div className="h-10 w-10 flex items-center justify-center overflow-hidden rounded border bg-slate-50">
-                    {value ? (
-                        <img
-                            src={`https://evto027-001-site1.ktempurl.com${value}`}
-                            alt="Product"
-                            className="object-contain h-full w-full"
-                        />
-                    ) : (
-                        <span className="text-[10px] text-gray-400">No Img</span>
-                    )}
-                </div>
-            )
+            render: (value) => {
+                return (
+                    <div className="h-10 w-10 flex items-center justify-center overflow-hidden rounded border bg-slate-50">
+                        {value ? (
+                            <img
+                                src={`https://evto027-001-site1.ktempurl.com${value}`}
+                                alt="Product"
+                                className="object-contain h-full w-full"
+                            />
+                        ) : (
+                            <span className="text-[10px] text-gray-400">No Img</span>
+                        )}
+                    </div>
+                )
+            }
         },
         { key: "name", label: "Name", sortable: true },
         { key: "sku", label: "SKU", sortable: true },
@@ -64,6 +70,23 @@ export default function ProductsPage() {
                 </span>
             )
         },
+        {
+            key: "id",
+            label: "details",
+            render: (value) => {
+                return (
+                    <Link href={`/dashboard/products/${value}`}>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-3/5 h-6 !mx-auto"
+                        >
+                            <Plus size={14} />
+                        </Button>
+                    </Link>
+                )
+            }
+        }
     ],
         async (item) => {
             try {
@@ -74,7 +97,7 @@ export default function ProductsPage() {
             }
         },
         (item) => {
-            setEditingProduct(item);
+            setEditingProductId(item.id);
         }), [deleteProduct]);
 
     if (isLoading) {
@@ -119,8 +142,8 @@ export default function ProductsPage() {
                 filterColumn="name"
             />
             <EditProductPopup
-                product={editingProduct}
-                onOpenChange={(open) => !open && setEditingProduct(null)}
+                productId={editingProductId}
+                onOpenChange={(open) => !open && setEditingProductId(null)}
             />
         </div>
     );

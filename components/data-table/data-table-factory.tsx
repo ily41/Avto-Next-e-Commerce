@@ -63,37 +63,37 @@ export function createColumns<T>(
       },
       // Override the cell rendering if a render function is provided
       cell: ({ getValue, row }) => {
-  const val = getValue();
-  const content = col.render ? col.render(val, row.original) : (val as React.ReactNode);
-
-  if (col.isExpandable) {
-    return (
-      <div 
-        style={{ paddingLeft: `${row.depth * 2}rem` }} // Indent based on depth
-        className="flex items-center gap-2"
-      >
-        {row.getCanExpand() && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-6 w-6 p-0"
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent row clicks from triggering other actions
-              row.getToggleExpandedHandler()();
-            }}
-          >
-            {row.getIsExpanded() ? <ChevronDown size={14}/> : <ChevronRight size={14}/>}
-          </Button>
-        )}
-        {/* Placeholder for rows without children to keep text aligned */}
-        {!row.getCanExpand() && <div className="w-6" />} 
-        {content}
-      </div>
-    );
-  }
-
-  return content;
-}
+        const val = getValue();
+        const content = col.render ? col.render(val, row.original) : (val as React.ReactNode);
+            
+        if (col.isExpandable) {
+          return (
+            <div 
+              style={{ paddingLeft: `${row.depth * 2}rem` }} // Indent based on depth
+              className="flex items-center gap-2"
+            >
+              {row.getCanExpand() && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 w-6 p-0"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent row clicks from triggering other actions
+                    row.getToggleExpandedHandler()();
+                  }}
+                >
+                  {row.getIsExpanded() ? <ChevronDown size={14}/> : <ChevronRight size={14}/>}
+                </Button>
+              )}
+              {/* Placeholder for rows without children to keep text aligned */}
+              {!row.getCanExpand() && <div className="w-6" />} 
+              {content}
+            </div>
+          );
+        }
+      
+        return content;
+      }
 
     })),
     // 3. Static Actions Column
