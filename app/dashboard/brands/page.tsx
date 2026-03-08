@@ -5,10 +5,12 @@ import { createColumns } from "@/components/data-table/data-table-factory";
 import { useDeleteBrandMutation, useGetBrandsQuery } from "@/lib/store/brands/apislice";
 import React from "react";
 import { PaginationState } from "@tanstack/react-table";
-import { AddBrandPopup } from "@/components/addEditElement/brand/addBrand";
-import { EditBrandPopup } from "@/components/addEditElement/brand/editBrand";
+import { DynamicAddPopup, type FieldConfig } from "@/components/addEditElement/DynamicAddPopup";
+import { DynamicEditPopup } from "@/components/addEditElement/DynamicEditPopup";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import * as z from "zod";
+import { useCreateBrandWithImageMutation, useEditBrandMutation } from "@/lib/store/brands/apislice";
 
 export type Brand = {
     id: string;
@@ -33,7 +35,23 @@ export default function Page() {
 
     const [editingBrand, setEditingBrand] = React.useState<Brand | null>(null);
 
+    const brandSchema = z.object({
+        name: z.string().min(2, "Name is required"),
+        sortOrder: z.number().min(1, "Sort order must be at least 1"),
+        imageFile: z.instanceof(File, { message: "Image is required" }).nullable().optional(),
+        isActive: z.boolean().default(true),
+    });
+
+    const brandFields: FieldConfig[] = [
+        { name: "name", label: "Brand Name", type: "text", placeholder: "e.g. Nike" },
+        { name: "sortOrder", label: "Sort Order", type: "number" },
+        { name: "isActive", label: "Is Active", type: "switch" },
+        { name: "imageFile", label: "Brand Logo (Optional)", type: "file" }
+    ];
+
     const { data, isLoading, error } = useGetBrandsQuery(pagination);
+    const [createBrand, { isLoading: isCreating }] = useCreateBrandWithImageMutation();
+    const [updateBrand, { isLoading: isUpdating }] = useEditBrandMutation();
     const [deleteBrand, { isLoading: isDeleting }] = useDeleteBrandMutation();
 
     const brandColumns = React.useMemo(() => createColumns<Brand>([
@@ -112,7 +130,18 @@ export default function Page() {
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
             <div className="flex justify-between">
                 <h1 className="text-base md:text-xl lg:text-2xl">Brands</h1>
-                <AddBrandPopup />
+                <DynamicAddPopup
+                    title="Add Brand"
+                    triggerText="Add Brand"
+                    schema={brandSchema}
+                    defaultValues={{ name: "", sortOrder: 1, imageFile: null, isActive: true }}
+                    fields={brandFields}
+                    isLoading={isCreating}
+                    onSubmit={async (values) => {
+                        await createBrand(values).unwrap();
+                        toast.success("Brand added!");
+                    }}
+                />
             </div>
             <DataTable
                 columns={brandColumns}
@@ -123,9 +152,25 @@ export default function Page() {
                 pageCount={data?.totalCount || 0}
                 manualPagination
             />
-            <EditBrandPopup
-                brand={editingBrand}
+            <DynamicEditPopup
+                open={!!editingBrand}
                 onOpenChange={(open) => !open && setEditingBrand(null)}
+                title={`Edit Brand: ${editingBrand?.name}`}
+                schema={brandSchema}
+                defaultValues={{
+                    ...editingBrand,
+                    imageFile: undefined
+                }}
+                initialPreviews={{
+                    imageFile: editingBrand?.logoUrl ? `https://evto027-001-site1.ktempurl.com${editingBrand.logoUrl}` : ""
+                }}
+                fields={brandFields}
+                isLoading={isUpdating}
+                onSubmit={async (values) => {
+                    if (!editingBrand) return;
+                    await updateBrand({ ...values, id: editingBrand.id }).unwrap();
+                    toast.success("Brand updated!");
+                }}
             />
         </div>
     )

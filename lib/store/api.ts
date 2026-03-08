@@ -15,7 +15,7 @@ export const api = createApi({
     }),
 
 
-    tagTypes: ["Product", "Brand", "Category", "ProductSpecification"],
+    tagTypes: ["Product", "Brand", "Category", "ProductSpecification", "Banner"],
     // We leave endpoints empty here and inject them from other files
     endpoints: () => ({}),
 });

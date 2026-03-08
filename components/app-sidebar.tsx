@@ -27,6 +27,7 @@ import {
   IconShoppingCart,
   IconTicket,
   IconUsers,
+  IconPhoto,
 } from "@tabler/icons-react"
 
 import { NavDocuments } from "@/components/nav-documents"
@@ -77,6 +78,11 @@ const data = {
       icon: IconCertificate,
     },
     {
+      title: "Banners",
+      url: "/dashboard/banners",
+      icon: IconPhoto,
+    },
+    {
       title: "Orders",
       url: "/dashboard/orders",
       icon: IconShoppingCart,
@@ -96,7 +102,7 @@ const data = {
       url: "/dashboard/installment-payments",
       icon: IconMoneybag,
     },
-    
+
 
   ],
   navClouds: [

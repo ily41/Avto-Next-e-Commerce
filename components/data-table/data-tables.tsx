@@ -57,6 +57,8 @@ interface DataTableProps<TData, TValue> {
       icon?: React.ComponentType<{ className?: string }>
     }[]
   }[]
+  filterMode?: "client" | "server"
+  onFacetedFilterChange?: (columnId: string, values: string[]) => void
 }
 
 export function DataTable<TData, TValue>({
@@ -73,6 +75,8 @@ export function DataTable<TData, TValue>({
   filterColumn,
 
   facetedFilters,
+  filterMode = "client",
+  onFacetedFilterChange,
 }: DataTableProps<TData, TValue>) {
 
 
@@ -89,6 +93,7 @@ export function DataTable<TData, TValue>({
     columns,
     pageCount: pageCount,
     manualPagination: manualPagination,
+    manualFiltering: filterMode === "server",
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: onSortingChange ?? setSorting,
@@ -113,14 +118,18 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
+      {/* Search Filter */}
       <div className="flex items-center py-4">
         {filterColumn && (
           <Input
             placeholder={`Filter ${filterColumn}...`}
             value={(table.getColumn(filterColumn)?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
+            onChange={(event) => {
               table.getColumn(filterColumn)?.setFilterValue(event.target.value)
-            }
+              if (onFilterChange) {
+                onFilterChange(event.target.value)
+              }
+            }}
             className="max-w-sm"
           />
         )}
@@ -156,6 +165,7 @@ export function DataTable<TData, TValue>({
             </DropdownMenuContent>
           </DropdownMenu>
 
+
           {facetedFilters?.map((filter) => (
             table.getColumn(filter.column) && (
               <DataTableFacetedFilter
@@ -163,6 +173,13 @@ export function DataTable<TData, TValue>({
                 column={table.getColumn(filter.column)}
                 title={filter.title}
                 options={filter.options}
+                onFilterChange={(values) => {
+                  table.getColumn(filter.column)?.setFilterValue(values)
+                  if (filterMode === "server" && onFacetedFilterChange) {
+                    onFacetedFilterChange(filter.column, values)
+                  }
+                }}
+
               />
             )
           ))}

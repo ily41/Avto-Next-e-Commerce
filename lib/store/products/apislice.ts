@@ -48,6 +48,17 @@ export type PaginatedResponse<T> = {
   totalPages: number;
 };
 
+export type FilterResponse<T> = {
+  products: T[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  appliedFilters: any[];
+};
+
 export type ProductQueryParams = {
   CategoryId?: string;
   BrandSlug?: string;
@@ -63,12 +74,44 @@ export type ProductQueryParams = {
   SortOrder?: string;
 };
 
+export type ProductFilterCriteria = {
+  filterId?: string;
+  filterOptionIds?: string[];
+  customValue?: string;
+  minValue?: number;
+  maxValue?: number;
+};
+
+export type ProductFilterRequest = {
+  categoryId?: string;
+  brandSlug?: string;
+  isHotDeal?: boolean;
+  isRecommended?: boolean;
+  searchTerm?: string;
+  filterCriteria?: ProductFilterCriteria[];
+  minPrice?: number;
+  maxPrice?: number;
+  sortBy?: string;
+  sortOrder?: string;
+  page?: number;
+  pageSize?: number;
+};
+
 export const productApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getPaginatedProducts: builder.query<PaginatedResponse<Product>, ProductQueryParams>({
       query: (params) => ({
         url: "Products/paginated",
         params,
+      }),
+      providesTags: ["Product"],
+    }),
+
+    filterProducts: builder.query<FilterResponse<Product>, ProductFilterRequest>({
+      query: (body) => ({
+        url: "Products/filter",
+        method: "POST",
+        body,
       }),
       providesTags: ["Product"],
     }),
@@ -157,4 +200,5 @@ export const {
   useCreateProductWithImageMutation,
   useUpdateProductWithImageMutation,
   useDeleteProductMutation,
+  useFilterProductsQuery,
 } = productApi;

@@ -4,12 +4,18 @@ import Link from "next/link";
 import { DataTable } from "@/components/data-table/data-tables";
 import { createColumns } from "@/components/data-table/data-table-factory";
 import { useMemo, useState } from "react";
-import { useGetPaginatedProductsQuery, useDeleteProductMutation, type Product } from "@/lib/store/products/apislice";
+import { useDeleteProductMutation, type Product, useFilterProductsQuery, useCreateProductWithImageMutation, useUpdateProductWithImageMutation } from "@/lib/store/products/apislice";
+import { useUploadPrimaryImageMutation, useUploadDetailImagesMutation, useDeleteProductImageMutation } from "@/lib/store/products/editApis/apislice";
+import { useGetProductByIdQuery } from "@/lib/store/productDetails/apislice";
+import { useGetCategoriesQuery, type Category } from "@/lib/store/categories/apislice";
+import { useGetBrandsQuery } from "@/lib/store/brands/apislice";
 import { toast } from "sonner";
-import { AddProductPopup } from "@/components/addEditElement/products/addProduct";
-import { EditProductPopup } from "@/components/addEditElement/products/editProduct";
+import { DynamicAddPopup, type FieldConfig } from "@/components/addEditElement/DynamicAddPopup";
+import { DynamicEditPopup } from "@/components/addEditElement/DynamicEditPopup";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { FormLabel } from "@/components/ui/form";
+import { Plus, ImageIcon, Trash2 } from "lucide-react";
+import * as z from "zod";
 
 export default function ProductsPage() {
     const [{ pageIndex, pageSize }, setPagination] = useState({
@@ -17,13 +23,142 @@ export default function ProductsPage() {
         pageSize: 10,
     });
 
-    const { data: productsData, isLoading, error } = useGetPaginatedProductsQuery({
-        Page: pageIndex + 1,
-        PageSize: pageSize
-    });
+    const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+    const [selectedBrandNames, setSelectedBrandNames] = useState<string[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const { data: categoriesData } = useGetCategoriesQuery();
+
+    const flatCategories = useMemo(() => {
+        if (!categoriesData) return [];
+        const flatList: Category[] = [];
+        const flatten = (cats: Category[]) => {
+            cats.forEach(cat => {
+                flatList.push(cat);
+                if (cat.subCategories && cat.subCategories.length > 0) {
+                    flatten(cat.subCategories);
+                }
+            });
+        };
+        flatten(categoriesData);
+        return flatList;
+    }, [categoriesData]);
+
+    const { data: brandsData } = useGetBrandsQuery({ pageIndex: 0, pageSize: 100 });
+    console.log(brandsData)
+
+    const filterRequestBody = useMemo(() => {
+        return {
+            categoryId: selectedCategoryIds.length > 0 ? selectedCategoryIds[0] : undefined,
+            brandSlug: selectedBrandNames.length > 0 ? selectedBrandNames[0] : undefined,
+            searchTerm: searchTerm || undefined,
+            page: pageIndex + 1,
+            pageSize: pageSize,
+        };
+    }, [selectedCategoryIds, selectedBrandNames, searchTerm, pageIndex, pageSize]);
+
+    const { data: filteredData, isLoading, error } = useFilterProductsQuery(filterRequestBody);
+    console.log("filteredData", filteredData)
+
+    const [createProduct, { isLoading: isCreating }] = useCreateProductWithImageMutation();
+    const [updateProduct, { isLoading: isUpdating }] = useUpdateProductWithImageMutation();
+    const [uploadPrimary] = useUploadPrimaryImageMutation();
+    const [uploadDetails] = useUploadDetailImagesMutation();
+    const [deleteDetailImage, { isLoading: isDeletingImage }] = useDeleteProductImageMutation();
 
     const [deleteProduct] = useDeleteProductMutation();
     const [editingProductId, setEditingProductId] = useState<string | null>(null);
+
+    const { data: productDetails, isLoading: isFetchingDetails } = useGetProductByIdQuery(editingProductId!, { skip: !editingProductId });
+
+    const productSchema = z.object({
+        name: z.string().min(2, "Name is required"),
+        sku: z.string(),
+        shortDescription: z.string(),
+        description: z.string(),
+        categoryId: z.string(),
+        brandId: z.string(),
+        price: z.number(),
+        discountedPrice: z.number(),
+        stockQuantity: z.number(),
+        isHotDeal: z.boolean(),
+        isActive: z.boolean(),
+        imageFile: z.any().optional(),
+        detailImageFiles: z.any().optional()
+    });
+
+    const productFields: FieldConfig[] = [
+        { name: "name", label: "Product Name", type: "text", placeholder: "e.g. T-Shirt" },
+        { name: "sku", label: "SKU", type: "text", placeholder: "TSH-001" },
+        { name: "shortDescription", label: "Short Description", type: "text" },
+        { name: "description", label: "Full Description", type: "textarea" },
+        {
+            name: "categoryId",
+            label: "Category",
+            type: "combobox",
+            placeholder: "Select Category",
+            options: flatCategories.map(cat => ({ label: cat.name, value: cat.id }))
+        },
+        {
+            name: "brandId",
+            label: "Brand",
+            type: "select",
+            placeholder: "Select Brand",
+            options: brandsData?.items?.map(brand => ({ label: brand.name, value: brand.id })) || []
+        },
+        { name: "price", label: "Price", type: "number" },
+        { name: "discountedPrice", label: "Discounted Price", type: "number" },
+        { name: "stockQuantity", label: "Stock Quantity", type: "number" },
+        { name: "isHotDeal", label: "Hot Deal", type: "switch" },
+        { name: "isActive", label: "Is Active", type: "switch" },
+        { name: "imageFile", label: "Main Image", type: "file" },
+        {
+            name: "existingDetailImages",
+            label: "Current Detail Images",
+            type: "custom",
+            renderCustom: () => {
+                if (!productDetails?.images?.length) return null;
+                const detailImages = productDetails.images.filter(img => img.imageUrl !== productDetails.imageUrl);
+                if (!detailImages.length) return null;
+                return (
+                    <div className="space-y-4">
+                        <FormLabel className="text-sm font-bold flex items-center gap-2">
+                            <ImageIcon className="h-4 w-4" /> Current Detail Images
+                        </FormLabel>
+                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+                            {detailImages.map((img) => (
+                                <div key={img.id} className="group relative aspect-square border-2 border-border/50 rounded-2xl overflow-hidden hover:border-primary/50 transition-all shadow-sm">
+                                    <img src={`https://evto027-001-site1.ktempurl.com${img.imageUrl}`} alt="Detail" className="object-cover w-full h-full" />
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <Button
+                                            type="button"
+                                            variant="destructive"
+                                            size="icon"
+                                            className="h-8 w-8 rounded-full"
+                                            onClick={async () => {
+                                                if (confirm("Are you sure you want to delete this image?")) {
+                                                    try {
+                                                        await deleteDetailImage(img.id).unwrap();
+                                                        toast.success("Image deleted successfully");
+                                                    } catch (err) {
+                                                        toast.error("Failed to delete image");
+                                                    }
+                                                }
+                                            }}
+                                            disabled={isDeletingImage}
+                                        >
+                                            <Trash2 size={14} />
+                                        </Button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )
+            }
+        },
+        { name: "detailImageFiles", label: "Add New Detail Images", type: "file-multiple" }
+    ];
 
     const productColumns = useMemo(() => createColumns<Product>([
 
@@ -130,20 +265,107 @@ export default function ProductsPage() {
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
             <div className="flex justify-between items-center">
                 <h1 className="text-base md:text-xl lg:text-2xl font-bold">Products</h1>
-                <AddProductPopup />
+                <DynamicAddPopup
+                    title="Add Product"
+                    triggerText="Add Product"
+                    schema={productSchema}
+                    defaultValues={{
+                        name: "", sku: "", shortDescription: "", description: "",
+                        categoryId: "", brandId: "", price: 0, discountedPrice: 0,
+                        stockQuantity: 0, isHotDeal: false, isActive: true, imageFile: null, detailImageFiles: []
+                    }}
+                    fields={productFields}
+                    isLoading={isCreating}
+                    onSubmit={async (values) => {
+                        if (!values.imageFile) {
+                            toast.error("Main image is required");
+                            return;
+                        }
+                        await createProduct({
+                            ...values,
+                            primaryImageUrl: values.imageFile,
+                            detailImageFiles: values.detailImageFiles || [],
+                        }).unwrap();
+                        toast.success("Product created!");
+                    }}
+                />
             </div>
+
             <DataTable
                 columns={productColumns}
-                data={productsData?.items || []}
-                pageCount={productsData?.totalPages || 0}
+                data={filteredData?.products || []}
+                pageCount={filteredData?.totalPages || 0}
                 manualPagination={true}
                 pagination={{ pageIndex, pageSize }}
                 onPaginationChange={setPagination}
                 filterColumn="name"
+                filterMode="server"
+                onFilterChange={(value) => {
+                    setSearchTerm(value);
+                    setPagination(prev => ({ ...prev, pageIndex: 0 }));
+                }}
+                onFacetedFilterChange={(column, values) => {
+                    if (column === "categoryId" || column === "categoryName") {
+                        setSelectedCategoryIds(values);
+                    } else if (column === "brandName") {
+                        setSelectedBrandNames(values);
+                    }
+                    setPagination(prev => ({ ...prev, pageIndex: 0 }));
+                }}
+                facetedFilters={[
+                    {
+                        column: "categoryName",
+                        title: "Category",
+                        options: flatCategories.map((cat) => ({
+                            label: cat.name,
+                            value: cat.id,
+                        })),
+                    },
+                    {
+                        column: "brandName",
+                        title: "Brand",
+                        options: brandsData?.items?.map((brand) => ({
+                            label: brand.name,
+                            value: brand.name,
+                        })) || [],
+                    }
+                ]}
             />
-            <EditProductPopup
-                productId={editingProductId}
+            <DynamicEditPopup
+                open={!!editingProductId}
                 onOpenChange={(open) => !open && setEditingProductId(null)}
+                title={productDetails?.name ? `Edit Product: ${productDetails.name}` : "Edit Product"}
+                isFetching={isFetchingDetails}
+                isLoading={isUpdating}
+                schema={productSchema}
+                defaultValues={productDetails ? {
+                    ...productDetails,
+                    imageFile: undefined,
+                    detailImageFiles: []
+                } : undefined}
+                initialPreviews={{
+                    imageFile: productDetails?.imageUrl ? `https://evto027-001-site1.ktempurl.com${productDetails.imageUrl}` : ""
+                }}
+                fields={productFields}
+                onSubmit={async (values) => {
+                    if (!productDetails) return;
+                    await updateProduct({
+                        ...values,
+                        id: productDetails.id,
+                        primaryImageUrl: null,
+                        detailImageFiles: [],
+                    }).unwrap();
+
+                    if (values.imageFile instanceof File) {
+                        await uploadPrimary({ id: productDetails.id, imageFile: values.imageFile }).unwrap();
+                    }
+
+                    if (values.detailImageFiles && values.detailImageFiles.length > 0) {
+                        await uploadDetails({ id: productDetails.id, imageFiles: values.detailImageFiles }).unwrap();
+                    }
+
+                    toast.success("Product updated!");
+                }}
             />
         </div>
     );

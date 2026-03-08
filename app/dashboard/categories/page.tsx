@@ -3,15 +3,50 @@
 import { DataTable } from "@/components/data-table/data-tables";
 import { createColumns } from "@/components/data-table/data-table-factory";
 import { useMemo, useState } from "react";
-import { useGetCategoriesQuery, useDeleteCategoryMutation, type Category } from "@/lib/store/categories/apislice";
+import { useGetCategoriesQuery, useDeleteCategoryMutation, useCreateCategoryWithImageMutation, useUpdateCategoryWithImageMutation, type Category } from "@/lib/store/categories/apislice";
 import { toast } from "sonner";
-import { AddCategoryPopup } from "@/components/addEditElement/category/addCategory";
-import { EditCategoryPopup } from "@/components/addEditElement/category/editCategory";
+import { DynamicAddPopup, type FieldConfig } from "@/components/addEditElement/DynamicAddPopup";
+import { DynamicEditPopup } from "@/components/addEditElement/DynamicEditPopup";
+import * as z from "zod";
+import { flattenCategories } from "@/lib/utils/category-flattener";
 
 export default function Page() {
     const { data: categories, isLoading, error } = useGetCategoriesQuery();
+    const [createCategory, { isLoading: isCreating }] = useCreateCategoryWithImageMutation();
+    const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryWithImageMutation();
     const [deleteCategory] = useDeleteCategoryMutation();
     const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+
+    const flatCategories = useMemo(() => {
+        return categories ? flattenCategories(categories) : [];
+    }, [categories]);
+
+    const categorySchema = z.object({
+        name: z.string().min(2, "Name is required"),
+        description: z.string().min(5, "Description must be at least 5 characters"),
+        sortOrder: z.number().min(1, "Sort order must be at least 1"),
+        parentCategoryId: z.string().nullable().optional(),
+        imageFile: z.instanceof(File, { message: "Image is required" }).nullable().optional(),
+        isActive: z.boolean().default(true)
+    });
+
+    const categoryFields: FieldConfig[] = [
+        { name: "name", label: "Category Name", type: "text", placeholder: "e.g. Shirts" },
+        { name: "description", label: "Description", type: "textarea", placeholder: "Category description..." },
+        { name: "sortOrder", label: "Sort Order", type: "number" },
+        {
+            name: "parentCategoryId",
+            label: "Parent Category",
+            type: "combobox",
+            placeholder: "Select Parent Category",
+            options: flatCategories.map(cat => ({
+                label: cat.displayName,
+                value: cat.id
+            }))
+        },
+        { name: "isActive", label: "Is Active", type: "switch" },
+        { name: "imageFile", label: "Category Image (Optional)", type: "file" }
+    ];
 
     const categoryColumns = useMemo(() => createColumns<Category>([
         {
@@ -91,7 +126,18 @@ export default function Page() {
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
             <div className="flex justify-between items-center">
                 <h1 className="text-base md:text-xl lg:text-2xl">Categories</h1>
-                <AddCategoryPopup />
+                <DynamicAddPopup
+                    title="Add Category"
+                    triggerText="Add Category"
+                    schema={categorySchema}
+                    defaultValues={{ name: "", description: "", sortOrder: 1, parentCategoryId: null, imageFile: null, isActive: true }}
+                    fields={categoryFields}
+                    isLoading={isCreating}
+                    onSubmit={async (values) => {
+                        await createCategory(values).unwrap();
+                        toast.success("Category added!");
+                    }}
+                />
             </div>
             <DataTable
                 columns={categoryColumns}
@@ -99,9 +145,26 @@ export default function Page() {
                 filterColumn="name"
                 getSubRows={(row) => row.subCategories}
             />
-            <EditCategoryPopup
-                category={editingCategory}
+            <DynamicEditPopup
+                open={!!editingCategory}
                 onOpenChange={(open) => !open && setEditingCategory(null)}
+                title={`Edit Category: ${editingCategory?.name}`}
+                schema={categorySchema}
+                defaultValues={{
+                    ...editingCategory,
+                    parentCategoryId: editingCategory?.parentCategoryId || null,
+                    imageFile: undefined
+                }}
+                initialPreviews={{
+                    imageFile: editingCategory?.imageUrl ? `https://evto027-001-site1.ktempurl.com${editingCategory.imageUrl}` : ""
+                }}
+                fields={categoryFields}
+                isLoading={isUpdating}
+                onSubmit={async (values) => {
+                    if (!editingCategory) return;
+                    await updateCategory({ ...values, id: editingCategory.id }).unwrap();
+                    toast.success("Category updated!");
+                }}
             />
         </div>
     )
