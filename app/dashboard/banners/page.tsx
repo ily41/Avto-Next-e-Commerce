@@ -4,7 +4,8 @@ import { useMemo, useState } from "react";
 import { DataTable } from "@/components/data-table/data-tables";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Trash2, Image as ImageIcon } from "lucide-react";
+import { Trash2, Image as ImageIcon, Settings2 } from "lucide-react";
+import Link from "next/link";
 import * as z from "zod";
 import { toast } from "sonner";
 import { DynamicAddPopup, type FieldConfig } from "@/components/addEditElement/DynamicAddPopup";
@@ -244,6 +245,12 @@ export default function BannersPage() {
             header: "Actions",
             cell: ({ row }) => (
                 <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" asChild>
+                        <Link href={`/dashboard/banners/${row.original.id}`}>
+                            <Settings2 className="h-4 w-4 mr-2" />
+                            Manage Design
+                        </Link>
+                    </Button>
                     <Button
                         variant="outline"
                         size="sm"

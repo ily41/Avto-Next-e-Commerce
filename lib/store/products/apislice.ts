@@ -97,6 +97,25 @@ export type ProductFilterRequest = {
   pageSize?: number;
 };
 
+export type ProductFilterAssignment = {
+  id: string;
+  productId: string;
+  productName: string;
+  filterId: string;
+  filterName: string;
+  filterOptionId?: string;
+  filterOptionDisplayName?: string;
+  customValue?: string;
+  createdAt?: string;
+};
+
+export type BulkAssignFilterRequest = {
+  productIds: string[];
+  filterId: string;
+  filterOptionId?: string;
+  customValue?: string;
+};
+
 export const productApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getPaginatedProducts: builder.query<PaginatedResponse<Product>, ProductQueryParams>({
@@ -192,6 +211,35 @@ export const productApi = api.injectEndpoints({
       }),
       invalidatesTags: ["Product"],
     }),
+
+    bulkAssignProductFilters: builder.mutation<void, BulkAssignFilterRequest>({
+      query: (body) => ({
+        url: `Admin/Products/filters/bulk-assign`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Product"],
+    }),
+    getProductFilters: builder.query<ProductFilterAssignment[], string>({
+      query: (productId) => `Admin/Products/${productId}/filters`,
+      providesTags: ["Product"],
+    }),
+
+    deleteProductFilters: builder.mutation<void, string>({
+      query: (productId) => ({
+        url: `Admin/Products/${productId}/filters`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Product"],
+    }),
+
+    deleteProductFilter: builder.mutation<void, { productId: string; filterId: string }>({
+      query: ({ productId, filterId }) => ({
+        url: `Admin/Products/${productId}/filters/${filterId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Product"],
+    }),
   }),
 });
 
@@ -201,4 +249,8 @@ export const {
   useUpdateProductWithImageMutation,
   useDeleteProductMutation,
   useFilterProductsQuery,
+  useBulkAssignProductFiltersMutation,
+  useGetProductFiltersQuery,
+  useDeleteProductFiltersMutation,
+  useDeleteProductFilterMutation,
 } = productApi;

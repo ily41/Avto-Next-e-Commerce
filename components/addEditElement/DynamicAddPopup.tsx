@@ -21,14 +21,14 @@ import { toast } from "sonner"
 export type FieldConfig = {
     name: string;
     label: string;
-    type: "text" | "number" | "date" | "textarea" | "switch" | "file" | "file-multiple" | "select" | "combobox" | "custom";
+    type: "text" | "number" | "date" | "textarea" | "switch" | "file" | "file-multiple" | "select" | "combobox" | "custom" | "color";
     placeholder?: string;
     options?: { label: string; value: string }[];
     renderCustom?: (field: any, form: any) => React.ReactNode;
 }
 
 const FIELD_ORDER: Record<FieldConfig["type"], number> = {
-    text: 0, number: 0, date: 0, select: 0, combobox: 0, textarea: 0,
+    text: 0, number: 0, date: 0, select: 0, combobox: 0, textarea: 0, color: 0,
     switch: 1,
     file: 2, "file-multiple": 2, custom: 2,
 }
@@ -124,6 +124,14 @@ export function DynamicAddPopup({
                                                 break;
                                             case "date":
                                                 content = <Input type="date" {...field} value={field.value || ""} />
+                                                break;
+                                            case "color":
+                                                content = (
+                                                    <div className="flex gap-2 items-center">
+                                                        <Input type="color" {...field} value={field.value || "#000000"} className="w-12 h-10 p-1 cursor-pointer" />
+                                                        <Input type="text" {...field} value={field.value || ""} placeholder={fieldConfig.placeholder || "#000000"} className="flex-1" />
+                                                    </div>
+                                                )
                                                 break;
                                             case "number":
                                                 content = <Input type="number" placeholder={fieldConfig.placeholder} {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} value={field.value || 0} />

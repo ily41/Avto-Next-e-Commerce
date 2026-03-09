@@ -20,6 +20,20 @@ export type Banner = {
     createdAt: string;
     updatedAt: string;
     isCurrentlyActive: boolean;
+    titlePositionX?: number;
+    titlePositionY?: number;
+    titleFontSize?: number;
+    titleColor?: string | null;
+    titleAlign?: string | null;
+    descriptionPositionX?: number;
+    descriptionPositionY?: number;
+    descriptionFontSize?: number;
+    descriptionColor?: string | null;
+    buttonPositionX?: number;
+    buttonPositionY?: number;
+    buttonColor?: string | null;
+    buttonTextColor?: string | null;
+    buttonBorderRadius?: number;
 };
 
 export const bannersApiSlice = api.enhanceEndpoints({ addTagTypes: ['Banner'] }).injectEndpoints({
@@ -33,6 +47,10 @@ export const bannersApiSlice = api.enhanceEndpoints({ addTagTypes: ['Banner'] })
                 return url;
             },
             providesTags: ['Banner'],
+        }),
+        getBannerById: builder.query<Banner, string>({
+            query: (id) => `/Admin/banners/${id}`,
+            providesTags: (result, error, id) => [{ type: 'Banner', id }],
         }),
         createBannerWithImages: builder.mutation<Banner, FormData>({
             query: (formData) => ({
@@ -69,6 +87,7 @@ export const bannersApiSlice = api.enhanceEndpoints({ addTagTypes: ['Banner'] })
 
 export const {
     useGetBannersQuery,
+    useGetBannerByIdQuery,
     useCreateBannerWithImagesMutation,
     useUpdateBannerMutation,
     useDeleteBannerMutation,

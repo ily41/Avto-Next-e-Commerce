@@ -59,6 +59,8 @@ interface DataTableProps<TData, TValue> {
   }[]
   filterMode?: "client" | "server"
   onFacetedFilterChange?: (columnId: string, values: string[]) => void
+  rowSelection?: Record<string, boolean>
+  onRowSelectionChange?: React.Dispatch<React.SetStateAction<Record<string, boolean>>>
 }
 
 export function DataTable<TData, TValue>({
@@ -77,6 +79,8 @@ export function DataTable<TData, TValue>({
   facetedFilters,
   filterMode = "client",
   onFacetedFilterChange,
+  rowSelection: externalRowSelection,
+  onRowSelectionChange: externalOnRowSelectionChange,
 }: DataTableProps<TData, TValue>) {
 
 
@@ -86,7 +90,10 @@ export function DataTable<TData, TValue>({
   )
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+  const [internalRowSelection, setInternalRowSelection] = React.useState({})
+
+  const rowSelection = externalRowSelection !== undefined ? externalRowSelection : internalRowSelection;
+  const setRowSelection = externalOnRowSelectionChange !== undefined ? externalOnRowSelectionChange : setInternalRowSelection as any;
 
   const table = useReactTable({
     data,

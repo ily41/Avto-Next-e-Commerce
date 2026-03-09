@@ -26,7 +26,8 @@ export function createColumns<T>(
     render?: (value: any, item: T) => React.ReactNode;
   }[],
   onDelete?: (item: T) => void,
-  onEdit?: (item: T) => void
+  onEdit?: (item: T) => void,
+  extraActions?: (item: T) => React.ReactNode
 ): ColumnDef<T>[] {
   return [
     // 1. Static Selection Column
@@ -65,10 +66,10 @@ export function createColumns<T>(
       cell: ({ getValue, row }) => {
         const val = getValue();
         const content = col.render ? col.render(val, row.original) : (val as React.ReactNode);
-            
+
         if (col.isExpandable) {
           return (
-            <div 
+            <div
               style={{ paddingLeft: `${row.depth * 2}rem` }} // Indent based on depth
               className="flex items-center gap-2"
             >
@@ -82,16 +83,16 @@ export function createColumns<T>(
                     row.getToggleExpandedHandler()();
                   }}
                 >
-                  {row.getIsExpanded() ? <ChevronDown size={14}/> : <ChevronRight size={14}/>}
+                  {row.getIsExpanded() ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                 </Button>
               )}
               {/* Placeholder for rows without children to keep text aligned */}
-              {!row.getCanExpand() && <div className="w-6" />} 
+              {!row.getCanExpand() && <div className="w-6" />}
               {content}
             </div>
           );
         }
-      
+
         return content;
       }
 
@@ -100,12 +101,12 @@ export function createColumns<T>(
     {
       id: "actions",
       header: "Actions",
-      cell: ({ row }) => <ActionCell row={row} onDelete={onDelete} onEdit={onEdit} />,
+      cell: ({ row }) => <ActionCell row={row} onDelete={onDelete} onEdit={onEdit} extraActions={extraActions} />,
     },
   ]
 }
 
-function ActionCell<T>({ row, onDelete, onEdit }: { row: any, onDelete?: (item: T) => void, onEdit?: (item: T) => void }) {
+function ActionCell<T>({ row, onDelete, onEdit, extraActions }: { row: any, onDelete?: (item: T) => void, onEdit?: (item: T) => void, extraActions?: (item: T) => React.ReactNode }) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const item = row.original as any
 
@@ -124,6 +125,7 @@ function ActionCell<T>({ row, onDelete, onEdit }: { row: any, onDelete?: (item: 
               Edit
             </DropdownMenuItem>
           )}
+          {extraActions && extraActions(item)}
           {onDelete && (
             <DropdownMenuItem
               className="text-destructive"

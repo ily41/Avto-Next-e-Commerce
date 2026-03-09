@@ -133,6 +133,14 @@ export function DynamicEditPopup({
                                                 case "date":
                                                     content = <Input type="date" {...field} value={field.value || ""} />
                                                     break;
+                                                case "color":
+                                                    content = (
+                                                        <div className="flex gap-2 items-center">
+                                                            <Input type="color" {...field} value={field.value || "#000000"} className="w-12 h-10 p-1 cursor-pointer" />
+                                                            <Input type="text" {...field} value={field.value || ""} placeholder={fieldConfig.placeholder || "#000000"} className="flex-1" />
+                                                        </div>
+                                                    )
+                                                    break;
                                                 case "number":
                                                     content = <Input type="number" placeholder={fieldConfig.placeholder} {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} value={field.value || 0} />
                                                     break;
