@@ -344,14 +344,14 @@ export default function BannersPage() {
                     fields={bannerEditFields}
                     isLoading={isUpdating}
                     onSubmit={async (values) => {
-                        const dataToUpdate = { ...values };
-                        delete dataToUpdate.imageFile;
-                        delete dataToUpdate.mobileImageFile;
+                        const dataToUpdate = { ...editingBanner, ...values };
+                        delete (dataToUpdate as any).imageFile;
+                        delete (dataToUpdate as any).mobileImageFile;
 
                         dataToUpdate.type = parseInt(dataToUpdate.type?.toString() || "0", 10);
                         dataToUpdate.sortOrder = parseInt(dataToUpdate.sortOrder?.toString() || "0", 10);
 
-                        await updateBanner({ id: editingBanner.id, data: dataToUpdate }).unwrap();
+                        await updateBanner({ id: editingBanner.id, data: dataToUpdate as any }).unwrap();
                         toast.success("Banner updated!");
                     }}
                 />

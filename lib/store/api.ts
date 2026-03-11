@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
-
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://evto027-001-site1.ktempurl.com';
 export const api = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://evto027-001-site1.ktempurl.com/api/v1",
+        baseUrl: API_BASE_URL + "/api/v1",
         prepareHeaders: (headers) => {
             const token = Cookies.get("token");
             if (token) {

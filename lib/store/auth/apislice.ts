@@ -21,7 +21,13 @@ export const authApi = api.injectEndpoints({
         getMe: builder.query<User, void>({
             query: () => "Auth/me", // Assuming this exists based on your provided guard code
         }),
+        logout: builder.mutation<void, void>({
+            query: () => ({
+                url: "Auth/logout",
+                method: "POST",
+            }),
+        }),
     }),
 });
 
-export const { useLoginMutation, useGetMeQuery } = authApi;
+export const { useLoginMutation, useGetMeQuery, useLogoutMutation } = authApi;

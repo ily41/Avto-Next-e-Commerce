@@ -28,6 +28,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useLogoutMutation } from "@/lib/store/auth/apislice"
+import Cookies from "js-cookie"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export function NavUser({
   user,
@@ -39,6 +43,22 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const [logout, { isLoading }] = useLogoutMutation()
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap()
+      Cookies.remove("token")
+      router.push("/")
+      toast.success("Logged out successfully")
+    } catch (error) {
+      // Even if server call fails, we should clear the token and redirect
+      Cookies.remove("token")
+      router.push("/")
+      toast.error("Logout performed with errors")
+    }
+  }
 
   return (
     <SidebarMenu>
@@ -98,9 +118,9 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout} disabled={isLoading}>
               <IconLogout />
-              Log out
+              {isLoading ? "Logging out..." : "Log out"}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

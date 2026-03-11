@@ -33,7 +33,11 @@ const loginSchema = z.object({
     password: z.string().min(6, "Password must be at least 6 characters"),
 })
 
-export function LoginPopup() {
+interface LoginPopupProps {
+    children?: React.ReactNode
+}
+
+export function LoginPopup({ children }: LoginPopupProps) {
     const [open, setOpen] = useState(false)
     const [login, { isLoading }] = useLoginMutation()
     const router = useRouter()
@@ -81,7 +85,7 @@ export function LoginPopup() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline">Login</Button>
+                {children || <Button variant="outline">Login</Button>}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

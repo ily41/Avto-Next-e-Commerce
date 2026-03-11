@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useGetBannerByIdQuery, useUpdateBannerMutation } from "@/lib/store/banners/apislice";
 import { DndContext, useDraggable, DragEndEvent, Modifier } from "@dnd-kit/core";
@@ -41,6 +41,8 @@ export default function BannerDesignPage() {
 
     const { data: banner, isLoading } = useGetBannerByIdQuery(id);
     const [updateBanner, { isLoading: isUpdating }] = useUpdateBannerMutation();
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     const [positions, setPositions] = useState({
         title: { x: 0, y: 0 },
@@ -60,24 +62,39 @@ export default function BannerDesignPage() {
     });
 
     useEffect(() => {
-        if (banner) {
-            setPositions({
-                title: { x: banner.titlePositionX || 20, y: banner.titlePositionY || 20 },
-                description: { x: banner.descriptionPositionX || 20, y: banner.descriptionPositionY || 80 },
-                button: { x: banner.buttonPositionX || 20, y: banner.buttonPositionY || 140 },
-            });
-            setStyles({
-                titleFontSize: banner.titleFontSize || 24,
-                titleColor: banner.titleColor || "#ffffff",
-                titleAlign: banner.titleAlign || "left",
-                descriptionFontSize: banner.descriptionFontSize || 16,
-                descriptionColor: banner.descriptionColor || "#ffffff",
-                buttonColor: banner.buttonColor || "#000000",
-                buttonTextColor: banner.buttonTextColor || "#ffffff",
-                buttonBorderRadius: banner.buttonBorderRadius || 4,
-            });
+        if (banner && containerRef.current && !isInitialized) {
+            const containerWidth = containerRef.current.offsetWidth;
+            const containerHeight = containerRef.current.offsetHeight;
+
+            if (containerWidth > 0) {
+                setPositions({
+                    title: {
+                        x: (banner.titlePositionX !== undefined ? (banner.titlePositionX / 100) * containerWidth : 20),
+                        y: (banner.titlePositionY !== undefined ? (banner.titlePositionY / 100) * containerHeight : 20)
+                    },
+                    description: {
+                        x: (banner.descriptionPositionX !== undefined ? (banner.descriptionPositionX / 100) * containerWidth : 20),
+                        y: (banner.descriptionPositionY !== undefined ? (banner.descriptionPositionY / 100) * containerHeight : 80)
+                    },
+                    button: {
+                        x: (banner.buttonPositionX !== undefined ? (banner.buttonPositionX / 100) * containerWidth : 20),
+                        y: (banner.buttonPositionY !== undefined ? (banner.buttonPositionY / 100) * containerHeight : 140)
+                    },
+                });
+                setStyles({
+                    titleFontSize: banner.titleFontSize || 24,
+                    titleColor: banner.titleColor || "#ffffff",
+                    titleAlign: banner.titleAlign || "left",
+                    descriptionFontSize: banner.descriptionFontSize || 16,
+                    descriptionColor: banner.descriptionColor || "#ffffff",
+                    buttonColor: banner.buttonColor || "#000000",
+                    buttonTextColor: banner.buttonTextColor || "#ffffff",
+                    buttonBorderRadius: banner.buttonBorderRadius || 4,
+                });
+                setIsInitialized(true);
+            }
         }
-    }, [banner]);
+    }, [banner, isInitialized]);
 
     const snapModifier: Modifier = ({ transform, active }) => {
         if (!active || !transform) return transform;
@@ -129,23 +146,27 @@ export default function BannerDesignPage() {
     };
 
     const handleSave = async () => {
-        if (!banner) return;
+        if (!banner || !containerRef.current) return;
+
+        const containerWidth = containerRef.current.offsetWidth;
+        const containerHeight = containerRef.current.offsetHeight;
+
         try {
             await updateBanner({
                 id: banner.id,
                 data: {
                     ...banner,
-                    titlePositionX: Math.round(positions.title.x),
-                    titlePositionY: Math.round(positions.title.y),
+                    titlePositionX: Math.round((positions.title.x / containerWidth) * 100),
+                    titlePositionY: Math.round((positions.title.y / containerHeight) * 100),
                     titleFontSize: styles.titleFontSize,
                     titleColor: styles.titleColor,
                     titleAlign: styles.titleAlign,
-                    descriptionPositionX: Math.round(positions.description.x),
-                    descriptionPositionY: Math.round(positions.description.y),
+                    descriptionPositionX: Math.round((positions.description.x / containerWidth) * 100),
+                    descriptionPositionY: Math.round((positions.description.y / containerHeight) * 100),
                     descriptionFontSize: styles.descriptionFontSize,
                     descriptionColor: styles.descriptionColor,
-                    buttonPositionX: Math.round(positions.button.x),
-                    buttonPositionY: Math.round(positions.button.y),
+                    buttonPositionX: Math.round((positions.button.x / containerWidth) * 100),
+                    buttonPositionY: Math.round((positions.button.y / containerHeight) * 100),
                     buttonColor: styles.buttonColor,
                     buttonTextColor: styles.buttonTextColor,
                     buttonBorderRadius: styles.buttonBorderRadius,
@@ -192,6 +213,7 @@ export default function BannerDesignPage() {
                 <div className="flex-1 w-full bg-slate-100 dark:bg-slate-900 rounded-2xl border p-4 shadow-inner flex flex-col items-center justify-start overflow-hidden min-h-[500px]">
                     <DndContext onDragEnd={handleDragEnd} modifiers={[restrictToParentElement, snapModifier]}>
                         <div
+                            ref={containerRef}
                             className="relative w-full max-w-4xl aspect-[21/9] rounded-xl shadow-xl overflow-hidden"
                             style={{
                                 backgroundImage: bannerBackground,
