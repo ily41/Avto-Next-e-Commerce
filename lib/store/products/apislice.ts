@@ -240,6 +240,10 @@ export const productApi = api.injectEndpoints({
       }),
       invalidatesTags: ["Product"],
     }),
+    getHotDeals: builder.query<Product[], void>({
+      query: () => "Products/hot-deals",
+      providesTags: ["Product"],
+    }),
   }),
 });
 
@@ -253,4 +257,5 @@ export const {
   useGetProductFiltersQuery,
   useDeleteProductFiltersMutation,
   useDeleteProductFilterMutation,
+  useGetHotDealsQuery,
 } = productApi;
