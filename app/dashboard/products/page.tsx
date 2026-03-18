@@ -74,12 +74,12 @@ export default function ProductsPage() {
     const productSchema = z.object({
         name: z.string().min(2, "Name is required"),
         sku: z.string(),
-        shortDescription: z.string(),
+        shortDescription: z.string().nullish(),
         description: z.string(),
         categoryId: z.string(),
         brandId: z.string(),
-        price: z.number(),
-        discountedPrice: z.number(),
+        price: z.coerce.number(),
+        discountedPrice: z.coerce.number().nullish(),
         stockQuantity: z.number(),
         isHotDeal: z.boolean(),
         isActive: z.boolean(),
@@ -283,6 +283,8 @@ export default function ProductsPage() {
                         }
                         await createProduct({
                             ...values,
+                            discountedPrice: values.discountedPrice || values.price,
+                            shortDescription: values.shortDescription || "",
                             primaryImageUrl: values.imageFile,
                             detailImageFiles: values.detailImageFiles || [],
                         }).unwrap();
@@ -352,6 +354,8 @@ export default function ProductsPage() {
                     await updateProduct({
                         ...values,
                         id: productDetails.id,
+                        discountedPrice: values.discountedPrice || values.price,
+                        shortDescription: values.shortDescription || "",
                         primaryImageUrl: null,
                         detailImageFiles: [],
                     }).unwrap();

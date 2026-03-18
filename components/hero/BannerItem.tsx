@@ -41,7 +41,7 @@ const BannerItem = ({ banner }: BannerItemProps) => {
     };
 
     return (
-        <div className="relative w-full h-full overflow-hidden rounded-2xl bg-gray-50 group min-h-[280px] cursor-pointer">
+        <div className="relative w-full h-full overflow-hidden rounded-lg bg-gray-50 group cursor-pointer">
             {/* Background Image */}
             <div className="absolute inset-0 w-full h-full">
                 {/* Mobile Image */}

@@ -26,12 +26,12 @@ const TopDealsMegaMenu = ({ isOpen, setHoveredLink }: TopDealsMegaMenuProps) => 
                 ? "opacity-100 translate-y-0 pointer-events-auto"
                 : "opacity-0 translate-y-8 pointer-events-none"
                 }`}
-            onMouseEnter={() => setHoveredLink("Top deals")}
+            onMouseEnter={() => setHoveredLink("Top təkliflər")}
             onMouseLeave={() => setHoveredLink(null)}
         >
             {/* Left Side: Shop By Categories Circles */}
             <div className="w-[50%] p-8">
-                <h3 className="text-center text-[16px] font-semibold text-gray-900 mb-8">Shop By</h3>
+                <h3 className="text-center text-[16px] font-semibold text-gray-900 mb-8">Kateqoriyalar</h3>
                 <div className="grid grid-cols-4 gap-y-5">
                     {displayCategories.map((category) => (
                         <Link 
@@ -60,7 +60,7 @@ const TopDealsMegaMenu = ({ isOpen, setHoveredLink }: TopDealsMegaMenuProps) => 
 
             {/* Right Side: Top Rated Grid (3 rows x 2 columns) */}
             <div className="w-[50%] bg-gray-50/50 p-6 border-l border-gray-100">
-                <h3 className="text-center text-[14px] font-semibold text-gray-900 mb-6">Top Rated</h3>
+                <h3 className="text-center text-[14px] font-semibold text-gray-900 mb-6">Ən Reytinqli</h3>
 
                 <div className="grid grid-cols-2 gap-px bg-gray-100 border border-gray-100 rounded-lg overflow-hidden">
                     {displayProducts.length > 0 ? (
@@ -74,7 +74,7 @@ const TopDealsMegaMenu = ({ isOpen, setHoveredLink }: TopDealsMegaMenuProps) => 
                             {isProductsLoading ? (
                                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                             ) : (
-                                <p className="text-gray-400 text-sm">No top rated products found</p>
+                                <p className="text-gray-400 text-sm">Ən reytinqli məhsul tapılmadı</p>
                             )}
                         </div>
                     )}

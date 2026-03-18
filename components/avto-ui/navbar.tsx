@@ -16,11 +16,11 @@ import { cn } from "@/lib/utils";
 import { LoginPopup } from "@/components/ownUI/loginPopup";
 
 const topNavLinks = [
-    { name: "Track Order", href: "#", icon: Package2 },
-    { name: "About Us", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Contact Us", href: "#" },
-    { name: "FAQs", href: "#" },
+    { name: "Sifarişi İzlə", href: "#", icon: Package2 },
+    { name: "Haqqımızda", href: "#" },
+    { name: "Bloq", href: "#" },
+    { name: "Bizimlə Əlaqə", href: "#" },
+    { name: "Tez-tez Verilən Suallar", href: "#" },
 ];
 
 export function Navbar() {
@@ -44,14 +44,14 @@ export function Navbar() {
                         ))}
                     </div>
                     <div className="font-medium text-gray-700">
-                        Free Shipping on orders over $100!
+                        $100-dan yuxarı sifarişlərdə Pulsuz Çatdırılma!
                     </div>
                 </div>
             </div>
 
             {/* --- MOBILE SUB-INFO (Mobile Only) --- */}
             <div className="w-full bg-white py-2 px-4 text-center lg:hidden text-[13px] font-medium text-gray-700 border-b border-gray-100">
-                Free Shipping on orders over $100!
+                $100-dan yuxarı sifarişlərdə Pulsuz Çatdırılma!
             </div>
 
             {/* --- MAIN NAVBAR --- */}
@@ -71,28 +71,26 @@ export function Navbar() {
                         {/* Logo Group */}
                         <div className="flex items-center">
                             <Link href="/" className="flex items-center select-none">
-                                <span className="text-2xl lg:text-[32px] font-black tracking-tight text-[#1a1a1a]">
-                                    Avto<span className="text-blue-600">027</span>
-                                </span>
+                                <img src="/logos/logo3.svg" alt="Avto027 Logo" className="h-[40px] lg:h-[50px] w-[100px] lg:w-[150px] object-cover mix-blend-multiply" />
                             </Link>
                         </div>
                     </div>
 
                     {/* Search Bar Group (Desktop Only) */}
                     <div className="hidden lg:flex flex-1 max-w-[650px] items-center border border-gray-200 rounded-md overflow-hidden bg-[#f3f4f6]/30">
-                        <div className="relative">
+                        {/* <div className="relative">
                             <button className="flex items-center gap-2 pl-4 pr-3 py-2 text-[14px] font-medium text-gray-700 border-r border-gray-200 hover:bg-gray-50 whitespace-nowrap">
-                                All Categories
+                                Bütün Kateqoriyalar
                                 <ChevronDown size={14} className="text-gray-400" />
                             </button>
-                        </div>
+                        </div> */}
                         <input
                             type="text"
-                            placeholder="Search products..."
+                            placeholder="Məhsulları axtar..."
                             className="flex-1 px-4 py-2.5 outline-none text-[14px] bg-transparent placeholder:text-gray-400"
                         />
                         <button className="bg-blue-600 text-white px-8 py-2 text-[15px] font-bold hover:bg-blue-700 transition-colors">
-                            Search
+                            Axtar
                         </button>
                     </div>
 
@@ -109,8 +107,8 @@ export function Navbar() {
                             <div className="flex items-center gap-2 group cursor-pointer">
                                 <User size={24} strokeWidth={1.5} className="text-gray-800 group-hover:text-blue-600 transition-colors shrink-0" />
                                 <div className="hidden lg:flex flex-col">
-                                    <span className="text-[10px] text-gray-400 uppercase font-semibold leading-tight">My Account</span>
-                                    <span className="text-[14px] font-bold text-gray-800 leading-tight">Login</span>
+                                    <span className="text-[10px] text-gray-400 uppercase font-semibold leading-tight">Hesabım</span>
+                                    <span className="text-[14px] font-bold text-gray-800 leading-tight">Daxil ol</span>
                                 </div>
                             </div>
                         </LoginPopup>
@@ -132,7 +130,7 @@ export function Navbar() {
                                 </span>
                             </div>
                             <div className="hidden lg:flex flex-col">
-                                <span className="text-[10px] text-gray-400 uppercase font-semibold leading-tight">My Cart</span>
+                                <span className="text-[10px] text-gray-400 uppercase font-semibold leading-tight">Səbətim</span>
                                 <span className="text-[14px] font-bold text-gray-800 leading-tight">$0.00</span>
                             </div>
                         </Link>
@@ -148,16 +146,16 @@ export function Navbar() {
                     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)} />
                     <nav className="fixed top-0 left-0 bottom-0 w-[280px] bg-white shadow-xl p-6 flex flex-col gap-6 animate-in slide-in-from-left duration-300">
                         <div className="flex justify-between items-center pb-4 border-b border-gray-100">
-                            <span className="text-xl font-black text-gray-900">Avto<span className="text-blue-600">027</span></span>
+                            <img src="/logos/logo3.svg" alt="Avto027 Logo" className="h-[40px] w-[120px] object-cover mix-blend-multiply" />
                             <button onClick={() => setIsMenuOpen(false)} className="text-gray-500 p-1"><X size={24} /></button>
                         </div>
                         <div className="flex flex-col gap-4 text-base font-semibold text-gray-800">
-                            <Link href="#" className="hover:text-blue-600">Home</Link>
-                            <Link href="#" className="hover:text-blue-600">Shop</Link>
-                            <Link href="#" className="hover:text-blue-600">Categories</Link>
-                            <Link href="#" className="hover:text-blue-600">Flash Sales</Link>
+                            <Link href="#" className="hover:text-blue-600">Ana Səhifə</Link>
+                            <Link href="#" className="hover:text-blue-600">Mağaza</Link>
+                            <Link href="#" className="hover:text-blue-600">Kateqoriyalar</Link>
+                            <Link href="#" className="hover:text-blue-600">Qaynar Endirimlər</Link>
                             <LoginPopup>
-                                <span className="hover:text-blue-600 cursor-pointer">Login</span>
+                                <span className="hover:text-blue-600 cursor-pointer">Daxil ol</span>
                             </LoginPopup>
                             <div className="h-px bg-gray-100 my-2" />
                             {topNavLinks.map(link => (

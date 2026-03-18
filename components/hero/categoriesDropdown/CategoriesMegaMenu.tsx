@@ -25,7 +25,7 @@ const CategoriesMegaMenu = ({ isOpen, setHoveredLink }: CategoriesMegaMenuProps)
                 ? "opacity-100 translate-y-0 pointer-events-auto"
                 : "opacity-0 translate-y-8 pointer-events-none"
                 }`}
-            onMouseEnter={() => setHoveredLink("Categories")}
+            onMouseEnter={() => setHoveredLink("Kateqoriyalar")}
             onMouseLeave={() => setHoveredLink(null)}
         >
             {/* Left Side: Categories Grid */}
@@ -53,7 +53,7 @@ const CategoriesMegaMenu = ({ isOpen, setHoveredLink }: CategoriesMegaMenuProps)
                                     href={`/category/${category.slug}`}
                                     className="text-[14px] text-blue-600 font-medium hover:underline"
                                 >
-                                    View all
+                                    Hamısına bax
                                 </Link>
                             )}
                         </div>
@@ -64,7 +64,7 @@ const CategoriesMegaMenu = ({ isOpen, setHoveredLink }: CategoriesMegaMenuProps)
             {/* Right Side: Hot Deals Grid (2 columns) */}
             <div className="w-[50%] bg-gray-50/50 p-4 border-l border-gray-100">
                 <div className="flex items-center justify-center my-4">
-                    <h3 className="text-[14px] font-semibold text-gray-900">Best Selling</h3>
+                    <h3 className="text-[14px] font-semibold text-gray-900">Ən çox satılanlar</h3>
 
                 </div>
 
@@ -80,7 +80,7 @@ const CategoriesMegaMenu = ({ isOpen, setHoveredLink }: CategoriesMegaMenuProps)
                             {isProductsLoading ? (
                                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                             ) : (
-                                <p className="text-gray-400 text-sm">No hot deals found</p>
+                                <p className="text-gray-400 text-sm">Qaynar təklif tapılmadı</p>
                             )}
                         </div>
                     )}

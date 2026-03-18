@@ -10,16 +10,16 @@ const NavLinks = () => {
     const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
     const links = [
-        { name: "Home", href: "/" },
-        { name: "Shop", href: "/shop", hasDropdown: true },
-        { name: "Categories", href: "/categories", label: "SALE", labelColor: "bg-green-100 text-green-600", hasDropdown: true },
-        { name: "Products", href: "/products", label: "HOT", labelColor: "bg-red-100 text-red-600", hasDropdown: true },
-        { name: "Top deals", href: "/top-deals", hasDropdown: true },
+        { name: "Ana Səhifə", href: "/" },
+        { name: "Mağaza", href: "/shop", hasDropdown: true },
+        { name: "Kateqoriyalar", href: "/categories", label: "ENDİRİM", labelColor: "bg-green-100 text-green-600", hasDropdown: true },
+        { name: "Məhsullar", href: "/products", label: "QAYNAR", labelColor: "bg-red-100 text-red-600", hasDropdown: true },
+        { name: "Top təkliflər", href: "/top-deals", hasDropdown: true },
     ];
 
     return (
         <nav className=" h-full flex items-center">
-            <ul className="flex items-center gap-6 lg:gap-8 h-full">
+            <ul className="flex items-center gap-6 lg:gap-3 h-full">
                 {links.map((link) => (
                     <li
                         key={link.name}
@@ -30,7 +30,7 @@ const NavLinks = () => {
                         <div className="flex items-center gap-1.5 cursor-pointer py-4">
                             <Link
                                 href={link.href}
-                                className={`text-[15px] font-medium transition-colors whitespace-nowrap ${hoveredLink === link.name ? "text-blue-600" : "text-gray-700"
+                                className={`text-[12px] min-[1150px]:text-[15px] font-medium transition-colors whitespace-nowrap ${hoveredLink === link.name ? "text-blue-600" : "text-gray-700"
                                     }`}
                             >
                                 {link.name}
@@ -50,25 +50,25 @@ const NavLinks = () => {
                         </div>
 
                         {/* Mega Menu Dropdown for Products */}
-                        {link.name === "Products" && (
+                        {link.name === "Məhsullar" && (
                             <ProductsMegaMenu 
-                                isOpen={hoveredLink === "Products"} 
+                                isOpen={hoveredLink === "Məhsullar"} 
                                 setHoveredLink={setHoveredLink} 
                             />
                         )}
 
                         {/* Mega Menu Dropdown for Categories */}
-                        {link.name === "Categories" && (
+                        {link.name === "Kateqoriyalar" && (
                             <CategoriesMegaMenu 
-                                isOpen={hoveredLink === "Categories"} 
+                                isOpen={hoveredLink === "Kateqoriyalar"} 
                                 setHoveredLink={setHoveredLink} 
                             />
                         )}
 
                         {/* Mega Menu Dropdown for Top Deals */}
-                        {link.name === "Top deals" && (
+                        {link.name === "Top təkliflər" && (
                             <TopDealsMegaMenu 
-                                isOpen={hoveredLink === "Top deals"} 
+                                isOpen={hoveredLink === "Top təkliflər"} 
                                 setHoveredLink={setHoveredLink} 
                             />
                         )}

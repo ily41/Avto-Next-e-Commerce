@@ -12,12 +12,12 @@ const CategoryMenu = () => {
         <div className="relative w-full bg-white border border-blue-600 rounded-lg mt-2">
             <div className="bg-blue-600 text-white px-5 py-[13.5px] font-bold flex items-center rounded-t-lg lg:hidden">
                 <LayoutGrid size={18} className="mr-3" />
-                <span className="capitalize text-xs tracking-widest">All Categories</span>
+                <span className="capitalize text-xs tracking-widest">Bütün Kateqoriyalar</span>
             </div>
             <ul className="flex flex-col">
                 <li className="bg-blue-600 text-white px-5 py-3.5 font-bold hidden lg:flex items-center rounded-t-lg">
                     <LayoutGrid size={18} className="mr-3" />
-                    <span className="capitalize text-xs tracking-widest">All Categories</span>
+                    <span className="capitalize text-xs tracking-widest">Bütün Kateqoriyalar</span>
                 </li>
                 {/* Our Store with Mega Menu */}
                 <li
@@ -26,7 +26,7 @@ const CategoryMenu = () => {
                     className="relative group px-5 py-3.5 hover:bg-gray-50 cursor-pointer flex justify-between items-center transition-all border-b border-gray-50"
                 >
                     <Link href="/shop" className="text-blue-600 font-bold text-[15px] flex items-center">
-                        Our Store
+                        Mağazamız
                     </Link>
                     <ChevronRight size={16} className="text-blue-600 group-hover:translate-x-1 transition-transform" />
 
@@ -38,7 +38,7 @@ const CategoryMenu = () => {
                                     <Link href={`/category/${category.slug}`} className="font-bold text-gray-900 text-base hover:text-blue-600 transition-colors">
                                         {category.name}
                                     </Link>
-                                    <ul className="flex flex-col space-y-2.5">
+                                    <ul className="flex flex-col space-y-1">
                                         {category.subCategories?.map((sub) => (
                                             <li key={sub.id}>
                                                 <Link href={`/category/${sub.slug}`} className="text-sm text-gray-500 hover:text-blue-600 transition-colors">
@@ -59,7 +59,7 @@ const CategoryMenu = () => {
                         key={category.id}
                         onMouseEnter={() => setHoveredCategory(category.id)}
                         onMouseLeave={() => setHoveredCategory(null)}
-                        className="group px-5 py-3.5 hover:bg-gray-50 cursor-pointer flex justify-between items-center transition-all border-b border-gray-50 last:border-0"
+                        className="relative group px-5 py-3.5 hover:bg-gray-50 cursor-pointer flex justify-between items-center transition-all border-b border-gray-50 last:border-0"
                     >
                         <Link
                             href={`/category/${category.slug}`}

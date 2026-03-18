@@ -15,7 +15,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     const imageUrl = product.imageUrl || product.primaryImageUrl;
     const fullImageUrl = imageUrl ? `${API_BASE_URL}${imageUrl}` : "/placeholder.png";
 
-    const discount = product.price > product.discountedPrice
+    const discount = (product.discountedPrice && product.price > product.discountedPrice)
         ? Math.round(((product.price - product.discountedPrice) / product.price) * 100)
         : 0;
 

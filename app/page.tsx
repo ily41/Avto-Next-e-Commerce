@@ -11,9 +11,12 @@ export default function Home() {
         <Navbar />
 
         {/* Homepage Container */}
-        <main className="w-full lg:w-[80.3%] flex-1 bg-white border-x border-gray-100 flex flex-col relative overflow-hidden">
+        <main className="w-full lg:w-[80.3%] flex-1 bg-white flex flex-col relative overflow-hidden">
           <HeroSection />
+          
         </main>
+
+        <div className="h-screen"></div>
       </div>
     </StoreProvider>
   );

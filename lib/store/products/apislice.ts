@@ -235,7 +235,8 @@ export const productApi = api.injectEndpoints({
 
     deleteProductFilter: builder.mutation<void, { productId: string; filterId: string }>({
       query: ({ productId, filterId }) => ({
-        url: `Admin/Products/${productId}/filters/${filterId}`,
+        url: `Admin/ zA2DC44F5VG6BH76NJ8N8KL
+        Products/${productId}/filters/${filterId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Product"],

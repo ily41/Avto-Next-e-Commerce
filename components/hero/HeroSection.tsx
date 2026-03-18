@@ -8,6 +8,7 @@ import NavLinks from "./NavLinks";
 
 const HeroSection = () => {
     const { data: banners, isLoading } = useGetBannersQuery();
+    console.log(banners);
 
     const { mainBanner, secondaryBanners } = useMemo(() => {
         if (!banners) return { mainBanner: null, secondaryBanners: [] };
@@ -18,9 +19,11 @@ const HeroSection = () => {
 
         return {
             mainBanner: activeBanners.find((b) => b.type === 0) || null,
-            secondaryBanners: activeBanners.filter((b) => b.type === 1),
+            secondaryBanners: activeBanners.filter((b) => b.type === 2),
         };
     }, [banners]);
+
+    console.log()
 
     if (isLoading) {
         return (
@@ -41,58 +44,54 @@ const HeroSection = () => {
                         <CategoryMenu />
                     </div>
 
-                    {/* Column 2: Header Row + Main Banner + Secondary Grid */}
-                    <div className="flex flex-col">
+                    {/* Column 2: Header Row + Main Banner */}
+                    <div className="flex flex-col lg:h-full">
 
                         {/* Desktop Row 1: Nav Links Header */}
-                        <div className="hidden lg:flex items-center justify-between h-[52px] border-b border-gray-100mb-6 ">
+                        <div className="hidden lg:flex shrink-0 items-center justify-between h-[52px] ">
                             <NavLinks />
-                            <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                            {/* <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                                 <span className="text-red-500 text-lg sm:text-xl">%</span>
-                                <span className="whitespace-nowrap uppercase tracking-tight text-xs">Super Discount</span>
-                            </div>
+                                <span className="whitespace-nowrap uppercase tracking-tight text-xs">Super Endirim</span>
+                            </div> */}
                         </div>
 
-                        {/* Main Hero & Tablet View */}
-                        <div className="flex flex-col gap-6">
-
-                            <div className="flex flex-col lg:flex-row gap-6">
-                                {/* Main Banner */}
-                                <div className="w-full lg:flex-1 h-[350px] md:h-[450px]">
-                                    {mainBanner && <BannerItem banner={mainBanner} />}
-                                </div>
-
-                                {/* Tablet Tablet only horizontal scroll banners */}
-                                <div className="hidden md:flex lg:hidden w-full overflow-x-auto no-scrollbar gap-4 py-2">
-                                    <div className="flex flex-nowrap gap-4 h-[250px]">
-                                        {secondaryBanners.map(banner => (
-                                            <div key={banner.id} className="w-[300px] shrink-0">
-                                                <BannerItem banner={banner} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Mobile stacked view (Secondary 1 only in mobile below main) */}
-                            <div className="flex md:hidden flex-col gap-4">
-                                {secondaryBanners.length > 0 && (
-                                    <div className="h-[250px]">
-                                        <BannerItem banner={secondaryBanners[0]} />
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Desktop Row 3: Secondary Grid */}
-                            <div className="hidden lg:grid grid-cols-3 gap-6">
-                                {secondaryBanners.map((banner) => (
-                                    <div key={banner.id} className="h-[220px]">
-                                        <BannerItem banner={banner} />
-                                    </div>
-                                ))}
-                            </div>
-
+                        {/* Main Hero */}
+                        <div className="h-[320px] md:h-[442px] lg:flex-1 lg:h-full relative">
+                            {mainBanner && <BannerItem banner={mainBanner} />}
                         </div>
+                    </div>
+                </div>
+
+                {/* Bottom Block: Secondary Banners */}
+                <div className="w-full mt-6 lg:mt-8">
+                    {/* Desktop: Grid of 3 */}
+                    <div className="hidden lg:grid h-[180px] grid-cols-3 gap-6">
+                        {secondaryBanners.slice(0, 3).map((banner) => (
+                            <div key={banner.id} className="h-full relative">
+                                <BannerItem banner={banner} />
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Tablet: Horizontal scroll */}
+                    <div className="hidden md:flex lg:hidden w-full overflow-x-auto no-scrollbar pb-2">
+                        <div className="flex flex-nowrap gap-4 h-[220px]">
+                            {secondaryBanners.map((banner) => (
+                                <div key={banner.id} className="w-[350px] shrink-0 h-full relative">
+                                    <BannerItem banner={banner} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Mobile: Only the first one */}
+                    <div className="flex md:hidden flex-col">
+                        {secondaryBanners.length > 0 && (
+                            <div className="h-[220px]">
+                                <BannerItem banner={secondaryBanners[0]} />
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
