@@ -4,10 +4,16 @@ import { useGetCategoriesQuery } from "@/lib/store/categories/apislice";
 import { ChevronRight, LayoutGrid } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import CategoryMenuSkeleton from "./CategoryMenuSkeleton";
 
 const CategoryMenu = () => {
-    const { data: categories } = useGetCategoriesQuery();
+    const { data: categories, isLoading } = useGetCategoriesQuery();
     const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+
+    if (isLoading) {
+        return <CategoryMenuSkeleton />;
+    }
+
     return (
         <div className="relative w-full bg-white border border-blue-600 rounded-lg mt-2">
             <div className="bg-blue-600 text-white px-5 py-[13.5px] font-bold flex items-center rounded-t-lg lg:hidden">
@@ -59,7 +65,7 @@ const CategoryMenu = () => {
                         key={category.id}
                         onMouseEnter={() => setHoveredCategory(category.id)}
                         onMouseLeave={() => setHoveredCategory(null)}
-                        className="relative group px-5 py-3.5 hover:bg-gray-50 cursor-pointer flex justify-between items-center transition-all border-b border-gray-50 last:border-0"
+                        className="relative group px-5 py-3.5 hover:bg-gray-50 last:rounded-xl cursor-pointer flex justify-between items-center transition-all border-b border-gray-50 last:border-0"
                     >
                         <Link
                             href={`/category/${category.slug}`}

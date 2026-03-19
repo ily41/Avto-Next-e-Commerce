@@ -1,8 +1,15 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { API_BASE_URL } from "./store/api"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+export function fullUrl(path: string | null | undefined): string {
+  if (!path) return "/logos/logo3.svg"; // Default placeholder
+  if (path?.startsWith('http')) return path;
+  return `${API_BASE_URL}${path}`;
 }
 
 export function getRoleFromToken(token: string | undefined): string | null {

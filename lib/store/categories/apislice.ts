@@ -11,6 +11,7 @@ export type Category = {
     parentCategoryId: string | null;
     parentCategoryName?: string | null;
     subCategories?: Category[];
+    productCount?: number;
     createdAt?: string;
 }
 

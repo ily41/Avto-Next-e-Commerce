@@ -61,6 +61,7 @@ export function Navbar() {
                         {/* Mobile Burger Group */}
                         <div className="flex items-center lg:hidden">
                             <button
+                                aria-label="Menyu aç"
                                 className="text-gray-800 p-1"
                                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                             >
@@ -98,23 +99,27 @@ export function Navbar() {
                     <div className="flex items-center gap-1.5 sm:gap-4 lg:gap-2">
 
                         {/* Search Icon (Mobile Only) */}
-                        <button className="lg:hidden text-gray-700 p-1.5">
+                        <button aria-label="Axtar" className="lg:hidden text-gray-700 p-1.5">
                             <Search size={22} />
                         </button>
 
                         {/* My Account (Responsive) */}
                         <LoginPopup>
-                            <div className="flex items-center gap-2 group cursor-pointer">
+                            <button
+                                type="button"
+                                aria-label="Hesabıma daxil ol"
+                                className="flex items-center gap-2 group cursor-pointer bg-transparent border-none"
+                            >
                                 <User size={24} strokeWidth={1.5} className="text-gray-800 group-hover:text-blue-600 transition-colors shrink-0" />
                                 <div className="hidden lg:flex flex-col">
-                                    <span className="text-[10px] text-gray-400 uppercase font-semibold leading-tight">Hesabım</span>
+                                    <span className="text-[10px] text-gray-500 uppercase font-semibold leading-tight">Hesabım</span>
                                     <span className="text-[14px] font-bold text-gray-800 leading-tight">Daxil ol</span>
                                 </div>
-                            </div>
+                            </button>
                         </LoginPopup>
 
                         {/* Wishlist */}
-                        <Link href="#" className="relative group p-1.5">
+                        <Link href="#" aria-label="İstək siyahısı" className="relative group p-1.5">
                             <Heart size={24} strokeWidth={1.5} className="text-gray-800 group-hover:text-blue-600 transition-colors" />
                             <span className="absolute top-0 right-0 bg-blue-600 text-white text-[9px] w-[18px] h-[18px] flex items-center justify-center rounded-full font-bold border-2 border-white">
                                 3
@@ -130,7 +135,7 @@ export function Navbar() {
                                 </span>
                             </div>
                             <div className="hidden lg:flex flex-col">
-                                <span className="text-[10px] text-gray-400 uppercase font-semibold leading-tight">Səbətim</span>
+                            <span className="text-[10px] text-gray-500 uppercase font-semibold leading-tight">Səbətim</span>
                                 <span className="text-[14px] font-bold text-gray-800 leading-tight">$0.00</span>
                             </div>
                         </Link>
@@ -147,7 +152,7 @@ export function Navbar() {
                     <nav className="fixed top-0 left-0 bottom-0 w-[280px] bg-white shadow-xl p-6 flex flex-col gap-6 animate-in slide-in-from-left duration-300">
                         <div className="flex justify-between items-center pb-4 border-b border-gray-100">
                             <img src="/logos/logo3.svg" alt="Avto027 Logo" className="h-[40px] w-[120px] object-cover mix-blend-multiply" />
-                            <button onClick={() => setIsMenuOpen(false)} className="text-gray-500 p-1"><X size={24} /></button>
+                            <button aria-label="Menyunu bağla" onClick={() => setIsMenuOpen(false)} className="text-gray-500 p-1"><X size={24} /></button>
                         </div>
                         <div className="flex flex-col gap-4 text-base font-semibold text-gray-800">
                             <Link href="#" className="hover:text-blue-600">Ana Səhifə</Link>

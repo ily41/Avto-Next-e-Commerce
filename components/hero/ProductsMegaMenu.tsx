@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useFilterProductsQuery } from "@/lib/store/products/apislice";
 import { useGetCategoriesQuery } from "@/lib/store/categories/apislice";
 import ProductCard from "@/components/card/ProductCard";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import SliderArrows from "@/components/ui/SliderArrows";
 
 interface ProductsMegaMenuProps {
     isOpen: boolean;
@@ -94,20 +94,13 @@ const ProductsMegaMenu = ({ isOpen, setHoveredLink }: ProductsMegaMenuProps) => 
 
                 {/* Navigation Arrows */}
                 {products.length > 4 && (
-                    <>
-                        <button
-                            onClick={() => scroll('left')}
-                            className="absolute left-[-20px] top-1/2 -translate-y-1/2 w-10 h-10 bg-white border border-gray-100 rounded-full shadow-lg flex items-center justify-center text-gray-600 transition-all hover:bg-blue-600 hover:text-white opacity-0 group-hover/slider:opacity-100 z-50"
-                        >
-                            <ChevronLeft size={20} />
-                        </button>
-                        <button
-                            onClick={() => scroll('right')}
-                            className="absolute right-[-20px] top-1/2 -translate-y-1/2 w-10 h-10 bg-white border border-gray-100 rounded-full shadow-lg flex items-center justify-center text-gray-600 transition-all hover:bg-blue-600 hover:text-white opacity-0 group-hover/slider:opacity-100 z-50"
-                        >
-                            <ChevronRight size={20} />
-                        </button>
-                    </>
+                    <SliderArrows 
+                        onPrev={() => scroll('left')}
+                        onNext={() => scroll('right')}
+                        canPrev={true} // Mega menu always shows them if enough products
+                        canNext={true}
+                        variant="blue"
+                    />
                 )}
             </div>
         </div>

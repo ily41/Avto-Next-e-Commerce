@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import { Banner } from "@/lib/store/banners/apislice";
-import { CSSProperties } from "react";
-import { API_BASE_URL } from "@/lib/store/api";
+import { fullUrl } from "@/lib/utils";
 
 interface BannerItemProps {
     banner: Banner;
+    variant?: "main" | "secondary";
 }
 
-const BannerItem = ({ banner }: BannerItemProps) => {
+const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
     const {
         title,
         description,
@@ -39,35 +39,27 @@ const BannerItem = ({ banner }: BannerItemProps) => {
         const minSize = Math.max(baseSize * 0.6, 12); // Don't go below 12px or 60% of original
         return `clamp(${minSize}px, ${baseSize * 0.08}vw + ${baseSize * 0.5}px, ${baseSize}px)`;
     };
+    const finalSrc = fullUrl((mobileImageUrl && typeof window !== 'undefined' && window.innerWidth < 640)
+        ? mobileImageUrl
+        : imageUrl);
 
     return (
         <div className="relative w-full h-full overflow-hidden rounded-lg bg-gray-50 group cursor-pointer">
-            {/* Background Image */}
             <div className="absolute inset-0 w-full h-full">
-                {/* Mobile Image */}
-                {mobileImageUrl && (
-                    <div className="block sm:hidden absolute inset-0 w-full h-full">
-                        <Image
-                            src={`${API_BASE_URL}${mobileImageUrl}`}
-                            alt={title || "Banner Mobile"}
-                            fill
-                            className="object-cover transition-transform duration-1000 group-hover:scale-105"
-                            priority
-                            sizes="(max-width: 640px) 100vw, 50vw"
-                        />
-                    </div>
-                )}
-                {/* Desktop Image */}
-                <div className={`${mobileImageUrl ? "hidden sm:block" : "block"} absolute inset-0 w-full h-full`}>
-                    <Image
-                        src={`${API_BASE_URL}${imageUrl}` || "/placeholder-banner.jpg"}
-                        alt={title || "Banner Desktop"}
-                        fill
-                        className="object-cover transition-transform duration-1000 group-hover:scale-105"
-                        priority
-                        sizes="(max-width: 1024px) 100vw, 80vw"
-                    />
-                </div>
+            <Image
+                src={finalSrc} 
+                alt={title || "Banner"}
+                fill
+                priority={variant === "main"}
+                sizes={
+                    variant === "main"
+                        ? "(max-width: 1024px) 100vw, 1100px" 
+                        : "(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 360px" 
+                }
+                className="object-cover"
+                {...(variant === "main" ? { fetchPriority: "high" } : {})}
+            />
+
             </div>
 
             {/* Content Overlay */}

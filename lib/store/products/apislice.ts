@@ -59,6 +59,14 @@ export type FilterResponse<T> = {
   appliedFilters: any[];
 };
 
+export type RecommendationResponse = {
+  basedOnFavorites: Product[];
+  basedOnCategory: Product[];
+  hotDeals: Product[];
+  recentlyAdded: Product[];
+  similarProducts: Product[];
+};
+
 export type ProductQueryParams = {
   CategoryId?: string;
   BrandSlug?: string;
@@ -245,6 +253,13 @@ export const productApi = api.injectEndpoints({
       query: () => "Products/hot-deals",
       providesTags: ["Product"],
     }),
+    getRecommendations: builder.query<RecommendationResponse, { productId?: string; categoryId?: string; limit?: number } | void>({
+      query: (params) => ({
+        url: "Products/recommendations",
+        params: params ? params : undefined,
+      }),
+      providesTags: ["Product"],
+    }),
   }),
 });
 
@@ -259,4 +274,5 @@ export const {
   useDeleteProductFiltersMutation,
   useDeleteProductFilterMutation,
   useGetHotDealsQuery,
+  useGetRecommendationsQuery,
 } = productApi;

@@ -5,10 +5,14 @@ import { useGetBannersQuery } from "@/lib/store/banners/apislice";
 import BannerItem from "./BannerItem";
 import CategoryMenu from "./CategoryMenu";
 import NavLinks from "./NavLinks";
+import CategoryMenuSkeleton from "./CategoryMenuSkeleton";
+
+const SkeletonBox = ({ className = "" }: { className?: string }) => (
+    <div className={`animate-pulse rounded-xl bg-blue-100 ${className}`} />
+);
 
 const HeroSection = () => {
     const { data: banners, isLoading } = useGetBannersQuery();
-    console.log(banners);
 
     const { mainBanner, secondaryBanners } = useMemo(() => {
         if (!banners) return { mainBanner: null, secondaryBanners: [] };
@@ -23,13 +27,55 @@ const HeroSection = () => {
         };
     }, [banners]);
 
-    console.log()
-
     if (isLoading) {
         return (
-            <div className="w-full max-w-[1440px] mx-auto px-4 py-12 flex justify-center items-center h-[500px]">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-            </div>
+            <section className="w-full bg-white pb-10">
+                <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-0">
+
+                    <div className="flex flex-col relative lg:grid lg:grid-cols-[256px_1fr] gap-6">
+
+                        {/* Sidebar skeleton (desktop only) */}
+                        <div className="hidden lg:block">
+                            <CategoryMenuSkeleton />
+                        </div>
+
+                        {/* Main banner area skeleton */}
+                        <div className="flex flex-col lg:h-full">
+                            {/* Nav links skeleton (desktop) */}
+                            <div className="hidden lg:flex shrink-0 items-center gap-6 h-[52px]">
+                                {[...Array(5)].map((_, i) => (
+                                    <div key={i} className="animate-pulse h-4 w-20 rounded-md bg-blue-100" />
+                                ))}
+                            </div>
+
+                            {/* Main hero banner skeleton */}
+                            <SkeletonBox className="h-[320px] md:h-[442px] lg:flex-1 w-full" />
+                        </div>
+                    </div>
+
+                    {/* Secondary banners skeleton */}
+                    <div className="w-full mt-6 lg:mt-8">
+                        {/* Desktop: 3-column grid */}
+                        <div className="hidden lg:grid h-[180px] grid-cols-3 gap-6">
+                            {[...Array(3)].map((_, i) => (
+                                <SkeletonBox key={i} className="h-full w-full" />
+                            ))}
+                        </div>
+
+                        {/* Tablet: horizontal scroll */}
+                        <div className="hidden md:flex lg:hidden gap-4 h-[220px]">
+                            {[...Array(3)].map((_, i) => (
+                                <SkeletonBox key={i} className="w-[350px] shrink-0 h-full" />
+                            ))}
+                        </div>
+
+                        {/* Mobile: single banner */}
+                        <div className="flex md:hidden">
+                            <SkeletonBox className="h-[220px] w-full" />
+                        </div>
+                    </div>
+                </div>
+            </section>
         );
     }
 
@@ -50,10 +96,6 @@ const HeroSection = () => {
                         {/* Desktop Row 1: Nav Links Header */}
                         <div className="hidden lg:flex shrink-0 items-center justify-between h-[52px] ">
                             <NavLinks />
-                            {/* <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-                                <span className="text-red-500 text-lg sm:text-xl">%</span>
-                                <span className="whitespace-nowrap uppercase tracking-tight text-xs">Super Endirim</span>
-                            </div> */}
                         </div>
 
                         {/* Main Hero */}
@@ -69,7 +111,7 @@ const HeroSection = () => {
                     <div className="hidden lg:grid h-[180px] grid-cols-3 gap-6">
                         {secondaryBanners.slice(0, 3).map((banner) => (
                             <div key={banner.id} className="h-full relative">
-                                <BannerItem banner={banner} />
+                                <BannerItem banner={banner} variant="secondary" />
                             </div>
                         ))}
                     </div>
@@ -79,7 +121,7 @@ const HeroSection = () => {
                         <div className="flex flex-nowrap gap-4 h-[220px]">
                             {secondaryBanners.map((banner) => (
                                 <div key={banner.id} className="w-[350px] shrink-0 h-full relative">
-                                    <BannerItem banner={banner} />
+                                    <BannerItem banner={banner} variant="secondary" />
                                 </div>
                             ))}
                         </div>
@@ -89,7 +131,7 @@ const HeroSection = () => {
                     <div className="flex md:hidden flex-col">
                         {secondaryBanners.length > 0 && (
                             <div className="h-[220px]">
-                                <BannerItem banner={secondaryBanners[0]} />
+                                <BannerItem banner={secondaryBanners[0]} variant="secondary" />
                             </div>
                         )}
                     </div>

@@ -2,7 +2,7 @@
 
 import { useGetCategoriesQuery } from "@/lib/store/categories/apislice";
 import { useGetHotDealsQuery } from "@/lib/store/products/apislice";
-import { API_BASE_URL } from "@/lib/store/api";
+import { fullUrl } from "@/lib/utils";
 import Link from "next/link";
 import MiniProductCard from "../categoriesDropdown/MiniProductCard";
 
@@ -42,7 +42,7 @@ const TopDealsMegaMenu = ({ isOpen, setHoveredLink }: TopDealsMegaMenuProps) => 
                             <div className="w-24 h-24 rounded-full border-2 border-gray-100 flex items-center justify-center p-4 transition-all duration-300 group-hover:border-blue-600 group-hover:shadow-md bg-white overflow-hidden">
                                 {category.imageUrl ? (
                                     <img 
-                                        src={`${API_BASE_URL}${category.imageUrl}`} 
+                                        src={fullUrl(category.imageUrl)} 
                                         alt={category.name} 
                                         className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
                                     />
