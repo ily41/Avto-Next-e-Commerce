@@ -1,71 +1,69 @@
-"use client";
+// Server Component — no "use client" directive
+// Data is fetched on the server with Next.js ISR caching.
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { IconChevronRight } from "@tabler/icons-react";
-import { useGetRecommendationsQuery, Product } from "@/lib/store/products/apislice";
-import { useGetBannersQuery } from "@/lib/store/banners/apislice";
+import { fetchRecommendations, fetchBanners } from "@/lib/api/server-fetchers";
 import ProductCard from "../card/ProductCard";
 import BannerItem from "../hero/BannerItem";
 
-const TechGadgets = () => {
-  const { data: recommendations, isLoading: itemsLoading } = useGetRecommendationsQuery({ limit: 12 });
-  const { data: banners, isLoading: bannersLoading } = useGetBannersQuery({ type: 4 });
-  const [width, setWidth] = useState(0);
+const TechGadgets = async () => {
+  const [recommendations, banners] = await Promise.all([
+    fetchRecommendations(12),
+    fetchBanners(4),
+  ]);
 
-  useEffect(() => {
-    setWidth(window.innerWidth);
-    const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  // Prefer hotDeals; fall back to recentlyAdded — max 4 per equivalent of desktop displayLimit
+  const products = (
+    recommendations?.hotDeals?.length
+      ? recommendations.hotDeals
+      : recommendations?.recentlyAdded ?? []
+  ).slice(0, 4);
 
-  const displayLimit = width < 1024 ? 2 : width < 1350 ? 3 : 4;
-  const displayProducts = (recommendations?.hotDeals || recommendations?.recentlyAdded || []).slice(0, displayLimit);
-  const activeBanner = banners?.find(b => b.isCurrentlyActive) || banners?.[0];
+  const activeBanner =
+    banners.find((b) => b.isCurrentlyActive) ?? banners[0] ?? null;
 
   return (
     <section className="w-full bg-white py-14">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-0">
         {/* Header */}
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100">
-          <h1 className="text-xl font-bold text-[#1a1a1a]">Ən Son Texnoloji Qadcetlər</h1>
-          <Link href="/shop" className="flex items-center gap-1 text-[13px] font-bold text-gray-800 hover:text-blue-600 transition-colors">
+          <h2 className="text-xl font-bold text-[#1a1a1a]">Ən Son Texnoloji Qadcetlər</h2>
+          <Link
+            href="/shop"
+            className="flex items-center gap-1 text-[13px] font-bold text-gray-800 hover:text-blue-600 transition-colors"
+          >
             Hamısına bax
             <IconChevronRight size={18} />
           </Link>
         </div>
 
-        {/* Layout Containers - Reversed Order for Side Banner */}
+        {/* Layout Containers — Reversed Order for Side Banner on Desktop */}
         <div className="flex flex-col md:flex-row-reverse gap-6">
-          {/* Banner Column - Right on Desktop */}
+          {/* Banner Column — Right on Desktop */}
           <div className="w-full md:w-[30%] lg:w-[25%] xl:w-[20%] aspect-[16/9] md:aspect-[14/10]">
-            {bannersLoading ? (
-                 <div className="w-full h-full bg-gray-50 rounded-lg animate-pulse" />
-            ) : activeBanner ? (
-                <BannerItem banner={activeBanner} variant="secondary" />
+            {activeBanner ? (
+              <BannerItem banner={activeBanner} variant="secondary" />
             ) : null}
           </div>
 
-          {/* Product Cards Column */}
+          {/* Product Cards Column — CSS responsive grid */}
           <div className="flex-1">
-            <div 
-              className="grid gap-6"
-              style={{ 
-                gridTemplateColumns: `repeat(${displayLimit === 2 ? 2 : displayLimit === 3 ? 3 : 4}, minmax(0, 1fr))` 
-              }}
-            >
-              {itemsLoading ? (
-                [...Array(displayLimit)].map((_, i) => (
-                  <div key={i} className="aspect-[10/14] bg-gray-50 rounded-xl animate-pulse" />
-                ))
-              ) : (
-                displayProducts.map((product) => (
-                  <div key={product.id} className="aspect-[10/14]">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {products.map((product, i) => {
+                let displayClass = "";
+                // mobile (< md): 2 elements (2 cols, 1 row). indices 2 & 3 are hidden.
+                // tablet (md - lg): 3 elements (3 cols, 1 row). index 3 is hidden.
+                // desktop (lg+): 4 elements (4 cols, 1 row). all visible.
+                if (i === 2) displayClass = "hidden md:block";
+                else if (i === 3) displayClass = "hidden lg:block";
+
+                return (
+                  <div key={product.id} className={`aspect-[10/14] ${displayClass}`}>
                     <ProductCard product={product} />
                   </div>
-                ))
-              )}
+                );
+              })}
             </div>
           </div>
         </div>

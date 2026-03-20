@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Category } from "@/lib/store/categories/apislice";
-import { fullUrl } from "@/lib/utils";
+import { Category } from "@/lib/api/types";
+import { fullUrl } from "@/lib/api/url-utils";
 
 interface CategoryCardProps {
     category: Category;

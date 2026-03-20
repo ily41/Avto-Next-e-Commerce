@@ -28,7 +28,7 @@ export default function Home() {
 
         </main>
 
-        <div className="h-screen"></div>
+        <div className="h-[30vh]"></div>
       </div>
     </StoreProvider>
   );

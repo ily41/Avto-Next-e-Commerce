@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Banner } from "@/lib/store/banners/apislice";
-import { fullUrl } from "@/lib/utils";
+import { Banner } from "@/lib/api/types";
+import { fullUrl } from "@/lib/api/url-utils";
 
 interface BannerItemProps {
     banner: Banner;
@@ -39,27 +39,38 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
         const minSize = Math.max(baseSize * 0.6, 12); // Don't go below 12px or 60% of original
         return `clamp(${minSize}px, ${baseSize * 0.08}vw + ${baseSize * 0.5}px, ${baseSize}px)`;
     };
-    const finalSrc = fullUrl((mobileImageUrl && typeof window !== 'undefined' && window.innerWidth < 640)
-        ? mobileImageUrl
-        : imageUrl);
+    const desktopSrc = fullUrl(imageUrl);
+    const mobileSrc = mobileImageUrl ? fullUrl(mobileImageUrl) : desktopSrc;
 
     return (
         <div className="relative w-full h-full overflow-hidden rounded-lg bg-gray-50 group cursor-pointer">
             <div className="absolute inset-0 w-full h-full">
+            {/* Desktop image — hidden on small screens if a mobile version exists */}
             <Image
-                src={finalSrc} 
+                src={desktopSrc}
                 alt={title || "Banner"}
                 fill
                 priority={variant === "main"}
                 sizes={
                     variant === "main"
-                        ? "(max-width: 1024px) 100vw, 1100px" 
-                        : "(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 360px" 
+                        ? "(max-width: 1024px) 100vw, 1100px"
+                        : "(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 360px"
                 }
-                className="object-cover"
+                className={`object-cover ${mobileSrc !== desktopSrc ? "hidden sm:block" : ""}`}
                 {...(variant === "main" ? { fetchPriority: "high" } : {})}
             />
 
+            {/* Mobile image — only rendered when a separate mobile URL exists */}
+            {mobileSrc !== desktopSrc && (
+                <Image
+                    src={mobileSrc}
+                    alt={title || "Banner"}
+                    fill
+                    priority={variant === "main"}
+                    sizes="100vw"
+                    className="object-cover block sm:hidden"
+                />
+            )}
             </div>
 
             {/* Content Overlay */}

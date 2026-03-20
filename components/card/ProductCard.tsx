@@ -1,10 +1,10 @@
 "use client";
 
-import { Product } from "@/lib/store/products/apislice";
+import { Product } from "@/lib/api/types";
 import { IconHeart, IconChartBar, IconEye } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
-import { fullUrl } from "@/lib/utils";
+import { fullUrl } from "@/lib/api/url-utils";
 
 interface ProductCardProps {
     product: Product;
@@ -55,7 +55,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                     src={fullPrimaryUrl}
                     alt={product.name}
                     onError={(e) => (e.currentTarget.src = PLACEHOLDER_IMAGE)}
-                    className={`max-h-full max-w-full object-contain transition-all duration-700 ease-in-out ${isHovered && fullSecondaryUrl ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}
+                    className={`max-h-full max-w-full object-contain min-h-[190px] transition-all duration-700 ease-in-out ${isHovered && fullSecondaryUrl ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}
                 />
                 {fullSecondaryUrl && (
                     <img
