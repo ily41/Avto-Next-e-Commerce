@@ -33,7 +33,7 @@ const CategoriesMegaMenu = ({ isOpen, setHoveredLink }: CategoriesMegaMenuProps)
                 {displayCategories.map((category) => (
                     <div key={category.id} className="flex flex-col gap-4">
                         <Link
-                            href={`/category/${category.slug}`}
+                            href={`/shop?category=${category.slug}`}
                             className="text-[17px] font-medium text-gray-900 hover:text-blue-600 transition-colors"
                         >
                             {category.name}
@@ -42,7 +42,7 @@ const CategoriesMegaMenu = ({ isOpen, setHoveredLink }: CategoriesMegaMenuProps)
                             {category.subCategories?.slice(0, 4).map((sub) => (
                                 <Link
                                     key={sub.id}
-                                    href={`/category/${sub.slug}`}
+                                    href={`/shop?category=${sub.slug}`}
                                     className="text-[14px] text-gray-500 hover:text-blue-600 hover:translate-x-1 transition-all"
                                 >
                                     {sub.name}
@@ -50,7 +50,7 @@ const CategoriesMegaMenu = ({ isOpen, setHoveredLink }: CategoriesMegaMenuProps)
                             ))}
                             {(category.subCategories?.length || 0) > 4 && (
                                 <Link
-                                    href={`/category/${category.slug}`}
+                                    href={`/shop?category=${category.slug}`}
                                     className="text-[14px] text-blue-600 font-medium hover:underline"
                                 >
                                     Hamısına bax

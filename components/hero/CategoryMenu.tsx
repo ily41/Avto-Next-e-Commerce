@@ -41,13 +41,13 @@ const CategoryMenu = () => {
                         <div className="absolute left-full top-0 w-[700px] bg-white border border-gray-100 shadow-2xl z-50 p-8 rounded-r-2xl grid grid-cols-3 gap-x-8 gap-y-10 animate-in fade-in slide-in-from-left-2 duration-200">
                             {categories.map((category) => (
                                 <div key={category.id} className="flex flex-col space-y-4">
-                                    <Link href={`/category/${category.slug}`} className="font-bold text-gray-900 text-base hover:text-blue-600 transition-colors">
+                                    <Link href={`shop?category=${category.slug}`} className="font-bold text-gray-900 text-base hover:text-blue-600 transition-colors">
                                         {category.name}
                                     </Link>
                                     <ul className="flex flex-col space-y-1">
                                         {category.subCategories?.map((sub) => (
                                             <li key={sub.id}>
-                                                <Link href={`/category/${sub.slug}`} className="text-sm text-gray-500 hover:text-blue-600 transition-colors">
+                                                <Link href={`shop?category=${sub.slug}`} className="text-sm text-gray-500 hover:text-blue-600 transition-colors">
                                                     {sub.name}
                                                 </Link>
                                             </li>
@@ -68,7 +68,7 @@ const CategoryMenu = () => {
                         className="relative group px-5 py-3.5 hover:bg-gray-50 last:rounded-xl cursor-pointer flex justify-between items-center transition-all border-b border-gray-50 last:border-0"
                     >
                         <Link
-                            href={`/category/${category.slug}`}
+                            href={`shop?category=${category.slug}`}
                             className="text-gray-700 group-hover:text-blue-600 text-[14px] font-medium transition-colors"
                         >
                             {category.name}
@@ -83,7 +83,7 @@ const CategoryMenu = () => {
                                 {category.subCategories.map((sub) => (
                                     <Link
                                         key={sub.id}
-                                        href={`/category/${sub.slug}`}
+                                        href={`shop?category=${sub.slug}`}
                                         className="block px-5 py-2.5 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                                     >
                                         {sub.name}

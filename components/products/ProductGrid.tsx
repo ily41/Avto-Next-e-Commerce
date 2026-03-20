@@ -1,20 +1,23 @@
 import ProductCard from "@/components/card/ProductCard";
 import type { Product } from "@/lib/api/types";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ProductGridProps {
   products: Product[];
   isLoading: boolean;
   viewMode: "grid" | "list";
-  hasMore: boolean;
-  onLoadMore: () => void;
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }
 
 export default function ProductGrid({
   products,
   isLoading,
   viewMode,
-  hasMore,
-  onLoadMore
+  currentPage,
+  totalPages,
+  onPageChange
 }: ProductGridProps) {
 
   if (isLoading && products.length === 0) {
@@ -39,13 +42,74 @@ export default function ProductGrid({
      );
   }
 
+  const renderPagination = () => {
+    if (totalPages <= 1) return null;
+
+    const maxVisible = 5;
+    let start = Math.max(1, currentPage - 2);
+    let end = Math.min(totalPages, start + maxVisible - 1);
+    
+    if (end - start + 1 < maxVisible) {
+        start = Math.max(1, end - maxVisible + 1);
+    }
+    
+    const elements = [];
+
+    // Previous Button
+    elements.push(
+        <button
+            key="prev"
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1 || isLoading}
+            aria-label="Previous Page"
+            className="w-10 h-10 flex items-center justify-center rounded border border-gray-200 text-gray-500 hover:text-blue-600 hover:border-blue-600 focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none transition-colors mx-1 bg-white cursor-pointer"
+        >
+            <ChevronLeft size={18} />
+        </button>
+    );
+
+    // Sequence Buttons Loop
+    for (let i = start; i <= end; i++) {
+        elements.push(
+            <button
+                key={i}
+                onClick={() => onPageChange(i)}
+                disabled={isLoading && currentPage !== i}
+                aria-label={`Page ${i}`}
+                className={`w-10 h-10 flex items-center justify-center rounded text-sm font-medium transition-colors mx-1 focus-visible:ring-2 focus-visible:ring-blue-500 cursor-pointer ${
+                    currentPage === i
+                        ? "bg-blue-600 text-white border border-blue-600 shadow-sm opacity-100"
+                        : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:text-blue-600 hover:border-blue-300 disabled:opacity-50"
+                }`}
+            >
+                {i}
+            </button>
+        );
+    }
+
+    // Next Button
+    elements.push(
+        <button
+            key="next"
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages || isLoading}
+            aria-label="Next Page"
+            className="w-10 h-10 flex items-center justify-center rounded border border-gray-200 text-gray-500 hover:text-blue-600 hover:border-blue-600 focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none transition-colors mx-1 bg-white cursor-pointer"
+        >
+            <ChevronRight size={18} />
+        </button>
+    );
+
+    return <div className="flex items-center justify-center mt-12 mb-8 flex-wrap gap-1 w-full">{elements}</div>;
+  };
+
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full">
       <div 
          className={
            viewMode === "grid"
              ? "grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 w-full"
-             : "flex flex-col space-y-4 w-full" // standard vertical card stacking for list mode based on standard requirements
+             : "flex flex-col space-y-4 w-full"
          }
       >
         {products.map(p => (
@@ -55,15 +119,7 @@ export default function ProductGrid({
         ))}
       </div>
 
-      {hasMore && (
-         <button 
-           onClick={onLoadMore}
-           disabled={isLoading}
-           className="mt-12 mb-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-md transition-colors text-sm shadow-sm cursor-pointer disabled:bg-blue-400"
-         >
-           {isLoading ? "Loading..." : "Load More"}
-         </button>
-      )}
+      {renderPagination()}
     </div>
   );
 }

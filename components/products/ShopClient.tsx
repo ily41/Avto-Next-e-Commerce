@@ -114,8 +114,9 @@ export default function ShopClient({ initialSearchParams }: { initialSearchParam
               products={data?.products || []} 
               isLoading={isLoading || isFetching} 
               viewMode={viewMode} 
-              hasMore={data?.hasNextPage || false}
-              onLoadMore={() => setQueryParam("page", (pageParam + 1).toString())}
+              currentPage={pageParam}
+              totalPages={data?.totalPages || 1}
+              onPageChange={(page: number) => setQueryParam("page", page.toString())}
            />
         </div>
     </div>

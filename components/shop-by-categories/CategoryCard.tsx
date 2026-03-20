@@ -9,7 +9,7 @@ interface CategoryCardProps {
 const CategoryCard = ({ category }: CategoryCardProps) => {
     return (
         <Link
-            href={`/category/${category.slug}`}
+            href={`shop?category=${category.slug}`}
             className="flex flex-col items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded-2xl"
             aria-label={`${category.name} kateqoriyasına bax`}
         >

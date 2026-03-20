@@ -53,7 +53,7 @@ export default function SortHeader({
           </select>
 
           {/* View Toggles (Visible on larger screens typically, but can be everywhere) */}
-          <div className="hidden sm:flex items-center gap-1.5 ml-2">
+          {/* <div className="hidden sm:flex items-center gap-1.5 ml-2">
              <button 
                 onClick={() => onViewModeChange("grid")}
                 aria-label="Grid view"
@@ -69,7 +69,7 @@ export default function SortHeader({
              >
                 <IconList size={22} />
              </button>
-          </div>
+          </div> */}
        </div>
     </div>
   );

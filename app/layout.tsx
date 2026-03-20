@@ -22,6 +22,9 @@ export const metadata: Metadata = {
 
 import { Toaster } from "@/components/ui/sonner";
 
+import StoreProvider from "@/lib/providers/store-provider";
+import { Navbar } from "@/components/avto-ui/navbar";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -39,8 +42,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Toaster />
+          <StoreProvider>
+            <div className="min-h-screen flex flex-col bg-white">
+              <Navbar />
+              {children}
+            </div>
+            <Toaster />
+          </StoreProvider>
         </ThemeProvider>
       </body>
     </html>

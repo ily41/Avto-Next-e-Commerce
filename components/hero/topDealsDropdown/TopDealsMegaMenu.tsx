@@ -34,16 +34,16 @@ const TopDealsMegaMenu = ({ isOpen, setHoveredLink }: TopDealsMegaMenuProps) => 
                 <h3 className="text-center text-[16px] font-semibold text-gray-900 mb-8">Kateqoriyalar</h3>
                 <div className="grid grid-cols-4 gap-y-5">
                     {displayCategories.map((category) => (
-                        <Link 
-                            key={category.id} 
-                            href={`/category/${category.slug}`}
+                        <Link
+                            key={category.id}
+                            href={`shop?category=${category.slug}`}
                             className="group flex flex-col items-center gap-3"
                         >
                             <div className="w-24 h-24 rounded-full border-2 border-gray-100 flex items-center justify-center p-4 transition-all duration-300 group-hover:border-blue-600 group-hover:shadow-md bg-white overflow-hidden">
                                 {category.imageUrl ? (
-                                    <img 
-                                        src={fullUrl(category.imageUrl)} 
-                                        alt={category.name} 
+                                    <img
+                                        src={fullUrl(category.imageUrl)}
+                                        alt={category.name}
                                         className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
                                     />
                                 ) : (

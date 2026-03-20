@@ -1,3 +1,4 @@
+"use client";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -12,9 +13,9 @@ const NavLinks = () => {
     const links = [
         { name: "Ana Səhifə", href: "/" },
         { name: "Mağaza", href: "/shop", hasDropdown: true },
-        { name: "Kateqoriyalar", href: "/categories", label: "ENDİRİM", labelColor: "bg-green-100 text-green-600", hasDropdown: true },
-        { name: "Məhsullar", href: "/products", label: "QAYNAR", labelColor: "bg-red-100 text-red-600", hasDropdown: true },
-        { name: "Top təkliflər", href: "/top-deals", hasDropdown: true },
+        { name: "Kateqoriyalar", href: "/shop", label: "ENDİRİM", labelColor: "bg-green-100 text-green-600", hasDropdown: true },
+        { name: "Məhsullar", href: "/shop", label: "QAYNAR", labelColor: "bg-red-100 text-red-600", hasDropdown: true },
+        { name: "Top təkliflər", href: "/shop?isHotDeal=true", hasDropdown: true },
     ];
 
     return (

@@ -1,8 +1,6 @@
-// Server Component — no "use client" directive
-// Data is fetched on the server; responsive grid handled via CSS classes.
-
 import { fetchBrands } from "@/lib/api/server-fetchers";
 import { fullUrl } from "@/lib/api/url-utils";
+import Link from "next/link";
 
 const PopularBrands = async () => {
   // Fetch 8 brands server-side; CSS grid controls how many are visible per breakpoint
@@ -27,8 +25,9 @@ const PopularBrands = async () => {
             else if (i >= 6) displayClass = "hidden lg:flex";
 
             return (
-              <div
+              <Link
                 key={brand.id}
+                href={`/shop?brand=${brand.slug}`}
                 className={`h-24 bg-[#F8F8F8] rounded-xl flex items-center justify-center p-6 grayscale hover:grayscale-0 transition-all duration-300 hover:shadow-md cursor-pointer group ${displayClass}`}
               >
                 <img
@@ -36,7 +35,7 @@ const PopularBrands = async () => {
                   alt={brand.name}
                   className="max-h-full min-h-[90px] max-w-full object-contain opacity-70 group-hover:opacity-100 transition-opacity"
                 />
-              </div>
+              </Link>
             );
           })}
         </div>
