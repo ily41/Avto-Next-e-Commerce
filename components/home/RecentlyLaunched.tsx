@@ -21,7 +21,7 @@ const RecentlyLaunched = async () => {
 
   return (
     <section className="w-full bg-white py-14">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-0">
+      <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
         {/* Header */}
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100">
           <h2 className="text-xl font-bold text-[#1a1a1a]">Yeni Təqdim Olunmuşlar</h2>
@@ -69,4 +69,3 @@ const RecentlyLaunched = async () => {
 };
 
 export default RecentlyLaunched;
- 

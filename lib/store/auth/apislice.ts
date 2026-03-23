@@ -18,8 +18,36 @@ export const authApi = api.injectEndpoints({
                 body: credentials,
             }),
         }),
+        register: builder.mutation<void, any>({
+            query: (body) => ({
+                url: "Auth/register",
+                method: "POST",
+                body,
+            }),
+        }),
+        changePassword: builder.mutation<void, any>({
+            query: (body) => ({
+                url: "Auth/change-password",
+                method: "POST",
+                body,
+            }),
+        }),
+        forgotPassword: builder.mutation<void, any>({
+            query: (body) => ({
+                url: "Auth/forgot-password",
+                method: "POST",
+                body,
+            }),
+        }),
+        resetPassword: builder.mutation<void, any>({
+            query: (body) => ({
+                url: "Auth/reset-password",
+                method: "POST",
+                body,
+            }),
+        }),
         getMe: builder.query<User, void>({
-            query: () => "Auth/me", // Assuming this exists based on your provided guard code
+            query: () => "Auth/me",
         }),
         logout: builder.mutation<void, void>({
             query: () => ({
@@ -30,4 +58,12 @@ export const authApi = api.injectEndpoints({
     }),
 });
 
-export const { useLoginMutation, useGetMeQuery, useLogoutMutation } = authApi;
+export const {
+    useLoginMutation,
+    useRegisterMutation,
+    useChangePasswordMutation,
+    useForgotPasswordMutation,
+    useResetPasswordMutation,
+    useGetMeQuery,
+    useLogoutMutation
+} = authApi;

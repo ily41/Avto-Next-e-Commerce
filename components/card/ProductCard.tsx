@@ -1,8 +1,10 @@
 "use client";
 
 import { Product } from "@/lib/api/types";
-import { IconHeart, IconChartBar, IconEye } from "@tabler/icons-react";
+import { useToggleFavoriteMutation } from "@/lib/store/favorites/apislice";
+import { IconHeart, IconChartBar, IconEye, IconShoppingCart, IconHeartFilled } from "@tabler/icons-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { fullUrl } from "@/lib/api/url-utils";
 
@@ -12,7 +14,32 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, noBorder }: ProductCardProps) => {
+    const router = useRouter();
     const [isHovered, setIsHovered] = useState(false);
+    if (product.id == "803100b4-0f04-4fd2-bb43-6a97a7011537") {
+        console.log("product.isFavorite", product.isFavorite);
+    }
+
+    const [toggleFavorite] = useToggleFavoriteMutation();
+
+    const handleFavoriteClick = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        try {
+            await toggleFavorite(product.id).unwrap();
+            console.log("Favorite toggle success");
+            console.log(product.id)
+            console.log(product.isFavorite)
+        } catch (err) {
+            console.error("Favorite toggle failed:", err);
+        }
+    };
+    const handleCardClick = (e: React.MouseEvent) => {
+        // Only navigate if the click was on the card itself or its text, not on a button
+        const target = e.target as HTMLElement;
+        if (!target.closest("button") && !target.closest("a")) {
+            router.push(`/product/${product.slug || product.id}`);
+        }
+    };
 
     const PLACEHOLDER_IMAGE = "/logos/logo3.svg";
     const fullPrimaryUrl = fullUrl(product.primaryImageUrl || product.imageUrl);
@@ -25,9 +52,10 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
 
     return (
         <div
-            className={`group relative bg-white ${noBorder ? " rounded-lg" : "border border-[#f2f2f2] "} p-4 pb-3  flex flex-col h-full transition-all duration-300 overflow-hidden cursor-pointer`}
+            className={`group relative bg-white ${noBorder ? " rounded-lg" : "border border-[#f2f2f2] "} p-4 pb-3 flex flex-col h-full transition-all duration-300 overflow-hidden cursor-pointer`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            onClick={handleCardClick}
         >
             {/* Discount Badge */}
             {discount > 0 && (
@@ -38,8 +66,11 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
 
             {/* Action Icons - Left top side, slide from Left */}
             <div className={`absolute top-4 left-4 flex flex-col gap-2 z-20 transition-all duration-500 ease-out ${isHovered ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"}`}>
-                <button className="w-7 h-7 rounded-full bg-gray-50 flex items-center justify-center text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-sm border border-gray-100 cursor-pointer">
-                    <IconHeart size={18} stroke={1.5} />
+                <button
+                    onClick={handleFavoriteClick}
+                    className={`w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm border border-gray-100 cursor-pointer ${product.isFavorite ? "bg-red-50 text-red-500 border-red-100" : "bg-gray-50 text-gray-700 hover:bg-blue-600 hover:text-white"}`}
+                >
+                    {product.isFavorite ? <IconHeartFilled size={18} /> : <IconHeart size={18} stroke={1.5} />}
                 </button>
                 <button className="w-7 h-7 rounded-full bg-gray-50 flex items-center justify-center text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-sm border border-gray-100 cursor-pointer">
                     <IconChartBar size={18} stroke={1.5} />
@@ -50,7 +81,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
             </div>
 
             {/* Product Image Area */}
-            <div className={`relative ${noBorder ? "flex-1 min-h-0" : "aspect-square"} mb-2 flex items-center justify-center px-4 overflow-hidden`}>
+            <div className={`relative ${noBorder ? "flex-1 min-h-0" : "aspect-square"} mb-2 min-h- flex items-center justify-center px-1 md:px-4 overflow-hidden`}>
                 <img
                     src={fullPrimaryUrl}
                     alt={product.name}
@@ -82,7 +113,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                     <div className="flex flex-col flex-1">
                         <Link
                             href={`/product/${product.slug || product.id}`}
-                            className={`text-[12px] md:text-[13px] font-medium ${noBorder ? "text-center" : "text-left"} text-gray-800 leading-snug mb-2 line-clamp-2 hover:text-blue-600 transition-colors`}
+                            className={`text-[11px] md:text-[13px] font-medium ${noBorder ? "text-center" : "text-left"} text-gray-800 leading-snug mb-2 line-clamp-2 hover:text-blue-600 transition-colors`}
                         >
                             {product.name}
                         </Link>
@@ -94,7 +125,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                                     ${product.price}
                                 </span>
                             )}
-                            <span className={`text-[17px] font-bold text-[#1a1a1a] ${noBorder ? "text-center" : "text-left"}`}>
+                            <span className={`text-[14px] md:text-[14px] lg:text-[17px] font-bold text-[#1a1a1a] ${noBorder ? "text-center" : "text-left"}`}>
                                 ${product.discountedPrice || product.price}
                             </span>
                         </div>

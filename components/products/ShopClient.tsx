@@ -7,6 +7,8 @@ import SortHeader from "./SortHeader";
 import ProductGrid from "./ProductGrid";
 import { useFilterProductsQuery } from "@/lib/store/products/apislice";
 import { useGetCategoriesQuery } from "@/lib/store/categories/apislice";
+import { cn } from "@/lib/utils";
+import { IconX } from "@tabler/icons-react";
 
 export default function ShopClient({ initialSearchParams }: { initialSearchParams: any }) {
   const router = useRouter();
@@ -16,16 +18,35 @@ export default function ShopClient({ initialSearchParams }: { initialSearchParam
   // URL synced state
   const categorySlug = searchParams.get("category") || initialSearchParams.category || undefined;
   const brandSlug = searchParams.get("brand") || initialSearchParams.brand || undefined;
+  const searchTerm = searchParams.get("searchTerm") || initialSearchParams.searchTerm || undefined;
   const sortByParam = searchParams.get("sort") || "default"; 
   const pageParam = parseInt(searchParams.get("page") || "1", 10);
   
+  // Custom filters f_<id>=optionId,optionId
+  const customFiltersFromUrl: Record<string, string[]> = {};
+  searchParams.forEach((value, key) => {
+    if (key.startsWith("f_")) {
+      customFiltersFromUrl[key.replace("f_", "")] = value.split(",");
+    }
+  });
+
   // Local state for sidebar / display
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   // RTK Queries
   const { data: categories } = useGetCategoriesQuery();
-  const categoryId = categories?.find(c => c.slug === categorySlug)?.id;
+  
+  // Find category by slug (recursively for subcategories)
+  const categoryId = (() => {
+    if (!categorySlug || !categories) return undefined;
+    for (const cat of categories) {
+      if (cat.slug === categorySlug) return cat.id;
+      const foundSub = cat.subCategories?.find((s: any) => s.slug === categorySlug);
+      if (foundSub) return foundSub.id;
+    }
+    return undefined;
+  })();
 
   // Sorting parser
   let sortBy, sortOrder;
@@ -52,9 +73,16 @@ export default function ShopClient({ initialSearchParams }: { initialSearchParam
       break;
   }
 
+  const filterCriteria = Object.entries(customFiltersFromUrl).map(([filterId, optionIds]) => ({
+    filterId,
+    filterOptionIds: optionIds
+  }));
+
   const queryArgs = {
     categoryId: categoryId,
     brandSlug: brandSlug,
+    searchTerm: searchTerm,
+    filterCriteria: filterCriteria.length > 0 ? filterCriteria : undefined,
     sortBy: sortBy,
     sortOrder: sortOrder,
     page: pageParam,
@@ -80,18 +108,40 @@ export default function ShopClient({ initialSearchParams }: { initialSearchParam
   return (
     <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start relative w-full mb-16">
         {/* Sidebar */}
-        <div className={`lg:w-[260px] xl:w-[280px] shrink-0 transition-transform ${isSidebarOpen ? "fixed inset-0 z-50 bg-white p-6 overflow-y-auto" : "hidden lg:block"} bg-white rounded-lg lg:bg-transparent lg:p-0`}>
+        {/* Sidebar */}
+        <div className="lg:w-[260px] xl:w-[280px] shrink-0">
+            {/* Mobile Sidebar Overlay */}
             {isSidebarOpen && (
-               <div className="flex justify-between items-center mb-6 lg:hidden">
-                   <h2 className="text-xl font-bold">Filters</h2>
-                   <button onClick={() => setIsSidebarOpen(false)} className="text-3xl">&times;</button>
-               </div>
+                <div 
+                    className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] lg:hidden"
+                    onClick={() => setIsSidebarOpen(false)}
+                />
             )}
-            <FilterSidebar 
-              currentCategory={categorySlug} 
-              currentBrand={brandSlug}
-              onFilterChange={setQueryParam} 
-            />
+
+            {/* Sidebar Content */}
+            <aside className={cn(
+                "fixed inset-y-0 left-0 w-[300px] bg-white z-[70] p-6 overflow-y-auto transition-transform duration-300 transform lg:static lg:w-full lg:translate-x-0 lg:p-0 lg:bg-transparent lg:block lg:sticky lg:top-4 lg:h-fit",
+                isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            )}>
+                {/* Mobile Header */}
+                <div className="flex justify-between items-center mb-6 lg:hidden">
+                    <h2 className="text-xl font-bold text-gray-900 font-outfit uppercase tracking-tight">Filters</h2>
+                    <button 
+                        onClick={() => setIsSidebarOpen(false)} 
+                        className="text-gray-500 hover:text-red-500 transition-colors p-1"
+                        aria-label="Filterləri bağla"
+                    >
+                        <IconX size={28} />
+                    </button>
+                </div>
+
+                <FilterSidebar 
+                  currentCategory={categorySlug} 
+                  currentBrand={brandSlug}
+                  currentFilters={customFiltersFromUrl}
+                  onFilterChange={setQueryParam} 
+                />
+            </aside>
         </div>
 
         <div className="flex-1 min-w-0 flex flex-col space-y-6 w-full">

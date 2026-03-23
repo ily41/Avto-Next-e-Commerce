@@ -7,7 +7,11 @@ export const productDetailsApi = api.injectEndpoints({
             query: (id) => `Products/${id}`,
             providesTags: (result, error, id) => [{ type: "Product", id }],
         }),
+        getProductBySlug: builder.query<Product, string>({
+            query: (slug) => `Products/slug/${slug}`,
+            providesTags: (result, error, slug) => [{ type: "Product", id: slug }],
+        }),
     }),
 });
 
-export const { useGetProductByIdQuery } = productDetailsApi;
+export const { useGetProductByIdQuery, useGetProductBySlugQuery } = productDetailsApi;

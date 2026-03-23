@@ -22,7 +22,7 @@ export default function SortHeader({
   onOpenSidebar
 }: SortHeaderProps) {
   return (
-    <div className="flex flex-col md:flex-row justify-between items-center w-full pb-4 lg:mb-4">
+    <div className="flex flex-col md:flex-row justify-between items-center w-full lg:pb-4 lg:mb-4">
        {/* Left side text */}
        <div className="text-[#555555] text-sm font-medium mb-4 md:mb-0">
           Showing {startItem}–{endItem} of {totalItems} results
@@ -42,7 +42,7 @@ export default function SortHeader({
           <select 
              value={currentSort}
              onChange={(e) => onSortChange(e.target.value)}
-             className="appearance-none bg-white border border-[#e5e5e5] text-gray-700 text-sm font-medium focus:ring-1 focus:outline-none focus:ring-blue-500 rounded-md py-2 pl-4 pr-10 hover:border-blue-400 transition-colors cursor-pointer"
+             className="appearance-none bg-white border border-[#e5e5e5] text-gray-700 text-sm font-medium focus:ring-1 focus:outline-none focus:ring-blue-500 rounded-md py-2 pl-4 md:pr-10 hover:border-blue-400 transition-colors cursor-pointer"
              aria-label="Sort products"
           >
              <option value="default">Default sorting</option>

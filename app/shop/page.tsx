@@ -33,7 +33,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const categoryName = category?.name || "Mağaza";
 
   return {
-    title: `${categoryName} | TechShop`,
+    title: `${categoryName} | Avto027`,
     description: `Shop for ${categoryName}`,
   };
 }
@@ -69,41 +69,47 @@ export default async function ShopPage({ searchParams }: PageProps) {
 
   return (
     <main className="w-full bg-[#f8f8f8] min-h-screen py-8">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-0">
-         {/* Breadcrumb */}
-         <nav className="flex text-[13px] text-gray-500 mb-6 bg-white py-2 px-4 rounded-md shadow-sm border border-gray-100 w-full justify-center lg:justify-start">
-            <ol className="flex flex-col lg:flex-row lg:items-center w-full text-center lg:text-left space-y-1 lg:space-y-0 lg:space-x-2">
-              <div className="flex justify-center lg:justify-start items-center space-x-2">
-                <li><a href="/" className="hover:text-blue-600 transition-colors font-medium">Ana Səhifə</a></li>
-                <li><span>/</span></li>
-                <li><a href="/shop" className="hover:text-blue-600 transition-colors font-medium">Mağaza</a></li>
-                
-                {parentCategory && (
-                  <>
-                    <li><span>/</span></li>
-                    <li><a href={`/shop?category=${parentCategory.slug}`} className="hover:text-blue-600 transition-colors font-medium">{parentCategory.name}</a></li>
-                  </>
-                )}
+      <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
+        {/* Breadcrumb */}
+        <nav className="flex text-[13px] text-gray-500 mb-6 bg-white py-2 px-4 rounded-md shadow-sm border border-gray-100 w-full justify-center lg:justify-start">
+          <ol className="flex flex-col lg:flex-row lg:items-center w-full text-center lg:text-left space-y-1 lg:space-y-0 lg:space-x-2">
+            <div className="flex justify-center lg:justify-start items-center space-x-2">
+              <li><a href="/" className="hover:text-blue-600 transition-colors font-medium">Ana Səhifə</a></li>
+              <li><span>/</span></li>
+              <li><a href="/shop" className="hover:text-blue-600 transition-colors font-medium">Mağaza</a></li>
 
-                {currentCategory && (
-                  <>
-                    <li><span>/</span></li>
-                    <li className="text-gray-900 font-bold">{currentCategory.name}</li>
-                  </>
-                )}
-              </div>
-            </ol>
-         </nav>
+              {parentCategory && (
+                <>
+                  <li><span>/</span></li>
+                  <li><a href={`/shop?category=${parentCategory.slug}`} className="hover:text-blue-600 transition-colors font-medium">{parentCategory.name}</a></li>
+                </>
+              )}
 
-         {/* Title area */}
-         <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-[#1a1a1a]">
-              {currentCategory?.name || "Mağaza"}
-            </h1>
-         </div>
-         
-         {/* Shop Client manages Sidebar, Sort Header, and Product Grid */}
-         <ShopClient initialSearchParams={resolvedParams} />
+              {currentCategory && (
+                <>
+                  <li><span>/</span></li>
+                  <li className="text-gray-900 font-bold">{currentCategory.name}</li>
+                </>
+              )}
+            </div>
+          </ol>
+        </nav>
+
+        {/* Title area */}
+        {/* Title area */}
+        <div className="text-center mb-10">
+          <h1 className="text-3xl font-bold text-[#1a1a1a]">
+            {currentCategory?.name || "Mağaza"}
+          </h1>
+          {resolvedParams.searchTerm && (
+            <p className="text-gray-500 mt-2 text-[15px] font-medium italic">
+               "{resolvedParams.searchTerm}" üçün axtarış nəticələri
+            </p>
+          )}
+        </div>
+
+        {/* Shop Client manages Sidebar, Sort Header, and Product Grid */}
+        <ShopClient initialSearchParams={resolvedParams} />
       </div>
     </main>
   );
