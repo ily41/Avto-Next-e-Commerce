@@ -45,7 +45,6 @@ export default function ProductsPage() {
     }, [categoriesData]);
 
     const { data: brandsData } = useGetBrandsQuery({ pageIndex: 0, pageSize: 100 });
-    console.log(brandsData)
 
     const filterRequestBody = useMemo(() => {
         return {
@@ -58,7 +57,6 @@ export default function ProductsPage() {
     }, [selectedCategoryIds, selectedBrandNames, searchTerm, pageIndex, pageSize]);
 
     const { data: filteredData, isLoading, error } = useFilterProductsQuery(filterRequestBody);
-    console.log("filteredData", filteredData)
 
     const [createProduct, { isLoading: isCreating }] = useCreateProductWithImageMutation();
     const [updateProduct, { isLoading: isUpdating }] = useUpdateProductWithImageMutation();

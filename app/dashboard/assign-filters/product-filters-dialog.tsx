@@ -20,7 +20,6 @@ export function ProductFiltersDialog({
     const { data: filters, isLoading, isFetching } = useGetProductFiltersQuery(product.id, {
         skip: !open,
     });
-    console.log(filters)
 
     const [deleteFilter] = useDeleteProductFilterMutation();
 

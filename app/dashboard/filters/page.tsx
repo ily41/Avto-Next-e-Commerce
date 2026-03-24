@@ -49,7 +49,6 @@ export default function FiltersPage() {
         pageSize,
         searchTerm: debouncedSearchTerm || undefined,
     });
-    console.log(data)
 
     const filters = data?.filters;
 

@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { fullUrl } from "@/lib/api/url-utils";
+import { useCart } from "@/hooks/useCart";
+import { toast } from "sonner";
 
 interface ProductCardProps {
     product: Product;
@@ -16,19 +18,15 @@ interface ProductCardProps {
 const ProductCard = ({ product, noBorder }: ProductCardProps) => {
     const router = useRouter();
     const [isHovered, setIsHovered] = useState(false);
-    if (product.id == "803100b4-0f04-4fd2-bb43-6a97a7011537") {
-        console.log("product.isFavorite", product.isFavorite);
-    }
 
     const [toggleFavorite] = useToggleFavoriteMutation();
+    const { addItem } = useCart();
+    const [isAdded, setIsAdded] = useState(false);
 
     const handleFavoriteClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
         try {
             await toggleFavorite(product.id).unwrap();
-            console.log("Favorite toggle success");
-            console.log(product.id)
-            console.log(product.isFavorite)
         } catch (err) {
             console.error("Favorite toggle failed:", err);
         }
@@ -38,6 +36,17 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
         const target = e.target as HTMLElement;
         if (!target.closest("button") && !target.closest("a")) {
             router.push(`/product/${product.slug || product.id}`);
+        }
+    };
+
+    const handleAddToCart = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        try {
+            await addItem(product, 1);
+            setIsAdded(true);
+            setTimeout(() => setIsAdded(false), 2000);
+        } catch (err: any) {
+            toast.error(err?.data || err?.data || "Səbətə əlavə edərkən xəta baş verdi");
         }
     };
 
@@ -133,8 +142,16 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
 
                     {/* Add to Cart Button - Revealed on hover on desktop, fixed position on mobile */}
                     <div className="relative mt-4 md:absolute md:top-full md:left-0 md:right-0">
-                        <button className="w-full bg-[#1a1a1a] hover:bg-blue-600 text-white font-bold py-2 rounded-lg text-sm tracking-tight transition-all duration-300 shadow-md active:scale-95 cursor-pointer">
-                            Səbətə at
+                        <button 
+                            className={`w-full font-bold py-2 rounded-lg text-sm tracking-tight transition-all duration-300 shadow-md cursor-pointer flex items-center justify-center gap-2 ${
+                                isAdded 
+                                    ? "bg-green-600 hover:bg-green-700 text-white" 
+                                    : "bg-[#1a1a1a] hover:bg-blue-600 text-white active:scale-95"
+                            }`}
+                            onClick={handleAddToCart}
+                            disabled={isAdded}
+                        >
+                            {isAdded ? "Əlavə edildi" : "Səbətə at"}
                         </button>
                     </div>
                 </div>

@@ -28,3 +28,24 @@ export function getRoleFromToken(token: string | undefined): string | null {
     return null;
   }
 }
+
+export function formatDate(date: string | number | Date, options?: Intl.DateTimeFormatOptions): string {
+  const d = new Date(date);
+  return new Intl.DateTimeFormat('en-US', options || {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(d);
+}
+
+export function formatDateTime(date: string | number | Date): string {
+    const d = new Date(date);
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }).format(d).replace(',', ' •');
+}

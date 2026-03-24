@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import { useLoginMutation } from "@/lib/store/auth/apislice";
 import { getRoleFromToken } from "@/lib/utils";
 import Cookies from "js-cookie";
@@ -38,6 +38,7 @@ export function LoginPopup({ children }: { children?: React.ReactNode }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[450px] p-0 overflow-hidden border-none shadow-2xl rounded-xl">
+        <DialogTitle className="sr-only">Login</DialogTitle>
         <div className="bg-white p-8 md:p-12 flex flex-col items-center relative">
           <button onClick={() => setOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-900 transition-colors">
             <IconX size={20} />

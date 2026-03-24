@@ -189,8 +189,6 @@ export default function UsersPage() {
                             </SelectTrigger>
                             <SelectContent className="bg-popover text-popover-foreground rounded-lg border shadow-lg z-50">
                                 {roles?.map((role) => {
-                                    console.log(roles)
-                                    console.log(role.value)
                                     return(
                                     <SelectItem key={role.value} value={role.value.toString()}>
                                         {role.name}

@@ -159,7 +159,6 @@ export const productApi = api.injectEndpoints({
     }>({
       query: ({ primaryImageUrl, detailImageFiles, ...data }) => {
         const formData = new FormData();
-        console.log(data)
         formData.append("productData", JSON.stringify(data));
         formData.append("imageFile", primaryImageUrl);
         if (detailImageFiles) {

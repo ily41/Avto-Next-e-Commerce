@@ -10,8 +10,11 @@ import {
   IconPlus,
   IconHeartFilled,
   IconCreditCard,
+  IconCheck,
 } from "@tabler/icons-react";
 import { Product } from "@/lib/api/types";
+import { useCart } from "@/hooks/useCart";
+import { toast } from "sonner";
 
 interface ProductInfoProps {
   product: Product;
@@ -21,16 +24,24 @@ interface ProductInfoProps {
 export default function ProductInfo({ product, discount }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1);
   const [toggleFavorite] = useToggleFavoriteMutation();
-
-  if (product.id == "803100b4-0f04-4fd2-bb43-6a97a7011537") {
-    console.log("product.isFavorite", product.isFavorite);
-  }
+  const { addItem } = useCart();
+  const [isAdded, setIsAdded] = useState(false);
 
   const handleFavoriteClick = async () => {
     try {
       await toggleFavorite(product.id).unwrap();
     } catch (err) {
       console.error("Wishlist sync failed:", err);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    try {
+      await addItem(product, quantity);
+      setIsAdded(true);
+      setTimeout(() => setIsAdded(false), 2000);
+    } catch (err: any) {
+      toast.error(err?.data || err?.data || "Səbətə əlavə edərkən xəta baş verdi");
     }
   };
 
@@ -59,9 +70,23 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
             <button onClick={() => setQuantity(q => q + 1)} className="w-12 h-full flex items-center justify-center hover:bg-gray-50 text-gray-400 hover:text-gray-900 transition-colors cursor-pointer"><IconPlus size={16} /></button>
           </div>
 
-          <button className="flex-1 h-12 bg-blue-600 hover:bg-black text-white font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg cursor-pointer">
-            <IconShoppingCart size={20} className="transition-transform group-hover:scale-110" />
-            <span>Səbətə at</span>
+          <button
+            onClick={handleAddToCart}
+            disabled={isAdded}
+            className={`flex-1 h-12 font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg cursor-pointer ${isAdded ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-blue-600 hover:bg-black text-white'
+              }`}
+          >
+            {isAdded ? (
+              <>
+                <IconCheck size={20} className="animate-in zoom-in duration-300" />
+                <span>Əlavə edildi</span>
+              </>
+            ) : (
+              <>
+                <IconShoppingCart size={20} className="transition-transform group-hover:scale-110" />
+                <span>Səbətə at</span>
+              </>
+            )}
           </button>
         </div>
 
