@@ -18,7 +18,6 @@ export default function Home() {
         <PopularBrands />
         <TechGadgets />
       </div>
-      <div className="h-[30vh]"></div>
     </main>
   );
 }

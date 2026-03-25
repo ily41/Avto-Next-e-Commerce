@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Search, User, Heart, ShoppingCart } from "lucide-react";
 import { LoginPopup } from "@/components/ownUI/loginPopup";
+import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
 
 interface NavActionsProps {
@@ -12,7 +13,8 @@ interface NavActionsProps {
 }
 
 export function NavActions({ favoritesCount, onMobileSearchOpen }: NavActionsProps) {
-    const { guestCart, serverCart, isAuth } = useCart();
+    const { isAuth } = useAuth();
+    const { guestCart, serverCart } = useCart();
     
     const cartItemsCount = isAuth 
         ? (serverCart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0) 

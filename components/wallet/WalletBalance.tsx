@@ -5,10 +5,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Wallet as WalletIcon } from "lucide-react";
 
-export function WalletBalance() {
-  const { data: wallet, isLoading, error } = useGetWalletQuery();
+import { useAuth } from "@/hooks/useAuth";
 
-  if (isLoading) {
+export function WalletBalance() {
+  const { isAuth } = useAuth();
+  const { data: wallet, isLoading, error } = useGetWalletQuery(undefined, {
+    skip: !isAuth
+  });
+
+  if (isLoading || !isAuth) {
     return <Skeleton className="h-[120px] w-full rounded-2xl" />;
   }
 

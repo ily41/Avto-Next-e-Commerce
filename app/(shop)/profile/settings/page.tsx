@@ -34,35 +34,32 @@ export default function SettingsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <Card className="border-[#f2f2f2] shadow-sm rounded-2xl overflow-hidden">
-          <CardHeader className="pb-4 bg-gray-50/50 border-b border-[#f2f2f2]">
-            <CardTitle className="text-[11px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
+        <Card className="border border-[#f2f2f2] shadow-sm rounded-2xl overflow-hidden bg-white">
+          <div className="h-1.5 w-full bg-blue-600" />
+          <CardHeader className="pb-4 bg-white border-b border-[#f2f2f2]">
+            <CardTitle className="text-xs font-black uppercase tracking-widest text-blue-600 flex items-center gap-2">
               <User className="h-4 w-4" /> Şəxsi Məlumatlar
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-8 space-y-6">
-            <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="p-4 rounded-xl bg-gray-50/50 border border-gray-100/50 space-y-1">
                     <p className="text-[10px] text-gray-400 font-black uppercase tracking-wider">Ad</p>
                     <p className="text-sm font-bold text-gray-800 tracking-tight">{user?.firstName || "Qeyd edilməyib"}</p>
                 </div>
-                <div className="space-y-1">
+                <div className="p-4 rounded-xl bg-gray-50/50 border border-gray-100/50 space-y-1">
                     <p className="text-[10px] text-gray-400 font-black uppercase tracking-wider">Soyad</p>
                     <p className="text-sm font-bold text-gray-800 tracking-tight">{user?.lastName || "Qeyd edilməyib"}</p>
                 </div>
             </div>
-            <div className="space-y-1">
+            <div className="p-4 rounded-xl bg-gray-50/50 border border-gray-100/50 space-y-1">
                 <p className="text-[10px] text-gray-400 font-black uppercase tracking-wider">Email Ünvanı</p>
                 <div className="flex items-center gap-2">
-                    <Mail className="h-3 w-3 text-gray-300" />
+                    <Mail className="h-3 w-3 text-blue-400" />
                     <p className="text-sm font-bold text-gray-800 tracking-tight">{user?.email}</p>
                 </div>
             </div>
-            <div className="pt-4">
-                <Button variant="outline" className="w-full text-xs font-black h-10 border-[#f2f2f2] hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all rounded-xl uppercase tracking-widest">
-                    Məlumatları Yenilə
-                </Button>
-            </div>
+           
           </CardContent>
         </Card>
 

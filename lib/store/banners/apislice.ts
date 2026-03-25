@@ -34,6 +34,9 @@ export type Banner = {
     buttonColor?: string | null;
     buttonTextColor?: string | null;
     buttonBorderRadius?: number;
+    buttonPaddingX?: number;
+    buttonPaddingY?: number;
+    buttonFontSize?: number;
 };
 
 export const bannersApiSlice = api.enhanceEndpoints({ addTagTypes: ['Banner'] }).injectEndpoints({

@@ -4,13 +4,40 @@ import { ProfileSidebar } from "@/components/profile/ProfileSidebar";
 import { useGetWalletQuery } from "@/lib/store/wallet/walletApiSlice";
 import { Skeleton } from "@/components/ui/skeleton";
 
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 export default function ProfileLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { isAuth, isLoading: isAuthLoading } = useAuth();
+  const router = useRouter();
+  
   // Pre-fetch wallet for common balance display if needed
-  const { isLoading } = useGetWalletQuery();
+  const { isLoading: isWalletLoading } = useGetWalletQuery(undefined, {
+    skip: !isAuth
+  });
+
+  useEffect(() => {
+    if (!isAuthLoading && !isAuth) {
+      router.push("/");
+    }
+  }, [isAuth, isAuthLoading, router]);
+
+  if (isAuthLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Skeleton className="h-[400px] w-full rounded-2xl" />
+      </div>
+    );
+  }
+
+  if (!isAuth) {
+    return null; // Will redirect via useEffect
+  }
 
   return (
     <div className="bg-white min-h-[calc(100vh-80px)]">

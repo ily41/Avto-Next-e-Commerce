@@ -13,10 +13,16 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
 
     useEffect(() => {
         if (!isLoading) {
+            // Only redirect and toast if we have an error (like 401) or if user is logged in but NOT an admin
             if (isError || (user && user.role !== 0)) {
-                Cookies.remove("token");
+                // DON'T remove the token! Removing it logs the user out globally.
+                // Just redirect them to the home page if they don't have access.
                 router.push("/");
-                toast.error("Access Denied: Admins Only");
+                
+                // Only show "Access Denied" if they ARE logged in but not an admin
+                if (user && user.role !== 0) {
+                   toast.error("Access Denied: Admins Only");
+                }
             }
         }
     }, [isLoading, isError, user, router]);
@@ -32,8 +38,8 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
         );
     }
 
-    // If we have toxic data (not admin) but not loading yet, we might hide content
-    if (!user || user.role !== 0) {
+    // If we have data and user is not admin, hide content
+    if (!isLoading && (!user || user.role !== 0)) {
         return null;
     }
 

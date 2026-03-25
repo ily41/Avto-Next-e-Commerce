@@ -44,7 +44,7 @@ export default function ProductDetailsClient({ slug }: { slug: string }) {
         </div>
       </div>
 
-      <div className="max-w-[1240px] mx-auto mt-12 px-4 lg:px-0">
+      <div className="max-w-[1240px] mx-auto mt-12 px-4">
         <div className="flex flex-col lg:flex-row gap-16">
           <div className="w-full lg:w-1/2">
             <ProductGallery images={images} primaryUrl={product.primaryImageUrl || product.imageUrl || ""} />

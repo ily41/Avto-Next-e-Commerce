@@ -14,10 +14,15 @@ import { Badge } from "@/components/ui/badge";
 import { formatDateTime } from "@/lib/utils";
 import { MinusCircle, PlusCircle } from "lucide-react";
 
-export function TransactionList() {
-  const { data: transactions, isLoading, error } = useGetWalletTransactionsQuery();
+import { useAuth } from "@/hooks/useAuth";
 
-  if (isLoading) {
+export function TransactionList() {
+  const { isAuth } = useAuth();
+  const { data: transactions, isLoading, error } = useGetWalletTransactionsQuery(undefined, {
+    skip: !isAuth
+  });
+
+  if (isLoading || !isAuth) {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map((i) => (

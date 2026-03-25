@@ -19,8 +19,14 @@ const LOCAL = {
   action: "Fəaliyyət"
 };
 
+import { useAuth } from "@/hooks/useAuth";
+
 export default function WishlistClient() {
-  const { data: favorites, isLoading, error } = useGetFavoritesQuery({ page: 1, pageSize: 50 });
+  const { isAuth } = useAuth();
+  const { data: favorites, isLoading, error } = useGetFavoritesQuery(
+    { page: 1, pageSize: 50 },
+    { skip: !isAuth }
+  );
   const [toggleFavorite] = useToggleFavoriteMutation();
   const router = useRouter();
   const [wishlistLink, setWishlistLink] = React.useState("https://wordpresstheme"); // Placeholder for demonstration
@@ -28,7 +34,7 @@ export default function WishlistClient() {
   if (isLoading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Yüklənir...</div>;
 
   // Handle Unauthorized
-  if ((error as any)?.status === 401) {
+  if (!isAuth) {
     return (
       <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
          <div className="bg-white p-10 rounded-2xl shadow-2xl max-w-[450px] w-full text-center flex flex-col items-center gap-6 animate-in zoom-in-95 duration-200">

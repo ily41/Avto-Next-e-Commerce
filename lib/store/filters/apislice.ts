@@ -70,7 +70,7 @@ export type PaginatedFilters = {
 export const filtersApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
         getFilters: builder.query<Filter[], void>({
-            query: () => "/Admin/filters",
+            query: () => "Products/filters",
             providesTags: ["Filter"],
         }),
         getFiltersPaginated: builder.query<PaginatedFilters, FilterSearchParams>({

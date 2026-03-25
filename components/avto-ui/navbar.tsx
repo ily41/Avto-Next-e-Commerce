@@ -15,16 +15,19 @@ import { MobileMenu } from "./navbar-components/MobileMenu";
 import { Package2 } from "lucide-react";
 
 const topNavLinks = [
-    { name: "Sifarişi İzlə", href: "#", icon: Package2 },
+    // { name: "Sifarişi İzlə", href: "#", icon: Package2 },    
     { name: "Haqqımızda", href: "#" },
     { name: "Bloq", href: "#" },
     { name: "Bizimlə Əlaqə", href: "#" },
     { name: "Tez-tez Verilən Suallar", href: "#" },
 ];
 
+import { useAuth } from "@/hooks/useAuth";
+
 export function Navbar() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { isAuth } = useAuth();
     
     // State
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,7 +36,9 @@ export function Navbar() {
     const [searchTerm, setSearchTerm] = useState("");
     
     // Data
-    const { data: favoritesCountData } = useGetFavoritesCountQuery();
+    const { data: favoritesCountData } = useGetFavoritesCountQuery(undefined, {
+        skip: !isAuth
+    });
     const favoritesCount = favoritesCountData?.count || 0;
 
     // Effects

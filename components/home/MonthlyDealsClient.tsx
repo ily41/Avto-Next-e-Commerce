@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import type { Product } from "@/lib/api/types";
 import { fullUrl } from "@/lib/api/url-utils";
@@ -13,7 +14,10 @@ const FeaturedItemCard = ({ product }: { product: Product }) => {
   const fullPrimaryUrl = fullUrl(product.primaryImageUrl || product.imageUrl);
 
   return (
-    <div className="bg-white border border-[#f2f2f2] rounded-xl p-4 flex items-stretch gap-4 h-full transition-all duration-300 cursor-pointer group max-h-[150px] hover:border-blue-100">
+    <Link 
+      href={`/product/${product.slug || product.id}`}
+      className="bg-white border border-[#f2f2f2] rounded-xl p-4 flex items-stretch gap-4 h-full transition-all duration-300 cursor-pointer group max-h-[150px] hover:border-blue-100"
+    >
       {/* Image on Left */}
       <div className="w-[110px] shrink-0 flex items-center justify-center rounded-lg overflow-hidden transition-colors group-hover:bg-white">
         <img
@@ -47,7 +51,7 @@ const FeaturedItemCard = ({ product }: { product: Product }) => {
           {product.shortDescription || 'Functional Crown Fhd Footage 1.78"...'}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

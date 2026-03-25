@@ -6,9 +6,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, ShoppingBag, Wallet } from "lucide-react";
 import Link from "next/link";
 import { useGetMeQuery } from "@/lib/store/auth/apislice";
+import { useGetFavoritesCountQuery } from "@/lib/store/favorites/apislice";
+import { useGetMyOrdersQuery } from "@/lib/store/order/orderApiSlice";
+import { useAuth } from "@/hooks/useAuth";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProfilePage() {
-  const { data: user } = useGetMeQuery();
+  const { isAuth } = useAuth();
+  const { data: user } = useGetMeQuery(undefined, { skip: !isAuth });
+  const { data: favsData, isLoading: isFavsLoading } = useGetFavoritesCountQuery(undefined, { skip: !isAuth });
+  console.log(favsData)
+  const { data: orders, isLoading: isOrdersLoading } = useGetMyOrdersQuery(undefined, { skip: !isAuth });
+
+  const activeOrdersCount = orders?.filter(o => o.status !== "Completed" && o.status !== "Cancelled").length || 0;
+  const wishlistCount = favsData || 0;
 
   return (
     <div className="space-y-8">
@@ -40,11 +51,15 @@ export default function ProfilePage() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-black text-gray-900 tracking-tighter">0</div>
+              {isOrdersLoading ? (
+                <Skeleton className="h-9 w-12" />
+              ) : (
+                <div className="text-3xl font-black text-gray-900 tracking-tighter">{activeOrdersCount}</div>
+              )}
               <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">Aktiv sifariş</p>
             </CardContent>
           </Card>
-          
+
           <Card className="border-[#f2f2f2] shadow-sm bg-white hover:border-rose-200 transition-all rounded-2xl group">
             <CardHeader className="pb-2">
               <Link href="/wishlist">
@@ -54,7 +69,11 @@ export default function ProfilePage() {
               </Link>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-black text-gray-900 tracking-tighter">0</div>
+              {isFavsLoading ? (
+                <Skeleton className="h-9 w-12" />
+              ) : (
+                <div className="text-3xl font-black text-gray-900 tracking-tighter">{wishlistCount}</div>
+              )}
               <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">Sevimlilər</p>
             </CardContent>
           </Card>

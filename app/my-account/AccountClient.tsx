@@ -48,10 +48,11 @@ export default function AccountClient() {
     try {
       const { token } = await login({ email: loginEmail, password: loginPass }).unwrap();
       Cookies.set("token", token, { expires: 7, path: '/' });
+      window.dispatchEvent(new Event("auth-change"));
       const role = getRoleFromToken(token);
       toast.success("Login successful!");
       router.refresh();
-      if (role === "Admin") router.push("/dashboard");
+      if (role === "Admin" || role === "0") router.push("/dashboard");
       else router.push("/");
     } catch (err: any) {
       toast.error(err.data?.message || "Invalid credentials");

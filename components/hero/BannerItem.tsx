@@ -31,6 +31,9 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
         buttonColor = "#3b82f6",
         buttonTextColor = "#fff",
         buttonBorderRadius = 8,
+        buttonPaddingX = 24,
+        buttonPaddingY = 10,
+        buttonFontSize = 14,
     } = banner;
 
     // Function to scale font size responsively
@@ -115,8 +118,8 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
                             backgroundColor: buttonColor || "#3b82f6",
                             color: buttonTextColor || "#fff",
                             borderRadius: `${buttonBorderRadius}px`,
-                            padding: "10px 24px",
-                            fontSize: "clamp(12px, 1.5vw, 14px)",
+                            padding: `${buttonPaddingY / buttonFontSize}em ${buttonPaddingX / buttonFontSize}em`,
+                            fontSize: getResponsiveStyle(buttonFontSize),
                             fontWeight: "600",
                         }}
                     >

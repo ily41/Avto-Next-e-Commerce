@@ -15,10 +15,15 @@ const navigation = [
   { name: "Tənzimləmələr", href: "/profile/settings", icon: Settings },
 ];
 
+import { useAuth } from "@/hooks/useAuth";
+
 export function ProfileSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { data: user, isLoading } = useGetMeQuery();
+  const { isAuth } = useAuth();
+  const { data: user, isLoading } = useGetMeQuery(undefined, {
+    skip: !isAuth
+  });
   const [logout] = useLogoutMutation();
 
   const handleLogout = async () => {

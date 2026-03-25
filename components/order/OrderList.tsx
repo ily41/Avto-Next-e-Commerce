@@ -17,10 +17,15 @@ const statusConfig = {
   Cancelled: { icon: XCircle, className: "bg-red-50 text-red-700 border-red-200", label: "Ləğv edildi" },
 };
 
-export function OrderList() {
-  const { data: orders, isLoading, error } = useGetMyOrdersQuery();
+import { useAuth } from "@/hooks/useAuth";
 
-  if (isLoading) {
+export function OrderList() {
+  const { isAuth } = useAuth();
+  const { data: orders, isLoading, error } = useGetMyOrdersQuery(undefined, {
+    skip: !isAuth
+  });
+
+  if (isLoading || !isAuth) {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map((i) => (
