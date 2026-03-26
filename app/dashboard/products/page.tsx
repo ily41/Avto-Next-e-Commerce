@@ -60,22 +60,22 @@ export default function ProductsPage() {
 
     const [createProduct, { isLoading: isCreating }] = useCreateProductWithImageMutation();
     const [updateProduct, { isLoading: isUpdating }] = useUpdateProductWithImageMutation();
-    const [uploadPrimary] = useUploadPrimaryImageMutation();
-    const [uploadDetails] = useUploadDetailImagesMutation();
+    const [uploadPrimary, { isLoading: isUploadingPrimary }] = useUploadPrimaryImageMutation();
+    const [uploadDetails, { isLoading: isUploadingDetails }] = useUploadDetailImagesMutation();
     const [deleteDetailImage, { isLoading: isDeletingImage }] = useDeleteProductImageMutation();
 
     const [deleteProduct] = useDeleteProductMutation();
     const [editingProductId, setEditingProductId] = useState<string | null>(null);
 
     const { data: productDetails, isLoading: isFetchingDetails } = useGetProductByIdQuery(editingProductId!, { skip: !editingProductId });
-
+    console.log(productDetails)
     const productSchema = z.object({
-        name: z.string().min(2, "Name is required"),
+        name: z.string().min(2, "Name is required").refine((val) => !val.startsWith("#"), "Product name cannot start with '#'"),
         sku: z.string(),
         shortDescription: z.string().nullish(),
         description: z.string(),
         categoryId: z.string(),
-        brandId: z.string(),
+        brandId: z.string().min(1, "Brand is required"),
         price: z.coerce.number(),
         discountedPrice: z.coerce.number().nullish(),
         stockQuantity: z.number(),
@@ -84,6 +84,8 @@ export default function ProductsPage() {
         imageFile: z.any().optional(),
         detailImageFiles: z.any().optional()
     });
+
+
 
     const productFields: FieldConfig[] = [
         { name: "name", label: "Product Name", type: "text", placeholder: "e.g. T-Shirt" },
@@ -332,11 +334,12 @@ export default function ProductsPage() {
                 ]}
             />
             <DynamicEditPopup
+                key={editingProductId ?? "edit-popup"}
                 open={!!editingProductId}
                 onOpenChange={(open) => !open && setEditingProductId(null)}
                 title={productDetails?.name ? `Edit Product: ${productDetails.name}` : "Edit Product"}
                 isFetching={isFetchingDetails}
-                isLoading={isUpdating}
+                isLoading={isUpdating || isUploadingPrimary || isUploadingDetails}
                 schema={productSchema}
                 defaultValues={productDetails ? {
                     ...productDetails,
@@ -349,7 +352,10 @@ export default function ProductsPage() {
                 fields={productFields}
                 onSubmit={async (values) => {
                     if (!productDetails) return;
-                    await updateProduct({
+
+                    // We trigger the main update and any image uploads in parallel
+                    // This fixes the 10+ second delay caused by sequential awaiting.
+                    const updatePromise = updateProduct({
                         ...values,
                         id: productDetails.id,
                         discountedPrice: values.discountedPrice || values.price,
@@ -358,13 +364,15 @@ export default function ProductsPage() {
                         detailImageFiles: [],
                     }).unwrap();
 
+                    const uploads = [];
                     if (values.imageFile instanceof File) {
-                        await uploadPrimary({ id: productDetails.id, imageFile: values.imageFile }).unwrap();
+                        uploads.push(uploadPrimary({ id: productDetails.id, imageFile: values.imageFile }).unwrap());
+                    }
+                    if (values.detailImageFiles && values.detailImageFiles.length > 0) {
+                        uploads.push(uploadDetails({ id: productDetails.id, imageFiles: values.detailImageFiles }).unwrap());
                     }
 
-                    if (values.detailImageFiles && values.detailImageFiles.length > 0) {
-                        await uploadDetails({ id: productDetails.id, imageFiles: values.detailImageFiles }).unwrap();
-                    }
+                    await Promise.all([updatePromise, ...uploads]);
 
                     toast.success("Product updated!");
                 }}

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { DataTable } from "@/components/data-table/data-tables";
 import { createColumns } from "@/components/data-table/data-table-factory";
 import {
-    useGetUsersQuery,
+    useSearchUsersQuery,
     useGetUserRolesQuery,
     useUpdateUserMutation,
     useChangeUserRoleMutation,
@@ -28,7 +28,12 @@ export default function UsersPage() {
         pageSize: 10,
     });
 
-    const { data: users, isLoading: isFetchingUsers, error } = useGetUsersQuery();
+    const [searchTerm, setSearchTerm] = useState("");
+    const { data: usersData, isLoading: isFetchingUsers, error } = useSearchUsersQuery({
+        searchTerm,
+        page: pageIndex + 1,
+        pageSize: pageSize,
+    });
     const { data: roles } = useGetUserRolesQuery();
 
     const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
@@ -140,9 +145,13 @@ export default function UsersPage() {
             ) : (
                 <DataTable
                     columns={columns}
-                    data={users || []}
+                    data={usersData?.users || []}
+                    manualPagination={true}
+                    pageCount={usersData?.totalPages || 0}
                     pagination={{ pageIndex, pageSize }}
                     onPaginationChange={setPagination}
+                    filterMode="server"
+                    onFilterChange={setSearchTerm}
                     filterColumn="email"
                 />
             )}
@@ -189,11 +198,12 @@ export default function UsersPage() {
                             </SelectTrigger>
                             <SelectContent className="bg-popover text-popover-foreground rounded-lg border shadow-lg z-50">
                                 {roles?.map((role) => {
-                                    return(
-                                    <SelectItem key={role.value} value={role.value.toString()}>
-                                        {role.name}
-                                    </SelectItem>
-                                )})}
+                                    return (
+                                        <SelectItem key={role.value} value={role.value.toString()}>
+                                            {role.name}
+                                        </SelectItem>
+                                    )
+                                })}
                             </SelectContent>
                         </Select>
                     </div>

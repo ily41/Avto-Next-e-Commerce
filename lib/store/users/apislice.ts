@@ -13,6 +13,26 @@ export type User = {
     createdAt: string;
 };
 
+export type PaginatedResponse<T> = {
+    items: T[];
+    totalCount: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+};
+
+export type UserSearchParams = {
+    searchTerm?: string;
+    role?: number;
+    isActive?: boolean;
+    createdFrom?: string;
+    createdTo?: string;
+    sortBy?: string;
+    sortOrder?: string;
+    page?: number;
+    pageSize?: number;
+};
+
 export type UserRole = {
     value: number;
     name: string;
@@ -29,8 +49,11 @@ export type UpdateUserRequest = {
 
 export const usersApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
-        getUsers: builder.query<User[], void>({
-            query: () => "/Admin/users",
+        searchUsers: builder.query<PaginatedResponse<User>, UserSearchParams>({
+            query: (params) => ({
+                url: "/Admin/users/search",
+                params,
+            }),
             providesTags: ["User"],
         }),
         getUserRoles: builder.query<UserRole[], void>({
@@ -64,7 +87,7 @@ export const usersApiSlice = api.injectEndpoints({
 });
 
 export const {
-    useGetUsersQuery,
+    useSearchUsersQuery,
     useGetUserRolesQuery,
     useUpdateUserMutation,
     useChangeUserRoleMutation,

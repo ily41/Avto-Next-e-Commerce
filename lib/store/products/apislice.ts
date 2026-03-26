@@ -195,7 +195,7 @@ export const productApi = api.injectEndpoints({
         const formData = new FormData();
         formData.append("productData", JSON.stringify(data));
         if (primaryImageUrl instanceof File) {
-          formData.append("primaryImageUrl", primaryImageUrl);
+          formData.append("imageFile", primaryImageUrl);
         }
         if (detailImageFiles) {
           detailImageFiles.forEach((file) => {
@@ -242,8 +242,7 @@ export const productApi = api.injectEndpoints({
 
     deleteProductFilter: builder.mutation<void, { productId: string; filterId: string }>({
       query: ({ productId, filterId }) => ({
-        url: `Admin/ zA2DC44F5VG6BH76NJ8N8KL
-        Products/${productId}/filters/${filterId}`,
+        url: `Admin/Products/${productId}/filters/${filterId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Product"],

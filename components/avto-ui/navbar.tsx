@@ -64,7 +64,7 @@ export function Navbar() {
     const handleDropdownClose = () => setIsSearchFocused(false);
 
     return (
-        <header className="w-full bg-white flex flex-col items-center">
+        <header className="sticky top-0 z-50 w-full bg-white flex flex-col items-center shadow-sm">
             {/* 1. Mobile Search Overlay (Fullscreen when header icon is clicked) */}
             <MobileSearchOverlay 
                 isActive={isMobileSearchActive}
@@ -83,7 +83,7 @@ export function Navbar() {
             </div>
 
             {/* 4. Main Navbar Row */}
-            <div className="w-full flex justify-center py-4 lg:py-6 border-gray-100">
+            <div className="w-full flex justify-center py-3  border-gray-100">
                 <div className="w-full px-4 lg:w-[80.3%] lg:px-4 flex items-center justify-between gap-4">
                     <div className="flex gap-1 items-center">
                         {/* Mobile Side Menu Trigger */}

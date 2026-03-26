@@ -171,7 +171,7 @@ const HotDealsSlider = ({ products }: { products: Product[] }) => {
   };
 
   return (
-    <div className="flex flex-col border border-blue-600 rounded-lg px-1">
+    <div className="flex flex-col border border-blue-600 rounded-lg px-1 h-full">
       <div className="flex items-center justify-between mb-4 pb-2 px-2 pt-2 border-b border-gray-100">
         <h2 className="text-lg font-semibold text-[#1a1a1a]">Qaynar Təkliflər</h2>
         <div className="flex">
@@ -194,12 +194,12 @@ const HotDealsSlider = ({ products }: { products: Product[] }) => {
 
       <div
         ref={scrollRef}
-        className="flex overflow-hidden snap-x snap-mandatory flex-1"
+        className="flex overflow-hidden snap-x snap-mandatory max-h-[330px] flex-1"
       >
         {products.map((product) => (
           <div
             key={product.id}
-            className="w-full min-[400px]:w-1/2 md:w-full shrink-0 snap-start h-full"
+            className="w-full min-[400px]:w-1/2 md:w-full shrink-0 snap-start h-full flex flex-col justify-center"
           >
             <ProductCard product={product} noBorder={true} />
           </div>
@@ -217,9 +217,9 @@ interface MonthlyDealsClientProps {
 
 const MonthlyDealsClient = ({ hotDeals, featuredItems }: MonthlyDealsClientProps) => {
   return (
-    <div className="flex flex-col md:flex-row items-start gap-10">
+    <div className="flex flex-col md:flex-row items-stretch gap-10 ">
       {/* Hot Deals Column (~27%) */}
-      <div className="w-full md:w-[23%] shrink-0">
+      <div className="w-full md:w-[23%] shrink-0 h-full">
         <HotDealsSlider products={hotDeals} />
       </div>
 

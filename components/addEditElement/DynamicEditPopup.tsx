@@ -63,6 +63,7 @@ export function DynamicEditPopup({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open, defaultValues, form])
 
+
     useEffect(() => {
         return () => {
             Object.values(imagePreviews).forEach(val => {
@@ -76,6 +77,8 @@ export function DynamicEditPopup({
             })
         }
     }, [imagePreviews])
+    
+  
 
     async function handleSubmit(values: any) {
         try {
@@ -152,7 +155,7 @@ export function DynamicEditPopup({
                                                     break;
                                                 case "select":
                                                     content = (
-                                                        <Select onValueChange={field.onChange} value={field.value || ""}>
+                                                        <Select key={field.value || "empty"} onValueChange={field.onChange} value={field.value || ""}>
                                                             <SelectTrigger>
                                                                 <SelectValue placeholder={fieldConfig.placeholder || "Select an option"} />
                                                             </SelectTrigger>
