@@ -131,3 +131,62 @@ export type Brand = {
   createdAt: string;
   productCount: number;
 };
+
+// ---------------------------------------------------------------------------
+// Statistics
+// ---------------------------------------------------------------------------
+
+export type DashboardStatistics = {
+  revenue: {
+    today: number;
+    thisMonth: number;
+    total: number;
+    averageOrderValue: number;
+  };
+  orders: {
+    total: number;
+    pending: number;
+    confirmed: number;
+    delivered: number;
+  };
+  customers: {
+    total: number;
+    active: number;
+  };
+  products: {
+    total: number;
+    lowStock: number;
+    topSellingProducts: {
+      id: string;
+      name: string;
+      soldCount: number;
+    }[];
+  };
+  growth: {
+    revenuePercentage: number;
+    ordersPercentage: number;
+    customersPercentage: number;
+  };
+  trends: {
+    date: string;
+    amount: number;
+  }[];
+};
+
+// ---------------------------------------------------------------------------
+// Settings & Configuration
+// ---------------------------------------------------------------------------
+
+export type CartMinimumAmountSetting = {
+  minimumAmount: number;
+};
+
+export type LoyaltySettings = {
+  bonusPercentage: number;
+};
+
+export type InstallmentConfiguration = {
+  isEnabled: boolean;
+  minimumAmount: number;
+};
+

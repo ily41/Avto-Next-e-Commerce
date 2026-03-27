@@ -152,7 +152,7 @@ const data = {
   navSecondary: [
     {
       title: "Settings",
-      url: "#",
+      url: "/dashboard/settings",
       icon: IconSettings,
     },
     {
@@ -174,7 +174,7 @@ const data = {
     },
     {
       name: "Loyalty",
-      url: "/dashboard/loyalty",
+      url: "/dashboard/settings",
       icon: IconGift,
     }
   ],
@@ -199,7 +199,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
-              <a href="#">
+              <a href="/">
                 <IconInnerShadowTop className="size-5!" />
                 <span className="text-base font-semibold">AvtoStore</span>
               </a>

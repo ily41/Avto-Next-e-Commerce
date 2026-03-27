@@ -134,7 +134,18 @@ export function DynamicAddPopup({
                                                 )
                                                 break;
                                             case "number":
-                                                content = <Input type="number" placeholder={fieldConfig.placeholder} {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} value={field.value || 0} />
+                                                content = (
+                                                    <Input
+                                                        type="number"
+                                                        placeholder={fieldConfig.placeholder || "0"}
+                                                        {...field}
+                                                        onChange={e => {
+                                                            const val = e.target.value;
+                                                            field.onChange(val === "" ? "" : parseFloat(val));
+                                                        }}
+                                                        value={field.value ?? ""}
+                                                    />
+                                                )
                                                 break;
                                             case "textarea":
                                                 content = <Textarea placeholder={fieldConfig.placeholder} {...field} value={field.value || ""} />

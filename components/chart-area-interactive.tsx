@@ -140,7 +140,19 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function ChartAreaInteractive() {
+export function ChartAreaInteractive({ 
+  data = chartData, 
+  title = "Total Visitors",
+  config = chartConfig,
+  dataKey = "desktop",
+  showMobile = true
+}: { 
+  data?: any[], 
+  title?: string,
+  config?: ChartConfig,
+  dataKey?: string,
+  showMobile?: boolean
+}) {
   const isMobile = useIsMobile()
   const [timeRange, setTimeRange] = React.useState("90d")
 
@@ -150,9 +162,9 @@ export function ChartAreaInteractive() {
     }
   }, [isMobile])
 
-  const filteredData = chartData.filter((item) => {
+  const filteredData = data.filter((item) => {
     const date = new Date(item.date)
-    const referenceDate = new Date("2024-06-30")
+    const referenceDate = new Date()
     let daysToSubtract = 90
     if (timeRange === "30d") {
       daysToSubtract = 30
@@ -167,12 +179,12 @@ export function ChartAreaInteractive() {
   return (
     <Card className="@container/card">
       <CardHeader>
-        <CardTitle>Total Visitors</CardTitle>
+        <CardTitle>{title}</CardTitle>
         <CardDescription>
           <span className="hidden @[540px]/card:block">
-            Total for the last 3 months
+            Status for the selected period
           </span>
-          <span className="@[540px]/card:hidden">Last 3 months</span>
+          <span className="@[540px]/card:hidden">History</span>
         </CardDescription>
         <CardAction>
           <ToggleGroup
@@ -210,20 +222,20 @@ export function ChartAreaInteractive() {
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer
-          config={chartConfig}
+          config={config}
           className="aspect-auto h-[250px] w-full"
         >
           <AreaChart data={filteredData}>
             <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="fillArea" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
-                  stopColor="var(--color-desktop)"
+                  stopColor={`var(--color-${dataKey})`}
                   stopOpacity={1.0}
                 />
                 <stop
                   offset="95%"
-                  stopColor="var(--color-desktop)"
+                  stopColor={`var(--color-${dataKey})`}
                   stopOpacity={0.1}
                 />
               </linearGradient>
@@ -270,19 +282,21 @@ export function ChartAreaInteractive() {
               }
             />
             <Area
-              dataKey="mobile"
+              dataKey={dataKey}
               type="natural"
-              fill="url(#fillMobile)"
-              stroke="var(--color-mobile)"
+              fill="url(#fillArea)"
+              stroke={`var(--color-${dataKey})`}
               stackId="a"
             />
-            <Area
-              dataKey="desktop"
-              type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-desktop)"
-              stackId="a"
-            />
+            {showMobile && (
+              <Area
+                dataKey="mobile"
+                type="natural"
+                fill="url(#fillMobile)"
+                stroke="var(--color-mobile)"
+                stackId="a"
+              />
+            )}
           </AreaChart>
         </ChartContainer>
       </CardContent>

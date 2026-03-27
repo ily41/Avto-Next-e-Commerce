@@ -95,6 +95,11 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
           <span>İndi al</span>
         </button>
 
+        <button className="w-full h-12 bg-white border-2 border-[#E7E7E7] hover:border-black hover:bg-black hover:text-white text-black font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer">
+          <IconCreditCard size={20} className="transition-transform group-hover:scale-110" />
+          <span>Hissəli ödəniş</span>
+        </button>
+
         {/* Wishlist & Share */}
         <div className="flex items-center gap-8 justify-center mt-2 border-t border-gray-50 pt-4">
           <button
