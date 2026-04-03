@@ -12,7 +12,7 @@
 
 # testing
 /coverage
-
+/components.zip
 # next.js
 /.next/
 /out/
