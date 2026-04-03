@@ -50,19 +50,20 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
             {/* Contact Info */}
             <div className="lg:pr-8">
-              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">Contact Us</h4>
+              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">BİZİMLƏ ƏLAQƏ</h4>
               <div className="space-y-6">
                 <div>
-                  <a href="tel:+00123456789" className="text-xl lg:text-2xl font-bold text-gray-900 hover:text-[#007aff] transition-colors leading-none">
-                    (+00) 123-456-789
+                  <a href="tel:+994500000000" className="text-xl lg:text-2xl font-bold text-gray-900 hover:text-[#007aff] transition-colors leading-none">
+                    (+994) 50 000 00 00
                   </a>
                   <p className="text-gray-500 mt-4 leading-relaxed font-medium">
-                    99 New Theme St. XY, USA 12345, Beside the Sun point land.
+                    Bakı şəhəri, Azərbaycan. <br />
+                    Bütün avto ehtiyat hissələrinin online satışı.
                   </p>
                 </div>
                 <div>
-                  <a href="mailto:demo@example.com" className="text-gray-900 font-bold border-b-2 border-gray-900 pb-1 hover:text-[#007aff] hover:border-[#007aff] transition-colors">
-                    demo@example.com
+                  <a href="mailto:info@avto027.az" className="text-gray-900 font-bold border-b-2 border-gray-900 pb-1 hover:text-[#007aff] hover:border-[#007aff] transition-colors">
+                    info@avto027.az
                   </a>
                 </div>
                 <div className="flex items-center gap-4 pt-4">
@@ -87,49 +88,49 @@ export default function Footer() {
 
             {/* Footer Column 2 */}
             <div>
-              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">Get to know Us</h4>
+              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">BİZİ TANIYIN</h4>
               <ul className="space-y-4">
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">About Us</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Term & Policy</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Careers</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">News & Blog</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Contact Us</Link></li>
+                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Haqqımızda</Link></li>
+                <li><Link href="/privacy-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Məxfilik Siyasəti</Link></li>
+                <li><Link href="/terms-and-conditions" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">İstifadə Şərtləri</Link></li>
+                <li><Link href="/refund-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Geri Qaytarılma</Link></li>
+                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Bizimlə Əlaqə</Link></li>
               </ul>
             </div>
 
             {/* Footer Column 3 */}
             <div>
-              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">Information</h4>
+              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">MƏLUMAT</h4>
               <ul className="space-y-4">
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Help Center</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Feedback</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">FAQs</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Size Guide</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Payments</Link></li>
+                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Kömək Mərkəzi</Link></li>
+                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Rəylər</Link></li>
+                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">FAQ</Link></li>
+                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Ölçü Cədvəli</Link></li>
+                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Ödəniş Üsulları</Link></li>
               </ul>
             </div>
 
             {/* Footer Column 4 */}
             <div>
-              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">Orders & Returns</h4>
+              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">SİFARİŞLƏR</h4>
               <ul className="space-y-4">
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Track Order</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Delivery</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Services</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Returns</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Exchange</Link></li>
+                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Sifarişi İzlə</Link></li>
+                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Çatdırılma</Link></li>
+                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Xidmətlər</Link></li>
+                <li><Link href="/refund-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Geri Qaytarma</Link></li>
+                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Dəyişdirilmə</Link></li>
               </ul>
             </div>
 
             {/* Footer Column 5 */}
             <div>
-              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">Our Store</h4>
+              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">MAĞAZAMIZ</h4>
               <ul className="space-y-4">
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Affiliate</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Best Seller</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">New Products</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">On Sale</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Featured</Link></li>
+                <li><Link href="/shop" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Bütün Məhsullar</Link></li>
+                <li><Link href="/shop" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Ən Çox Satılanlar</Link></li>
+                <li><Link href="/shop" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Yeni Gələnlər</Link></li>
+                <li><Link href="/shop" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Endirimlər</Link></li>
+                <li><Link href="/shop" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Seçilmişlər</Link></li>
               </ul>
             </div>
           </div>
