@@ -19,7 +19,7 @@ export default function ProfilePage() {
   const { data: orders, isLoading: isOrdersLoading } = useGetMyOrdersQuery(undefined, { skip: !isAuth });
 
   const activeOrdersCount = orders?.filter(o => o.status !== "Completed" && o.status !== "Cancelled").length || 0;
-  const wishlistCount = favsData || 0;
+  const wishlistCount = favsData?.count ?? 0;
 
   return (
     <div className="space-y-8">

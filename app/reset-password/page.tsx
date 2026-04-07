@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useResetPasswordMutation } from "@/lib/store/auth/apislice";
 import { toast } from "sonner";
 import { IconEye, IconEyeOff, IconCheck } from "@tabler/icons-react";
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token");
@@ -91,5 +91,13 @@ export default function ResetPasswordPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div>Yüklənir...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }
