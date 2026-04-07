@@ -60,10 +60,10 @@ export default function UsersPage() {
                 role: parseInt(selectedRole),
             }).unwrap();
 
-            toast.success("Role updated successfully!");
+            toast.success("Röl uğurla yenilendi!");
             setRoleChangeUser(null);
         } catch (err: any) {
-            toast.error(err?.data?.message || "Failed to change role");
+            toast.error(err?.data?.message || "Röl dəyişdirilə bilmədi");
         }
     };
 
@@ -75,39 +75,39 @@ export default function UsersPage() {
     });
 
     const editFields: FieldConfig[] = [
-        { name: "firstName", label: "First Name", type: "text" },
-        { name: "lastName", label: "Last Name", type: "text" },
-        { name: "phoneNumber", label: "Phone Number", type: "text" },
-        { name: "isActive", label: "Is Active", type: "switch" },
+        { name: "firstName", label: "Ad", type: "text" },
+        { name: "lastName", label: "Soyad", type: "text" },
+        { name: "phoneNumber", label: "Telefon Nömrəsi", type: "text" },
+        { name: "isActive", label: "Aktivdir", type: "switch" },
     ];
 
     const columns = useMemo(() => createColumns<User>([
-        { key: "firstName", label: "First Name", sortable: true },
-        { key: "lastName", label: "Last Name", sortable: true },
-        { key: "email", label: "Email", sortable: true },
-        { key: "phoneNumber", label: "Phone" },
-        { key: "roleName", label: "Role" },
+        { key: "firstName", label: "Ad", sortable: true },
+        { key: "lastName", label: "Soyad", sortable: true },
+        { key: "email", label: "E-poçt", sortable: true },
+        { key: "phoneNumber", label: "Telefon" },
+        { key: "roleName", label: "Röl" },
         {
             key: "isActive",
             label: "Status",
             render: (value) => (
                 <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${value ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
-                    {value ? "Active" : "Inactive"}
+                    {value ? "Aktiv" : "Qeyri-aktiv"}
                 </div>
             )
         },
         {
             key: "createdAt",
-            label: "Registered At",
+            label: "Qeydiyyat Tarixi",
             render: (value) => value ? new Date(value).toLocaleDateString() : "-"
         }
     ],
         async (item) => {
             try {
                 await deleteUser(item.id).unwrap();
-                toast.success("User deleted successfully.");
+                toast.success("İstifadəçi uğurla silindi.");
             } catch (err) {
-                toast.error("Failed to delete user.");
+                toast.error("İstifadəçi silinə bilmədi.");
             }
         },
         (item) => {
@@ -115,7 +115,7 @@ export default function UsersPage() {
         },
         (item) => (
             <DropdownMenuItem onClick={() => handleRoleChangeOpen(item)}>
-                Change Role
+                Rölü Dəyişdər
             </DropdownMenuItem>
         )
     ), [deleteUser]);
@@ -123,7 +123,7 @@ export default function UsersPage() {
     if (error) {
         return (
             <div className="flex flex-col items-center justify-center p-10 h-full">
-                <p className="text-red-500 font-bold mb-4">Failed to load users.</p>
+                <p className="text-red-500 font-bold mb-4">İstifadəçilər yüklənilə bilmədi.</p>
             </div>
         );
     }
@@ -131,7 +131,7 @@ export default function UsersPage() {
     return (
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
             <div className="flex justify-between items-center">
-                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Users</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl font-bold">İstifadəçilər</h1>
                 {/* No Add Popup here as requested */}
             </div>
 
@@ -139,7 +139,7 @@ export default function UsersPage() {
                 <div className="flex flex-col items-center justify-center min-h-[400px]">
                     <div className="flex flex-col items-center gap-2">
                         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-                        <p className="text-muted-foreground animate-pulse">Loading users...</p>
+                        <p className="text-muted-foreground animate-pulse">İstifadəçilər yüklənir...</p>
                     </div>
                 </div>
             ) : (
@@ -160,7 +160,7 @@ export default function UsersPage() {
                 <DynamicEditPopup
                     open={!!editingUser}
                     onOpenChange={(open) => !open && setEditingUser(null)}
-                    title={`Edit User: ${editingUser.firstName} ${editingUser.lastName}`}
+                    title={`İstifadəçini Düzəlt: ${editingUser.firstName} ${editingUser.lastName}`}
                     schema={editSchema}
                     defaultValues={{
                         firstName: editingUser.firstName,
@@ -177,9 +177,9 @@ export default function UsersPage() {
                             lastName: values.lastName,
                             phoneNumber: values.phoneNumber,
                             isActive: values.isActive,
-                            role: editingUser.role, // Pass original role since it hasn't changed here
+                            role: editingUser.role,
                         }).unwrap();
-                        toast.success("User updated successfully!");
+                        toast.success("İstifadəçi uğurla yenilendi!");
                     }}
                 />
             )}
@@ -188,13 +188,13 @@ export default function UsersPage() {
             <Dialog open={!!roleChangeUser} onOpenChange={(open) => !open && setRoleChangeUser(null)}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Change Role for {roleChangeUser?.firstName} {roleChangeUser?.lastName}</DialogTitle>
+                        <DialogTitle>Rölü Dəyişdir: {roleChangeUser?.firstName} {roleChangeUser?.lastName}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4 py-4 flex flex-col items-start w-full">
-                        <Label>Select New Role</Label>
+                        <Label>Yeni Röl Seçin</Label>
                         <Select value={selectedRole} onValueChange={setSelectedRole}>
                             <SelectTrigger className="w-full text-left bg-background text-foreground border-border shadow-sm">
-                                <SelectValue placeholder="Select a role" />
+                                <SelectValue placeholder="Röl seçin" />
                             </SelectTrigger>
                             <SelectContent className="bg-popover text-popover-foreground rounded-lg border shadow-lg z-50">
                                 {roles?.map((role) => {
@@ -209,14 +209,14 @@ export default function UsersPage() {
                     </div>
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setRoleChangeUser(null)}>
-                            Cancel
+                            Ləğv Et
                         </Button>
                         <Button
                             onClick={handleSaveRole}
                             disabled={isChangingRole}
                             className="bg-primary hover:bg-primary/90 text-primary-foreground min-w-[100px]"
                         >
-                            {isChangingRole ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save"}
+                            {isChangingRole ? <Loader2 className="w-4 h-4 animate-spin" /> : "Saxla"}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

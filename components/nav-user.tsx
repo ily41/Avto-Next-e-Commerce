@@ -51,12 +51,12 @@ export function NavUser({
       await logout().unwrap()
       Cookies.remove("token")
       router.push("/")
-      toast.success("Logged out successfully")
+      toast.success("Uğurla çıxış edildi")
     } catch (error) {
       // Even if server call fails, we should clear the token and redirect
       Cookies.remove("token")
       router.push("/")
-      toast.error("Logout performed with errors")
+      toast.error("Çıxış mərhələsində xəta baş verdi")
     }
   }
 
@@ -106,7 +106,7 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <IconUserCircle />
-                Account
+                Hesab
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconCreditCard />
@@ -114,13 +114,13 @@ export function NavUser({
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconNotification />
-                Notifications
+                Bildirişlər
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout} disabled={isLoading}>
               <IconLogout />
-              {isLoading ? "Logging out..." : "Log out"}
+              {isLoading ? "Çıxış edilir..." : "Sistemdən Çıx"}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

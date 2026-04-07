@@ -43,19 +43,19 @@ export default function PromoCodesPage() {
     });
 
     const promoCodeAddFields: FieldConfig[] = [
-        { name: "code", label: "Promo Code", type: "text", placeholder: "e.g. SUMMER2026" },
-        { name: "discountPercentage", label: "Discount %", type: "number", placeholder: "0 - 100" },
-        { name: "expirationDate", label: "Expiration Date", type: "date" },
-        { name: "usageLimit", label: "Usage Limit", type: "number", placeholder: "0 for unlimited" },
-        { name: "isActive", label: "Active", type: "switch" },
+        { name: "code", label: "Promokod", type: "text", placeholder: "məsələn: SUMMER2026" },
+        { name: "discountPercentage", label: "Endirim %", type: "number", placeholder: "0 - 100" },
+        { name: "expirationDate", label: "Bitmə Tarixi", type: "date" },
+        { name: "usageLimit", label: "İstifadə Limiti", type: "number", placeholder: "0 - limitsiz" },
+        { name: "isActive", label: "Aktivdir", type: "switch" },
     ];
 
     const promoCodeEditFields: FieldConfig[] = [
-        { name: "code", label: "Promo Code", type: "text", placeholder: "e.g. SUMMER2026" },
-        { name: "discountPercentage", label: "Discount %", type: "number", placeholder: "0 - 100" },
-        { name: "expirationDate", label: "Expiration Date", type: "date" },
-        { name: "usageLimit", label: "Usage Limit", type: "number", placeholder: "0 for unlimited" },
-        { name: "isActive", label: "Active", type: "switch" },
+        { name: "code", label: "Promokod", type: "text", placeholder: "məsələn: SUMMER2026" },
+        { name: "discountPercentage", label: "Endirim %", type: "number", placeholder: "0 - 100" },
+        { name: "expirationDate", label: "Bitmə Tarixi", type: "date" },
+        { name: "usageLimit", label: "İstifadə Limiti", type: "number", placeholder: "0 - limitsiz" },
+        { name: "isActive", label: "Aktivdir", type: "switch" },
     ];
 
     const columns = useMemo<ColumnDef<PromoCode>[]>(() => [
@@ -70,7 +70,7 @@ export default function PromoCodesPage() {
         {
             id: "discountPercentage",
             accessorKey: "discountPercentage",
-            header: "Discount %",
+            header: "Endirim %",
             cell: ({ row }) => (
                 <div className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-800">
                     {row.original.discountPercentage}%
@@ -80,7 +80,7 @@ export default function PromoCodesPage() {
         {
             id: "expirationDate",
             accessorKey: "expirationDate",
-            header: "Expiration Date",
+            header: "Bitmə Tarixi",
             cell: ({ row }) => {
                 const date = new Date(row.original.expirationDate);
                 const isExpired = date < new Date();
@@ -98,9 +98,9 @@ export default function PromoCodesPage() {
         {
             id: "usageLimit",
             accessorKey: "usageLimit",
-            header: "Usage Limit",
+            header: "İstifadə Limiti",
             cell: ({ row }) => (
-                <span>{row.original.usageLimit === 0 ? "Unlimited" : row.original.usageLimit}</span>
+                <span>{row.original.usageLimit === 0 ? "Limitsiz" : row.original.usageLimit}</span>
             ),
         },
         {
@@ -114,13 +114,13 @@ export default function PromoCodesPage() {
                         : "bg-red-100 text-red-800"
                         }`}
                 >
-                    {row.original.isActive ? "Active" : "Inactive"}
+                    {row.original.isActive ? "Aktiv" : "Qeyri-aktiv"}
                 </div>
             ),
         },
         {
             id: "actions",
-            header: "Actions",
+            header: "Fəaliyyətlər",
             cell: ({ row }) => (
                 <div className="flex items-center gap-2">
                     <Button
@@ -129,18 +129,18 @@ export default function PromoCodesPage() {
                         onClick={() => setEditingPromoCode(row.original)}
                     >
                         <Pencil className="h-4 w-4 mr-2" />
-                        Edit
+                        Düzəlt
                     </Button>
                     <Button
                         variant="destructive"
                         size="sm"
                         onClick={async () => {
-                            if (confirm("Delete this promo code?")) {
+                            if (confirm("Bu promokodu silmək istədiyinizə əminsiniz?")) {
                                 try {
                                     await deletePromoCode(row.original.id).unwrap();
-                                    toast.success("Promo code deleted!");
+                                    toast.success("Promokod silindi!");
                                 } catch {
-                                    toast.error("Failed to delete promo code");
+                                    toast.error("Promokod silinə bilmədi");
                                 }
                             }
                         }}
@@ -155,7 +155,7 @@ export default function PromoCodesPage() {
     if (error) {
         return (
             <div className="flex items-center justify-center h-full">
-                <p className="text-red-500 font-bold">Failed to load promo codes.</p>
+                <p className="text-red-500 font-bold">Promokodlar yüklənilə bilmədi.</p>
             </div>
         );
     }
@@ -163,10 +163,10 @@ export default function PromoCodesPage() {
     return (
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
             <div className="flex justify-between items-center">
-                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Promo Codes</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Promokodlar</h1>
                 <DynamicAddPopup
-                    title="Add Promo Code"
-                    triggerText="Add Promo Code"
+                    title="Promokod Əlavə Et"
+                    triggerText="Promokod Əlavə Et"
                     schema={promoCodeSchema}
                     defaultValues={{
                         code: "",
@@ -186,7 +186,7 @@ export default function PromoCodesPage() {
                             usageLimit: Number(values.usageLimit),
                         };
                         await createPromoCode(payload).unwrap();
-                        toast.success("Promo code created!");
+                        toast.success("Promokod yaradıldı!");
                     }}
                 />
             </div>
@@ -204,7 +204,7 @@ export default function PromoCodesPage() {
                 <DynamicEditPopup
                     open={!!editingPromoCode}
                     onOpenChange={(open) => !open && setEditingPromoCode(null)}
-                    title={`Edit Promo Code: ${editingPromoCode.code}`}
+                    title={`Promokodu Düzəlt: ${editingPromoCode.code}`}
                     schema={promoCodeSchema}
                     defaultValues={{
                         code: editingPromoCode.code,
@@ -229,7 +229,7 @@ export default function PromoCodesPage() {
                             id: editingPromoCode.id,
                             data: payload,
                         }).unwrap();
-                        toast.success("Promo code updated!");
+                        toast.success("Promokod yenilendi!");
                     }}
                 />
             )}

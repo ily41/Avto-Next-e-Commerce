@@ -31,21 +31,21 @@ export default function Page() {
     });
 
     const categoryFields: FieldConfig[] = [
-        { name: "name", label: "Category Name", type: "text", placeholder: "e.g. Shirts" },
-        { name: "description", label: "Description", type: "textarea", placeholder: "Category description..." },
-        { name: "sortOrder", label: "Sort Order", type: "number" },
+        { name: "name", label: "Kateqoriyanın Adı", type: "text", placeholder: "məsələn: Köynəklər" },
+        { name: "description", label: "Təsvir", type: "textarea", placeholder: "Kateqoriya təsviri..." },
+        { name: "sortOrder", label: "Sıralama", type: "number" },
         {
             name: "parentCategoryId",
-            label: "Parent Category",
+            label: "Ana Kateqoriya",
             type: "combobox",
-            placeholder: "Select Parent Category",
+            placeholder: "Ana Kateqoriya Seçin",
             options: flatCategories.map(cat => ({
                 label: cat.displayName,
                 value: cat.id
             }))
         },
-        { name: "isActive", label: "Is Active", type: "switch" },
-        { name: "imageFile", label: "Category Image (Optional)", type: "file" }
+        { name: "isActive", label: "Aktivdir", type: "switch" },
+        { name: "imageFile", label: "Kateqoriya Şəkli (İxtiyari)", type: "file" }
     ];
 
     const categoryColumns = useMemo(() => createColumns<Category>([
@@ -68,7 +68,7 @@ export default function Page() {
         },
         {
             key: "name",
-            label: "Category Name",
+            label: "Kateqoriyanın Adı",
             sortable: true,
             isExpandable: true
         },
@@ -78,18 +78,18 @@ export default function Page() {
             label: "Status",
             render: (value) => (
                 <span className={`px-2 py-1 rounded text-xs ${value ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                    {value ? "Active" : "Inactive"}
+                    {value ? "Aktiv" : "Qeyri-aktiv"}
                 </span>
             )
         },
-        { key: "sortOrder", label: "Sort Order", sortable: true },
+        { key: "sortOrder", label: "Sıralama", sortable: true },
     ],
         async (item) => {
             try {
                 await deleteCategory(item.id).unwrap();
-                toast.success(`Category "${item.name}" deleted successfully.`);
+                toast.success(`"${item.name}" kateqoriyası uğurla silindi.`);
             } catch (err) {
-                toast.error("Failed to delete the category. Please try again.");
+                toast.error("Kateqoriya silinə bilmədi. Yenidən cəhd edin.");
             }
         },
         (item) => {
@@ -99,11 +99,11 @@ export default function Page() {
     if (isLoading) {
         return (
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
-                <h1 className="text-base md:text-xl lg:text-2xl">Categories</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl">Kateqoriyalar</h1>
                 <div className="flex flex-1 items-center justify-center min-h-[400px]">
                     <div className="flex flex-col items-center gap-2">
                         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-                        <p className="text-muted-foreground animate-pulse">Loading categories...</p>
+                        <p className="text-muted-foreground animate-pulse">Kateqoriyalar yüklənir...</p>
                     </div>
                 </div>
             </div>
@@ -113,10 +113,10 @@ export default function Page() {
     if (error) {
         return (
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
-                <h1 className="text-base md:text-xl lg:text-2xl">Categories</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl">Kateqoriyalar</h1>
                 <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-6 text-destructive">
-                    <p className="font-semibold">Error Loading Categories</p>
-                    <p className="text-sm opacity-90">Failed to fetch data from the server. Please check your connection or try again later.</p>
+                    <p className="font-semibold">Kateqoriyalar Yüklənilə Bilmədi</p>
+                    <p className="text-sm opacity-90">Serverdən məlumat alınması mümkün olmadı. Birlaşmanızı yoxlayın və ya bir az sonra yenidən cəhd edin.</p>
                 </div>
             </div>
         );
@@ -125,17 +125,17 @@ export default function Page() {
     return (
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
             <div className="flex justify-between items-center">
-                <h1 className="text-base md:text-xl lg:text-2xl">Categories</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl">Kateqoriyalar</h1>
                 <DynamicAddPopup
-                    title="Add Category"
-                    triggerText="Add Category"
+                    title="Kateqoriya Əlavə Et"
+                    triggerText="Kateqoriya Əlavə Et"
                     schema={categorySchema}
                     defaultValues={{ name: "", description: "", sortOrder: 1, parentCategoryId: null, imageFile: null, isActive: true }}
                     fields={categoryFields}
                     isLoading={isCreating}
                     onSubmit={async (values) => {
                         await createCategory(values).unwrap();
-                        toast.success("Category added!");
+                        toast.success("Kateqoriya əlavə edildi!");
                     }}
                 />
             </div>
@@ -148,7 +148,7 @@ export default function Page() {
             <DynamicEditPopup
                 open={!!editingCategory}
                 onOpenChange={(open) => !open && setEditingCategory(null)}
-                title={`Edit Category: ${editingCategory?.name}`}
+                title={`Kateqoriyanı Düzəlt: ${editingCategory?.name}`}
                 schema={categorySchema}
                 defaultValues={{
                     ...editingCategory,
@@ -163,7 +163,7 @@ export default function Page() {
                 onSubmit={async (values) => {
                     if (!editingCategory) return;
                     await updateCategory({ ...values, id: editingCategory.id }).unwrap();
-                    toast.success("Category updated!");
+                    toast.success("Kateqoriya yenilendi!");
                 }}
             />
         </div>

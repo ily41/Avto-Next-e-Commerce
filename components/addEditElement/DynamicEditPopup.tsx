@@ -87,7 +87,7 @@ export function DynamicEditPopup({
             setImagePreviews({})
             onOpenChange(false)
         } catch (err: any) {
-            const msg = err?.data ?? err?.message ?? "Something went wrong";
+            const msg = err?.data ?? err?.message ?? "Xəta baş verdi";
             toast.error(typeof msg === "string" ? msg : JSON.stringify(msg));
             console.error("Popup update error", err)
         }
@@ -104,14 +104,14 @@ export function DynamicEditPopup({
             <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl">
                 <DialogHeader>
                     <DialogTitle className="text-2xl font-black italic uppercase tracking-tighter">
-                        {isFetching ? "Syncing Data..." : title}
+                        {isFetching ? "Məlumatlar Sinxronlaşdırılır..." : title}
                     </DialogTitle>
                 </DialogHeader>
 
                 {isFetching ? (
                     <div className="flex flex-col items-center justify-center py-20 animate-pulse">
                         <Loader2 className="h-12 w-12 text-primary animate-spin mb-4" />
-                        <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Retrieving Details...</p>
+                        <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Məlumatlar Yüklənir...</p>
                     </div>
                 ) : (
                     <Form {...form}>
@@ -168,7 +168,7 @@ export function DynamicEditPopup({
                                                     content = (
                                                         <Select key={field.value || "empty"} onValueChange={field.onChange} value={field.value || ""}>
                                                             <SelectTrigger>
-                                                                <SelectValue placeholder={fieldConfig.placeholder || "Select an option"} />
+                                                                <SelectValue placeholder={fieldConfig.placeholder || "Seçin"} />
                                                             </SelectTrigger>
                                                             <SelectContent>
                                                                 {fieldConfig.options?.map(opt => (
@@ -185,16 +185,16 @@ export function DynamicEditPopup({
                                                             <PopoverTrigger asChild>
                                                                 <FormControl>
                                                                     <Button variant="outline" role="combobox" className={cn("w-full justify-between font-normal", !field.value && "text-muted-foreground")}>
-                                                                        {field.value ? selectedOpt?.label : (fieldConfig.placeholder || "Select option")}
+                                                                        {field.value ? selectedOpt?.label : (fieldConfig.placeholder || "Seçin")}
                                                                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                                     </Button>
                                                                 </FormControl>
                                                             </PopoverTrigger>
                                                             <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
                                                                 <Command>
-                                                                    <CommandInput placeholder="Search..." />
+                                                                    <CommandInput placeholder="Axtar..." />
                                                                     <CommandList>
-                                                                        <CommandEmpty>No results found.</CommandEmpty>
+                                                                        <CommandEmpty>Nəticə tapılmadı.</CommandEmpty>
                                                                         <CommandGroup>
                                                                             {fieldConfig.options?.map((opt) => (
                                                                                 <CommandItem key={opt.value} value={opt.label} onSelect={() => field.onChange(opt.value)}>
@@ -273,9 +273,9 @@ export function DynamicEditPopup({
                             </div>
                             <Button type="submit" className="w-full h-12 text-md font-bold rounded-2xl shadow-lg shadow-primary/20 transition-all hover:scale-[1.01]" disabled={isLoading}>
                                 {isLoading ? (
-                                    <span className="flex items-center gap-2"><Loader2 className="h-4 w-4 animate-spin" /> Synchronizing Changes...</span>
+                                    <span className="flex items-center gap-2"><Loader2 className="h-4 w-4 animate-spin" /> Dəyişikliklər Saxlanılır...</span>
                                 ) : (
-                                    "Save Changes"
+                                    "Dəyişiklikləri Saxla"
                                 )}
                             </Button>
                         </form>

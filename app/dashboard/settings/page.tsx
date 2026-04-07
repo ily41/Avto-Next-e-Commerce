@@ -53,27 +53,27 @@ export default function SettingsPage() {
     const handleSaveCartMin = async () => {
         try {
             await updateCartMin({ minimumAmount: cartMin }).unwrap()
-            toast.success("Cart minimum amount updated successfully")
+            toast.success("Minimum səbət məbləği uğurla yenilendi")
         } catch (e) {
-            toast.error("Failed to update cart minimum amount")
+            toast.error("Minimum səbət məbləği yenilənə bilmədi")
         }
     }
 
     const handleSaveLoyalty = async () => {
         try {
             await updateLoyalty({ bonusPercentage: loyaltyPercent }).unwrap()
-            toast.success("Loyalty settings updated successfully")
+            toast.success("Loyallıq parametrləri uğurla yenilendi")
         } catch (e) {
-            toast.error("Failed to update loyalty settings")
+            toast.error("Loyallıq parametrləri yenilənə bilmədi")
         }
     }
 
     const handleSaveInstallment = async () => {
         try {
             await updateInstallment({ isEnabled: installmentEnabled, minimumAmount: installmentMin }).unwrap()
-            toast.success("Installment configuration updated successfully")
+            toast.success("Hissəli ödəniş konfiqurasiyası uğurla yenilendi")
         } catch (e) {
-            toast.error("Failed to update installment configuration")
+            toast.error("Hissəli ödəniş konfiqurasiyası yenilənə bilmədi")
         }
     }
 
@@ -93,11 +93,11 @@ export default function SettingsPage() {
                     className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                     <IconArrowLeft className="h-4 w-4" />
-                    Back to Dashboard
+                    İdarə Panelinə Qayıt
                 </Link>
                 <div className="space-y-1">
-                    <h1 className="text-4xl font-extrabold tracking-tight">Store Settings</h1>
-                    <p className="text-muted-foreground text-lg">Configure global business rules and customer incentives.</p>
+                    <h1 className="text-4xl font-extrabold tracking-tight">Mağaza Parametrləri</h1>
+                    <p className="text-muted-foreground text-lg">Qlobal biznes qaydalarını və müştəri həvəsləndirmələrini konfiqurasiya edin.</p>
                 </div>
             </div>
 
@@ -110,14 +110,14 @@ export default function SettingsPage() {
                                 <IconShoppingCart className="h-6 w-6 text-primary" />
                             </div>
                             <div>
-                                <CardTitle className="text-xl">Checkout Threshold</CardTitle>
-                                <CardDescription>Minimum order amounts</CardDescription>
+                                <CardTitle className="text-xl">Ödəniş Həddı</CardTitle>
+                                <CardDescription>Minimum sifariş məbləğləri</CardDescription>
                             </div>
                         </div>
                     </CardHeader>
                     <CardContent className="space-y-6 flex-1">
                         <div className="space-y-3">
-                            <Label htmlFor="cart-min" className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Minimum Order Amount ($)</Label>
+                            <Label htmlFor="cart-min" className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Minimum Sifariş Məbləği (AZN)</Label>
                             <div className="relative">
                                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">$</span>
                                 <Input 
@@ -129,7 +129,7 @@ export default function SettingsPage() {
                                 />
                             </div>
                             <p className="text-sm text-muted-foreground bg-secondary/30 p-3 rounded-md italic">
-                                Prevent checkout for orders less than this value to ensure profitability.
+                                Mənfəətliliyi təmin etmək üçün bu dəyərdən az məbləği olan sifarişlər üçün ödənişi bloklayın.
                             </p>
                         </div>
                     </CardContent>
@@ -140,7 +140,7 @@ export default function SettingsPage() {
                             disabled={isUpdatingCart}
                         >
                             {isUpdatingCart && <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Apply Threshold
+                            Həddi Tətbiq Et
                         </Button>
                     </CardFooter>
                 </Card>
@@ -153,14 +153,14 @@ export default function SettingsPage() {
                                 <IconGift className="h-6 w-6 text-green-600" />
                             </div>
                             <div>
-                                <CardTitle className="text-xl">Bonus Rewards</CardTitle>
-                                <CardDescription>Customer loyalty program</CardDescription>
+                                <CardTitle className="text-xl">Bonus Mükafatlar</CardTitle>
+                                <CardDescription>Müştəri loyallıq proqramı</CardDescription>
                             </div>
                         </div>
                     </CardHeader>
                     <CardContent className="space-y-6 flex-1">
                         <div className="space-y-3">
-                            <Label htmlFor="bonus-percent" className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Cashback Percentage (%)</Label>
+                            <Label htmlFor="bonus-percent" className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Keş-Bek Faizi (%)</Label>
                             <div className="relative">
                                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">%</span>
                                 <Input 
@@ -172,7 +172,7 @@ export default function SettingsPage() {
                                 />
                             </div>
                             <p className="text-sm text-muted-foreground bg-green-50/50 dark:bg-green-500/5 p-3 rounded-md italic border border-green-500/10">
-                                Reward your loyal customers with a percentage of their total spend as bonus points.
+                                Müştərilərinizi ümumi xərclərinin faizi qədər bonus xallarla mükafatlandırın.
                             </p>
                         </div>
                     </CardContent>
@@ -184,7 +184,7 @@ export default function SettingsPage() {
                             disabled={isUpdatingLoyalty}
                         >
                             {isUpdatingLoyalty && <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Save Program
+                            Proqramı Saxla
                         </Button>
                     </CardFooter>
                 </Card>
@@ -198,8 +198,8 @@ export default function SettingsPage() {
                                     <IconCreditCard className="h-6 w-6 text-blue-600" />
                                 </div>
                                 <div>
-                                    <CardTitle className="text-xl">Flexible Repayments</CardTitle>
-                                    <CardDescription>Installment configuration</CardDescription>
+                                    <CardTitle className="text-xl">Elastik Ödənişlər</CardTitle>
+                                    <CardDescription>Hissəli ödəniş konfiqurasiyası</CardDescription>
                                 </div>
                            </div>
                            <div className="flex items-center gap-2 bg-muted/50 p-2 rounded-full px-4 border">
@@ -210,7 +210,7 @@ export default function SettingsPage() {
                                     onCheckedChange={setInstallmentEnabled} 
                                 />
                                 <span className={`text-xs font-black uppercase ${installmentEnabled ? 'text-blue-600' : 'text-muted-foreground'}`}>
-                                    {installmentEnabled ? 'Enabled' : 'Disabled'}
+                                    {installmentEnabled ? 'Aktiv' : 'Deaktiv'}
                                 </span>
                            </div>
                         </div>
@@ -218,7 +218,7 @@ export default function SettingsPage() {
                     <div className={installmentEnabled ? "" : "opacity-40 grayscale pointer-events-none transition-all duration-300"}>
                         <CardContent className="pt-6 grid md:grid-cols-2 gap-8 items-center h-full">
                             <div className="space-y-4">
-                                <Label htmlFor="installment-min" className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Minimum Eligibility ($)</Label>
+                                <Label htmlFor="installment-min" className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Minimum Hədd (AZN)</Label>
                                 <div className="relative">
                                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">$</span>
                                     <Input 
@@ -230,14 +230,14 @@ export default function SettingsPage() {
                                     />
                                 </div>
                                 <p className="text-sm text-balance text-muted-foreground leading-relaxed">
-                                    Customers will only see the installment option if their cart total is above this threshold. This is usually set for high-ticket items.
+                                    Müştərilər yalnız alış-veriş səbəti bu həddi keçdikdə hissəli ödəniş seçimini görəcək. Bu adətən bahalı məhsullar üçün təyin edilir.
                                 </p>
                             </div>
                             <div className="bg-blue-50 dark:bg-blue-500/5 border border-blue-500/10 rounded-xl p-6 relative overflow-hidden h-full flex flex-col justify-center">
                                 <div className="z-10 relative">
-                                    <h4 className="font-bold text-blue-700 dark:text-blue-400 mb-2">Usage Example</h4>
+                                    <h4 className="font-bold text-blue-700 dark:text-blue-400 mb-2">İstifadə Nümunəsi</h4>
                                     <p className="text-sm text-muted-foreground">
-                                        If set to <span className="font-bold text-foreground">${installmentMin}</span>, a customer buying a phone for $800 can pay in monthly cycles, while a $50 purchase must be paid in full.
+                                        Məsələn, <span className="font-bold text-foreground">{installmentMin} AZN</span> təyin edilibə, 800 AZN-lik telefon alan müştəri aylıq taksitlə ödəyə bilər, 50 AZN-lik alış isə tam ödənilməlidir.
                                     </p>
                                 </div>
                                 <IconCreditCard className="absolute -right-8 -bottom-8 h-32 w-32 text-blue-500/10 -rotate-12" />
@@ -251,7 +251,7 @@ export default function SettingsPage() {
                             disabled={isUpdatingInstallment}
                         >
                             {isUpdatingInstallment && <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Confirm Configuration
+                            Konfiqurasiyası Təsdiqlə
                         </Button>
                     </CardFooter>
                 </Card>

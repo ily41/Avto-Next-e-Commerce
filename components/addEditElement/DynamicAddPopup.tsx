@@ -81,7 +81,7 @@ export function DynamicAddPopup({
             setImagePreviews({})
             setOpen(false)
         } catch (err: any) {
-            const msg = err?.data ?? err?.message ?? "Something went wrong";
+            const msg = err?.data ?? err?.message ?? "Xəta baş verdi";
             toast.error(typeof msg === "string" ? msg : JSON.stringify(msg));
             console.error("Popup submit error", err)
         }
@@ -157,7 +157,7 @@ export function DynamicAddPopup({
                                                 content = (
                                                     <Select onValueChange={field.onChange} value={field.value || ""}>
                                                         <SelectTrigger>
-                                                            <SelectValue placeholder={fieldConfig.placeholder || "Select an option"} />
+                                                            <SelectValue placeholder={fieldConfig.placeholder || "Seçin"} />
                                                         </SelectTrigger>
                                                         <SelectContent>
                                                             {fieldConfig.options?.map(opt => (
@@ -174,16 +174,16 @@ export function DynamicAddPopup({
                                                         <PopoverTrigger asChild>
                                                             <FormControl>
                                                                 <Button variant="outline" role="combobox" className={cn("w-full justify-between font-normal", !field.value && "text-muted-foreground")}>
-                                                                    {field.value ? selectedOpt?.label : (fieldConfig.placeholder || "Select option")}
+                                                                    {field.value ? selectedOpt?.label : (fieldConfig.placeholder || "Seçin")}
                                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                                 </Button>
                                                             </FormControl>
                                                         </PopoverTrigger>
                                                         <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
                                                             <Command>
-                                                                <CommandInput placeholder="Search..." />
+                                                                <CommandInput placeholder="Axtar..." />
                                                                 <CommandList>
-                                                                    <CommandEmpty>No results found.</CommandEmpty>
+                                                                    <CommandEmpty>Nəticə tapılmadı.</CommandEmpty>
                                                                     <CommandGroup>
                                                                         {fieldConfig.options?.map((opt) => (
                                                                             <CommandItem key={opt.value} value={opt.label} onSelect={() => field.onChange(opt.value)}>
@@ -262,7 +262,7 @@ export function DynamicAddPopup({
                         </div>
 
                         <Button type="submit" className="w-full" disabled={isLoading}>
-                            {isLoading ? "Saving..." : "Submit"}
+                            {isLoading ? "Saxlanılır..." : "Təsdiqlə"}
                         </Button>
                     </form>
                 </Form>

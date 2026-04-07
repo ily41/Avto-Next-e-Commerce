@@ -43,10 +43,10 @@ export default function Page() {
     });
 
     const brandFields: FieldConfig[] = [
-        { name: "name", label: "Brand Name", type: "text", placeholder: "e.g. Nike" },
-        { name: "sortOrder", label: "Sort Order", type: "number" },
-        { name: "isActive", label: "Is Active", type: "switch" },
-        { name: "imageFile", label: "Brand Logo (Optional)", type: "file" }
+        { name: "name", label: "Brendin Adı", type: "text", placeholder: "məsələn: Nike" },
+        { name: "sortOrder", label: "Sıralama", type: "number" },
+        { name: "isActive", label: "Aktivdir", type: "switch" },
+        { name: "imageFile", label: "Brend Loqosu (İxtiyari)", type: "file" }
     ];
 
     const { data, isLoading, error } = useGetBrandsQuery(pagination);
@@ -72,14 +72,14 @@ export default function Page() {
                 </div>
             )
         },
-        { key: "name", label: "Brand", sortable: true },
+        { key: "name", label: "Brend", sortable: true },
         { key: "slug", label: "Slug", sortable: true },
         {
             key: "isActive",
             label: "Status",
             render: (value) => (
                 <span className={`px-2 py-1 rounded text-xs ${value ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                    {value ? "Active" : "Inactive"}
+                    {value ? "Aktiv" : "Qeyri-aktiv"}
                 </span>
             )
         },
@@ -87,9 +87,9 @@ export default function Page() {
         async (item) => {
             try {
                 await deleteBrand(item.id).unwrap();
-                toast.success(`Brand "${item.name}" deleted successfully.`);
+                toast.success(`"${item.name}" brendi uğurla silindi.`);
             } catch (err) {
-                toast.error("Failed to delete the brand. Please try again.");
+                toast.error("Brend silinə bilmədi. Yenidən cəhd edin.");
             }
         },
         (item) => {
@@ -103,11 +103,11 @@ export default function Page() {
     if (isLoading) {
         return (
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
-                <h1 className="text-base md:text-xl lg:text-2xl">Brands</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl">Brendlər</h1>
                 <div className="flex flex-1 items-center justify-center min-h-[400px]">
                     <div className="flex flex-col items-center gap-2">
                         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-                        <p className="text-muted-foreground animate-pulse">Loading brands...</p>
+                        <p className="text-muted-foreground animate-pulse">Brendlər yüklənir...</p>
                     </div>
                 </div>
             </div>
@@ -117,10 +117,10 @@ export default function Page() {
     if (error) {
         return (
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
-                <h1 className="text-base md:text-xl lg:text-2xl">Brands</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl">Brendlər</h1>
                 <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-6 text-destructive">
-                    <p className="font-semibold">Error Loading Brands</p>
-                    <p className="text-sm opacity-90">Failed to fetch data from the server. Please check your connection or try again later.</p>
+                    <p className="font-semibold">Brendlər Yüklənilə Bilmədi</p>
+                    <p className="text-sm opacity-90">Serverdən məlumat alınması mümkün olmadı. Birlaşmanızı yoxlayın və ya bir az sonra yenidən cəhd edin.</p>
                 </div>
             </div>
         );
@@ -129,17 +129,17 @@ export default function Page() {
     return (
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
             <div className="flex justify-between">
-                <h1 className="text-base md:text-xl lg:text-2xl">Brands</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl">Brendlər</h1>
                 <DynamicAddPopup
-                    title="Add Brand"
-                    triggerText="Add Brand"
+                    title="Brend Əlavə Et"
+                    triggerText="Brend Əlavə Et"
                     schema={brandSchema}
                     defaultValues={{ name: "", sortOrder: 1, imageFile: null, isActive: true }}
                     fields={brandFields}
                     isLoading={isCreating}
                     onSubmit={async (values) => {
                         await createBrand(values).unwrap();
-                        toast.success("Brand added!");
+                        toast.success("Brend əlavə edildi!");
                     }}
                 />
             </div>
@@ -155,7 +155,7 @@ export default function Page() {
             <DynamicEditPopup
                 open={!!editingBrand}
                 onOpenChange={(open) => !open && setEditingBrand(null)}
-                title={`Edit Brand: ${editingBrand?.name}`}
+                title={`Brendi Düzəlt: ${editingBrand?.name}`}
                 schema={brandSchema}
                 defaultValues={{
                     ...editingBrand,
@@ -169,7 +169,7 @@ export default function Page() {
                 onSubmit={async (values) => {
                     if (!editingBrand) return;
                     await updateBrand({ ...values, id: editingBrand.id }).unwrap();
-                    toast.success("Brand updated!");
+                    toast.success("Brend yenilendi!");
                 }}
             />
         </div>

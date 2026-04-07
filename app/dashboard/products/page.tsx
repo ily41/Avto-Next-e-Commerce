@@ -88,33 +88,33 @@ export default function ProductsPage() {
 
 
     const productFields: FieldConfig[] = [
-        { name: "name", label: "Product Name", type: "text", placeholder: "e.g. T-Shirt" },
+        { name: "name", label: "Məhsulun Adı", type: "text", placeholder: "məsələn: T-Shirt" },
         { name: "sku", label: "SKU", type: "text", placeholder: "TSH-001" },
-        { name: "shortDescription", label: "Short Description", type: "text" },
-        { name: "description", label: "Full Description", type: "textarea" },
+        { name: "shortDescription", label: "Qısa Təsvir", type: "text" },
+        { name: "description", label: "Tam Təsvir", type: "textarea" },
         {
             name: "categoryId",
-            label: "Category",
+            label: "Kateqoriya",
             type: "combobox",
-            placeholder: "Select Category",
+            placeholder: "Kateqoriya Seçin",
             options: flatCategories.map(cat => ({ label: cat.name, value: cat.id }))
         },
         {
             name: "brandId",
-            label: "Brand",
+            label: "Brend",
             type: "select",
-            placeholder: "Select Brand",
+            placeholder: "Brend Seçin",
             options: brandsData?.items?.map(brand => ({ label: brand.name, value: brand.id })) || []
         },
-        { name: "price", label: "Price", type: "number" },
-        { name: "discountedPrice", label: "Discounted Price", type: "number" },
-        { name: "stockQuantity", label: "Stock Quantity", type: "number" },
-        { name: "isHotDeal", label: "Hot Deal", type: "switch" },
-        { name: "isActive", label: "Is Active", type: "switch" },
-        { name: "imageFile", label: "Main Image", type: "file" },
+        { name: "price", label: "Qiymət", type: "number" },
+        { name: "discountedPrice", label: "Endirimli Qiymət", type: "number" },
+        { name: "stockQuantity", label: "Stok Miqdarı", type: "number" },
+        { name: "isHotDeal", label: "İsti Təklif", type: "switch" },
+        { name: "isActive", label: "Aktivdir", type: "switch" },
+        { name: "imageFile", label: "Əsas Şəkil", type: "file" },
         {
             name: "existingDetailImages",
-            label: "Current Detail Images",
+            label: "Mövcud Detal Şəkilləri",
             type: "custom",
             renderCustom: () => {
                 if (!productDetails?.images?.length) return null;
@@ -123,12 +123,12 @@ export default function ProductsPage() {
                 return (
                     <div className="space-y-4">
                         <FormLabel className="text-sm font-bold flex items-center gap-2">
-                            <ImageIcon className="h-4 w-4" /> Current Detail Images
+                            <ImageIcon className="h-4 w-4" /> Mövcud Detal Şəkilləri
                         </FormLabel>
                         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
                             {detailImages.map((img) => (
                                 <div key={img.id} className="group relative aspect-square border-2 border-border/50 rounded-2xl overflow-hidden hover:border-primary/50 transition-all shadow-sm">
-                                    <img src={`https://evto027-001-site1.ktempurl.com${img.imageUrl}`} alt="Detail" className="object-cover w-full h-full" />
+                                    <img src={`https://evto027-001-site1.ktempurl.com${img.imageUrl}`} alt="Detal" className="object-cover w-full h-full" />
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <Button
                                             type="button"
@@ -136,12 +136,12 @@ export default function ProductsPage() {
                                             size="icon"
                                             className="h-8 w-8 rounded-full"
                                             onClick={async () => {
-                                                if (confirm("Are you sure you want to delete this image?")) {
+                                                if (confirm("Şəkli silmək istədiyinizə əminsiniz?")) {
                                                     try {
                                                         await deleteDetailImage(img.id).unwrap();
-                                                        toast.success("Image deleted successfully");
+                                                        toast.success("Şəkil uğurla silindi");
                                                     } catch (err) {
-                                                        toast.error("Failed to delete image");
+                                                        toast.error("Şəkil silinə bilmədi");
                                                     }
                                                 }
                                             }}
@@ -157,7 +157,7 @@ export default function ProductsPage() {
                 )
             }
         },
-        { name: "detailImageFiles", label: "Add New Detail Images", type: "file-multiple" }
+        { name: "detailImageFiles", label: "Yeni Detal Şəkilləri Əlavə Et", type: "file-multiple" }
     ];
 
     const productColumns = useMemo(() => createColumns<Product>([
@@ -181,19 +181,19 @@ export default function ProductsPage() {
                 )
             }
         },
-        { key: "name", label: "Name", sortable: true },
+        { key: "name", label: "Ad", sortable: true },
         { key: "sku", label: "SKU", sortable: true },
-        { key: "categoryName", label: "Category" },
-        { key: "brandName", label: "Brand" },
+        { key: "categoryName", label: "Kateqoriya" },
+        { key: "brandName", label: "Brend" },
         {
             key: "price",
-            label: "Price",
+            label: "Qiymət",
             sortable: true,
             render: (value) => `${value} AZN`
         },
         {
             key: "stockQuantity",
-            label: "Stock",
+            label: "Stok",
             sortable: true
         },
         {
@@ -201,13 +201,13 @@ export default function ProductsPage() {
             label: "Status",
             render: (value) => (
                 <span className={`px-2 py-1 rounded text-xs ${value ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                    {value ? "Active" : "Inactive"}
+                    {value ? "Aktiv" : "Qeyri-aktiv"}
                 </span>
             )
         },
         {
             key: "id",
-            label: "details",
+            label: "Təfərrüatlar",
             render: (value) => {
                 return (
                     <Link href={`/dashboard/products/${value}`}>
@@ -226,9 +226,9 @@ export default function ProductsPage() {
         async (item) => {
             try {
                 await deleteProduct(item.id).unwrap();
-                toast.success(`Product "${item.name}" deleted successfully.`);
+                toast.success(`"${item.name}" məhsulu uğurla silindi.`);
             } catch (err) {
-                toast.error("Failed to delete the product. Please try again.");
+                toast.error("Məhsul silinə bilmədi. Yenidən cəhd edin.");
             }
         },
         (item) => {
@@ -238,11 +238,11 @@ export default function ProductsPage() {
     if (isLoading) {
         return (
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
-                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Products</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Məhsullar</h1>
                 <div className="flex flex-1 items-center justify-center min-h-[400px]">
                     <div className="flex flex-col items-center gap-2">
                         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-                        <p className="text-muted-foreground animate-pulse">Loading products...</p>
+                        <p className="text-muted-foreground animate-pulse">Məhsullar yüklənir...</p>
                     </div>
                 </div>
             </div>
@@ -252,10 +252,10 @@ export default function ProductsPage() {
     if (error) {
         return (
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
-                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Products</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Məhsullar</h1>
                 <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-6 text-destructive">
-                    <p className="font-semibold">Error Loading Products</p>
-                    <p className="text-sm opacity-90">Failed to fetch data from the server. Please check your connection or try again later.</p>
+                    <p className="font-semibold">Məhsullar Yüklənilə Bilmədi</p>
+                    <p className="text-sm opacity-90">Serverdən məlumat alınması mümkün olmadı. Birlaşmanızı yoxlayın və ya bir az sonra yenidən cəhd edin.</p>
                 </div>
             </div>
         );
@@ -264,10 +264,10 @@ export default function ProductsPage() {
     return (
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
             <div className="flex justify-between items-center">
-                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Products</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Məhsullar</h1>
                 <DynamicAddPopup
-                    title="Add Product"
-                    triggerText="Add Product"
+                    title="Məhsul Əlavə Et"
+                    triggerText="Məhsul Əlavə Et"
                     schema={productSchema}
                     defaultValues={{
                         name: "", sku: "", shortDescription: "", description: "",
@@ -278,7 +278,7 @@ export default function ProductsPage() {
                     isLoading={isCreating}
                     onSubmit={async (values) => {
                         if (!values.imageFile) {
-                            toast.error("Main image is required");
+                            toast.error("Əsas şəkil tələb olunur");
                             return;
                         }
                         await createProduct({
@@ -288,7 +288,7 @@ export default function ProductsPage() {
                             primaryImageUrl: values.imageFile,
                             detailImageFiles: values.detailImageFiles || [],
                         }).unwrap();
-                        toast.success("Product created!");
+                        toast.success("Məhsul yaradıldı!");
                     }}
                 />
             </div>
@@ -337,7 +337,7 @@ export default function ProductsPage() {
                 key={editingProductId ?? "edit-popup"}
                 open={!!editingProductId}
                 onOpenChange={(open) => !open && setEditingProductId(null)}
-                title={productDetails?.name ? `Edit Product: ${productDetails.name}` : "Edit Product"}
+                title={productDetails?.name ? `Məhsulu Düzəlt: ${productDetails.name}` : "Məhsulu Düzəlt"}
                 isFetching={isFetchingDetails}
                 isLoading={isUpdating || isUploadingPrimary || isUploadingDetails}
                 schema={productSchema}
@@ -374,7 +374,7 @@ export default function ProductsPage() {
 
                     await Promise.all([updatePromise, ...uploads]);
 
-                    toast.success("Product updated!");
+                    toast.success("Məhsul yenilendi!");
                 }}
             />
         </div>

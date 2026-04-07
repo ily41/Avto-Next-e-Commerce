@@ -30,8 +30,8 @@ export function FilterOptionsDialog({ filter, open, onOpenChange }: FilterOption
     const [{ pageIndex, pageSize }, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
 
     const optionSchema = z.object({
-        value: z.string().min(1, "Value is required"),
-        displayName: z.string().min(1, "Display Name is required"),
+        value: z.string().min(1, "Dəyər tələb olunur"),
+        displayName: z.string().min(1, "Görünən ad tələb olunur"),
         color: z.string().optional().nullable(),
         iconUrl: z.string().optional().nullable(),
         isActive: z.boolean().default(true),
@@ -39,20 +39,20 @@ export function FilterOptionsDialog({ filter, open, onOpenChange }: FilterOption
     });
 
     const optionFields: FieldConfig[] = [
-        { name: "displayName", label: "Display Name", type: "text" },
-        { name: "value", label: "Value", type: "text" },
-        { name: "color", label: "Color (Hex)", type: "color", placeholder: "#000000" },
-        { name: "iconUrl", label: "Icon URL", type: "text" },
-        { name: "sortOrder", label: "Sort Order", type: "number" },
-        { name: "isActive", label: "Is Active", type: "switch" },
+        { name: "displayName", label: "Görünən Ad", type: "text" },
+        { name: "value", label: "Dəyər", type: "text" },
+        { name: "color", label: "Rəng (Hex)", type: "color", placeholder: "#000000" },
+        { name: "iconUrl", label: "İkona URL", type: "text" },
+        { name: "sortOrder", label: "Sıralama", type: "number" },
+        { name: "isActive", label: "Aktivdir", type: "switch" },
     ];
 
     const columns = useMemo(() => createColumns<FilterOption>([
-        { key: "displayName", label: "Name", sortable: true },
-        { key: "value", label: "Value", sortable: true },
-        { key: "sortOrder", label: "Sort Order", sortable: true },
+        { key: "displayName", label: "Ad", sortable: true },
+        { key: "value", label: "Dəyər", sortable: true },
+        { key: "sortOrder", label: "Sıralama", sortable: true },
         {
-            key: "color", label: "Color",
+            key: "color", label: "Rəng",
             render: (val) => val ? (
                 <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded-full border border-gray-300" style={{ backgroundColor: val }} />
@@ -65,7 +65,7 @@ export function FilterOptionsDialog({ filter, open, onOpenChange }: FilterOption
             label: "Status",
             render: (val) => (
                 <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${val ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
-                    {val ? "Active" : "Inactive"}
+                    {val ? "Aktiv" : "Qeyri-aktiv"}
                 </div>
             )
         }
@@ -73,9 +73,9 @@ export function FilterOptionsDialog({ filter, open, onOpenChange }: FilterOption
         async (item) => {
             try {
                 await deleteOption({ filterId: filter.id, optionId: item.id }).unwrap();
-                toast.success("Option deleted successfully.");
+                toast.success("Seçim uğurla silindi.");
             } catch (err) {
-                toast.error("Failed to delete option.");
+                toast.error("Seçim silinə bilmədi.");
             }
         },
         (item) => setEditingOption(item)
@@ -86,10 +86,10 @@ export function FilterOptionsDialog({ filter, open, onOpenChange }: FilterOption
             <DialogContent className="sm:max-w-none w-[90vw] md:w-[70vw] h-[90vh] flex flex-col overflow-hidden ">
                 <DialogHeader className="flex flex-col gap-4" >
                     <div className="flex items-center justify-between mt-4 px-4">
-                        <DialogTitle className="text-xl">Options for <span className="text-primary italic">"{filter.name}"</span></DialogTitle>
+                        <DialogTitle className="text-xl">Seçimlər: <span className="text-primary italic">"{filter.name}"</span></DialogTitle>
                         <DynamicAddPopup
-                            title="Add Filter Option"
-                            triggerText="Add Option"
+                            title="Filter Seçimi Əlavə Et"
+                            triggerText="Seçim Əlavə Et"
                             schema={optionSchema}
                             defaultValues={{
                                 value: "",
@@ -115,9 +115,9 @@ export function FilterOptionsDialog({ filter, open, onOpenChange }: FilterOption
                                         }
                                     }).unwrap();
 
-                                    toast.success("Option created successfully!");
+                                    toast.success("Seçim uğurla yaradıldı!");
                                 } catch (err) {
-                                    toast.error("Failed to create option.");
+                                    toast.error("Seçim yaradıla bilmədi.");
                                 }
                             }}
                         />
@@ -138,7 +138,7 @@ export function FilterOptionsDialog({ filter, open, onOpenChange }: FilterOption
                     <DynamicEditPopup
                         open={!!editingOption}
                         onOpenChange={(op) => !op && setEditingOption(null)}
-                        title={`Edit Option: ${editingOption.displayName}`}
+                        title={`Seçimi Düzəlt: ${editingOption.displayName}`}
                         schema={optionSchema}
                         defaultValues={{
                             value: editingOption.value,
@@ -165,10 +165,10 @@ export function FilterOptionsDialog({ filter, open, onOpenChange }: FilterOption
                                     }
                                 }).unwrap();
 
-                                toast.success("Option updated successfully!");
+                                toast.success("Seçim uğurla yenilendi!");
                                 setEditingOption(null);
                             } catch (err) {
-                                toast.error("Failed to update option.");
+                                toast.error("Seçim yenilənə bilmədi.");
                             }
                         }}
                     />

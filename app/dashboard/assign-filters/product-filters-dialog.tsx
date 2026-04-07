@@ -24,18 +24,18 @@ export function ProductFiltersDialog({
     const [deleteFilter] = useDeleteProductFilterMutation();
 
     const columns = useMemo(() => createColumns<ProductFilterAssignment>([
-        { key: "filterName", label: "Filter Name", sortable: true },
-        { key: "filterOptionDisplayName", label: "Option Name", sortable: true },
-        { key: "customValue", label: "Custom Value", sortable: true },
+        { key: "filterName", label: "Filterin Adı", sortable: true },
+        { key: "filterOptionDisplayName", label: "Seçimin Adı", sortable: true },
+        { key: "customValue", label: "Fərdi Dəyər", sortable: true },
     ], async (item) => {
         try {
             await deleteFilter({
                 productId: item.productId,
                 filterId: item.filterId,
             }).unwrap();
-            toast.success("Filter unassigned successfully");
+            toast.success("Filter uğurla silindi");
         } catch (e) {
-            toast.error("Failed to unassign filter.");
+            toast.error("Filter silinə bilmədi.");
         }
     }), [deleteFilter]);
 
@@ -43,7 +43,7 @@ export function ProductFiltersDialog({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-none w-[90vw] md:w-[70vw] h-[90vh] flex flex-col overflow-hidden ">
                 <DialogHeader>
-                    <DialogTitle>Filters for: {product.name}</DialogTitle>
+                    <DialogTitle>Məhsul Filterləri: {product.name}</DialogTitle>
                 </DialogHeader>
 
                 <div className="py-4">

@@ -67,37 +67,37 @@ export default function FiltersPage() {
     });
 
     const filterFields: FieldConfig[] = [
-        { name: "name", label: "Name", type: "text" },
-        { name: "type", label: "Type", type: "select", options: FILTER_TYPES },
-        { name: "sortOrder", label: "Sort Order", type: "number" },
-        { name: "isActive", label: "Is Active", type: "switch" },
+        { name: "name", label: "Ad", type: "text" },
+        { name: "type", label: "Növ", type: "select", options: FILTER_TYPES },
+        { name: "sortOrder", label: "Sıralama", type: "number" },
+        { name: "isActive", label: "Aktivdir", type: "switch" },
     ];
 
     const columns = useMemo(() => createColumns<Filter>([
-        { key: "name", label: "Name", sortable: true },
-        { key: "typeName", label: "Type", sortable: true },
-        { key: "sortOrder", label: "Sort Order", sortable: true },
+        { key: "name", label: "Ad", sortable: true },
+        { key: "typeName", label: "Növ", sortable: true },
+        { key: "sortOrder", label: "Sıralama", sortable: true },
         {
             key: "isActive",
             label: "Status",
             render: (value) => (
                 <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${value ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
-                    {value ? "Active" : "Inactive"}
+                    {value ? "Aktiv" : "Qeyri-aktiv"}
                 </div>
             )
         },
         {
             key: "createdAt",
-            label: "Created At",
+            label: "Yaradılma Tarixi",
             render: (value) => value ? new Date(value).toLocaleDateString() : "-"
         }
     ],
         async (item) => {
             try {
                 await deleteFilter(item.id).unwrap();
-                toast.success("Filter deleted successfully.");
+                toast.success("Filter uğurla silindi.");
             } catch (err) {
-                toast.error("Failed to delete filter.");
+                toast.error("Filter silinə bilmədi.");
             }
         },
         (item) => {
@@ -105,7 +105,7 @@ export default function FiltersPage() {
         },
         (item) => (
             <DropdownMenuItem onClick={() => setManagingOptionsFilter(item)}>
-                Manage Options
+                Seçimləri İdarə Et
             </DropdownMenuItem>
         )
     ), [deleteFilter]);
@@ -113,7 +113,7 @@ export default function FiltersPage() {
     if (error) {
         return (
             <div className="flex flex-col items-center justify-center p-10 h-full">
-                <p className="text-red-500 font-bold mb-4">Failed to load filters.</p>
+                <p className="text-red-500 font-bold mb-4">Filterlər yüklənilə bilmədi.</p>
             </div>
         );
     }
@@ -121,10 +121,10 @@ export default function FiltersPage() {
     return (
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10 h-full">
             <div className="flex justify-between items-center">
-                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Filters</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Filterlər</h1>
                 <DynamicAddPopup
-                    title="Add New Filter"
-                    triggerText="Add Filter"
+                    title="Yeni Filter Əlavə Et"
+                    triggerText="Filter Əlavə Et"
                     schema={filterSchema}
                     defaultValues={{
                         name: "",
@@ -142,7 +142,7 @@ export default function FiltersPage() {
                             sortOrder: values.sortOrder,
                             options: [],
                         }).unwrap();
-                        toast.success("Filter created successfully!");
+                        toast.success("Filter uğurla yaradıldı!");
                     }}
                 />
             </div>
@@ -151,7 +151,7 @@ export default function FiltersPage() {
                 <div className="flex flex-col items-center justify-center min-h-[400px]">
                     <div className="flex flex-col items-center gap-2">
                         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-                        <p className="text-muted-foreground animate-pulse">Loading filters...</p>
+                        <p className="text-muted-foreground animate-pulse">Filterlər yüklənir...</p>
                     </div>
                 </div>
             ) : (
@@ -175,7 +175,7 @@ export default function FiltersPage() {
                 <DynamicEditPopup
                     open={!!editingFilter}
                     onOpenChange={(open) => !open && setEditingFilter(null)}
-                    title={`Edit Filter: ${editingFilter.name}`}
+                    title={`Filteri Düzəlt: ${editingFilter.name}`}
                     schema={filterSchema}
                     defaultValues={{
                         name: editingFilter.name,
@@ -195,7 +195,7 @@ export default function FiltersPage() {
                                 sortOrder: values.sortOrder,
                             }
                         }).unwrap();
-                        toast.success("Filter updated successfully!");
+                        toast.success("Filter uğurla yenilendi!");
                     }}
                 />
             )}

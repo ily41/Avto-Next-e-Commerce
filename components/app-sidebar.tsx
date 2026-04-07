@@ -49,52 +49,52 @@ import { useGetMeQuery } from "@/lib/store/auth/apislice"
 const data = {
   navMain: [
     {
-      title: "Dashboard",
+      title: "İdarə Paneli",
       url: "/dashboard",
       icon: IconDashboard,
     },
     {
-      title: "Users",
+      title: "İstifadəçilər",
       url: "/dashboard/users",
       icon: IconUsers,
     },
     {
-      title: "Products",
+      title: "Məhsullar",
       url: "/dashboard/products",
       icon: IconBoxSeam,
     },
     {
-      title: "Categories",
+      title: "Kateqoriyalar",
       url: "/dashboard/categories",
       icon: IconHierarchy2,
     },
     {
-      title: "Brands",
+      title: "Brendlər",
       url: "/dashboard/brands",
       icon: IconCertificate,
     },
     {
-      title: "Banners",
+      title: "Bannerlər",
       url: "/dashboard/banners",
       icon: IconPhoto,
     },
     {
-      title: "Orders",
+      title: "Sifarişlər",
       url: "/dashboard/orders",
       icon: IconShoppingCart,
     },
     {
-      title: "Filters",
+      title: "Filterlər",
       url: "/dashboard/filters",
       icon: IconFilter,
     },
     {
-      title: "Assign Filters",
+      title: "Filterləri Təyin Et",
       url: "/dashboard/assign-filters",
       icon: IconFilterCheck,
     },
     {
-      title: "Installment Payments",
+      title: "Hissəli Ödənişlər",
       url: "/dashboard/installment-payments",
       icon: IconMoneybag,
     },
@@ -151,29 +151,29 @@ const data = {
   ],
   navSecondary: [
     {
-      title: "Settings",
+      title: "Parametrlər",
       url: "/dashboard/settings",
       icon: IconSettings,
     },
     {
-      title: "Get Help",
+      title: "Yardım",
       url: "#",
       icon: IconHelp,
     },
     {
-      title: "Search",
+      title: "Axtarış",
       url: "#",
       icon: IconSearch,
     },
   ],
   marketing: [
     {
-      name: "Promocodes",
+      name: "Promokodlar",
       url: "/dashboard/promocodes",
       icon: IconTicket,
     },
     {
-      name: "Loyalty",
+      name: "Loyallıq",
       url: "/dashboard/settings",
       icon: IconGift,
     }

@@ -48,14 +48,14 @@ export default function AssignFiltersPage() {
     const [managingFiltersProduct, setManagingFiltersProduct] = useState<Product | null>(null);
 
     const columns = useMemo(() => createColumns<Product>([
-        { key: "name", label: "Product Name", sortable: true },
+        { key: "name", label: "Məhsulun Adı", sortable: true },
         { key: "sku", label: "SKU" },
-        { key: "categoryName", label: "Category" },
-        { key: "brandName", label: "Brand" },
-        { key: "price", label: "Price", render: (val) => `$${val}` },
+        { key: "categoryName", label: "Kateqoriya" },
+        { key: "brandName", label: "Brend" },
+        { key: "price", label: "Qiymət", render: (val) => `${val} AZN` },
     ], undefined, undefined, (item) => (
         <DropdownMenuItem onClick={() => setManagingFiltersProduct(item)}>
-            Manage Filters
+            Filterləri İdarə Et
         </DropdownMenuItem>
     )), []);
 
@@ -73,7 +73,7 @@ export default function AssignFiltersPage() {
 
     const handleAssign = async () => {
         if (!selectedFilterId) {
-            toast.error("Please select a filter.");
+            toast.error("Zəhmət olmasa filter seçin.");
             return;
         }
 
@@ -85,27 +85,27 @@ export default function AssignFiltersPage() {
                 customValue: customValue || undefined,
             }).unwrap();
 
-            toast.success(`Successfully assigned filter to ${selectedProductIds.length} products!`);
+            toast.success(`${selectedProductIds.length} məhsula filter uğurla təyin edildi!`);
             setIsAssignModalOpen(false);
             setRowSelection({});
             setSelectedFilterId("");
             setSelectedOptionId("");
             setCustomValue("");
         } catch (error) {
-            toast.error("Failed to assign filters.");
+            toast.error("Filterlər təyin edilmədi.");
         }
     };
 
     return (
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10 h-full">
             <div className="flex justify-between items-center">
-                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Assign Filters to Products</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Məhsullara Filter Təyin Et</h1>
                 <Button
                     onClick={() => setIsAssignModalOpen(true)}
                     disabled={selectedProductIds.length === 0}
                     className="shadow-md"
                 >
-                    Assign Filter ({selectedProductIds.length})
+                    Filter Təyin Et ({selectedProductIds.length})
                 </Button>
             </div>
 
@@ -135,7 +135,7 @@ export default function AssignFiltersPage() {
             <Dialog open={isAssignModalOpen} onOpenChange={setIsAssignModalOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Assign Filter to {selectedProductIds.length} Products</DialogTitle>
+                        <DialogTitle>{selectedProductIds.length} Məhsula Filter Təyin Et</DialogTitle>
                     </DialogHeader>
 
                     <div className="space-y-4 py-4">
@@ -147,7 +147,7 @@ export default function AssignFiltersPage() {
                                 setCustomValue("");
                             }}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select a filter" />
+                                    <SelectValue placeholder="Filter seçin" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {filters?.map(f => (
@@ -159,13 +159,13 @@ export default function AssignFiltersPage() {
 
                         {activeFilter && activeFilter.options && activeFilter.options.length > 0 && (
                             <div className="space-y-2">
-                                <Label>Filter Option (Optional)</Label>
+                                <Label>Filter Seçimi (İxtiyari)</Label>
                                 <Select value={selectedOptionId} onValueChange={setSelectedOptionId}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Select an option" />
+                                        <SelectValue placeholder="Seçim seçin" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="none">None</SelectItem>
+                                        <SelectItem value="none">Heçbiri</SelectItem>
                                         {activeFilter.options.map(opt => (
                                             <SelectItem key={opt.id} value={opt.id}>{opt.displayName}</SelectItem>
                                         ))}
@@ -176,9 +176,9 @@ export default function AssignFiltersPage() {
 
                         {activeFilter && (
                             <div className="space-y-2">
-                                <Label>Custom Value (Optional)</Label>
+                                <Label>Fərdi Dəyər (İxtiyari)</Label>
                                 <Input
-                                    placeholder="Enter a custom value..."
+                                    placeholder="Fərdi dəyər daxil edin..."
                                     value={customValue}
                                     onChange={(e) => setCustomValue(e.target.value)}
                                 />
@@ -187,10 +187,10 @@ export default function AssignFiltersPage() {
                     </div>
 
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsAssignModalOpen(false)}>Cancel</Button>
+                        <Button variant="outline" onClick={() => setIsAssignModalOpen(false)}>Ləğv Et</Button>
                         <Button onClick={handleAssign} disabled={isAssigning || !selectedFilterId}>
                             {isAssigning && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                            Apply Assignment
+                            Təyinatı Tətbiq Et
                         </Button>
                     </DialogFooter>
                 </DialogContent>

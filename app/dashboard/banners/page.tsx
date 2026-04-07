@@ -52,58 +52,58 @@ export default function BannersPage() {
     });
 
     const bannerAddFields: FieldConfig[] = [
-        { name: "title", label: "Title", type: "text", placeholder: "Banner Title" },
-        { name: "titleVisible", label: "Title Visible", type: "switch" },
-        { name: "description", label: "Description", type: "textarea", placeholder: "Description" },
-        { name: "descriptionVisible", label: "Description Visible", type: "switch" },
+        { name: "title", label: "Başlıq", type: "text", placeholder: "Banner Başlığı" },
+        { name: "titleVisible", label: "Başlıq Görünsün", type: "switch" },
+        { name: "description", label: "Təsvir", type: "textarea", placeholder: "Təsvir" },
+        { name: "descriptionVisible", label: "Təsvir Görünsün", type: "switch" },
         { name: "linkUrl", label: "Link URL", type: "text" },
-        { name: "buttonText", label: "Button Text", type: "text" },
-        { name: "buttonVisible", label: "Button Visible", type: "switch" },
+        { name: "buttonText", label: "Düymə Mətni", type: "text" },
+        { name: "buttonVisible", label: "Düymə Görünsün", type: "switch" },
         {
             name: "type",
-            label: "Type",
+            label: "Növ",
             type: "select",
-            placeholder: "Select Type",
+            placeholder: "Növ Seçin",
             options: [
-                { label: "Type 0", value: "0" },
-                { label: "Type 1", value: "1" },
-                { label: "Type 2", value: "2" },
-                { label: "Type 3", value: "3" },
-                { label: "Type 4", value: "4" },
+                { label: "Növ 0", value: "0" },
+                { label: "Növ 1", value: "1" },
+                { label: "Növ 2", value: "2" },
+                { label: "Növ 3", value: "3" },
+                { label: "Növ 4", value: "4" },
             ],
         },
-        { name: "sortOrder", label: "Sort Order", type: "number" },
-        { name: "isActive", label: "Is Active", type: "switch" },
-        { name: "startDate", label: "Start Date", type: "date" },
-        { name: "endDate", label: "End Date", type: "date" },
-        { name: "imageFile", label: "Main Image", type: "file" },
-        { name: "mobileImageFile", label: "Mobile Image", type: "file" },
+        { name: "sortOrder", label: "Sıralama", type: "number" },
+        { name: "isActive", label: "Aktivdir", type: "switch" },
+        { name: "startDate", label: "Başlama Tarixi", type: "date" },
+        { name: "endDate", label: "Bitmə Tarixi", type: "date" },
+        { name: "imageFile", label: "Əsas Şəkil", type: "file" },
+        { name: "mobileImageFile", label: "Mobil Şəkil", type: "file" },
     ];
 
     const bannerEditFields: FieldConfig[] = [
-        { name: "title", label: "Title", type: "text" },
-        { name: "titleVisible", label: "Title Visible", type: "switch" },
-        { name: "description", label: "Description", type: "textarea" },
-        { name: "descriptionVisible", label: "Description Visible", type: "switch" },
+        { name: "title", label: "Başlıq", type: "text" },
+        { name: "titleVisible", label: "Başlıq Görünsün", type: "switch" },
+        { name: "description", label: "Təsvir", type: "textarea" },
+        { name: "descriptionVisible", label: "Təsvir Görünsün", type: "switch" },
         { name: "linkUrl", label: "Link URL", type: "text" },
-        { name: "buttonText", label: "Button Text", type: "text" },
-        { name: "buttonVisible", label: "Button Visible", type: "switch" },
+        { name: "buttonText", label: "Düymə Mətni", type: "text" },
+        { name: "buttonVisible", label: "Düymə Görünsün", type: "switch" },
         {
             name: "type",
-            label: "Type",
+            label: "Növ",
             type: "select",
             options: [
-                { label: "Type 0", value: "0" },
-                { label: "Type 1", value: "1" },
-                { label: "Type 2", value: "2" },
-                { label: "Type 3", value: "3" },
-                { label: "Type 4", value: "4" },
+                { label: "Növ 0", value: "0" },
+                { label: "Növ 1", value: "1" },
+                { label: "Növ 2", value: "2" },
+                { label: "Növ 3", value: "3" },
+                { label: "Növ 4", value: "4" },
             ],
         },
-        { name: "sortOrder", label: "Sort Order", type: "number" },
-        { name: "isActive", label: "Is Active", type: "switch" },
-        { name: "startDate", label: "Start Date", type: "date" },
-        { name: "endDate", label: "End Date", type: "date" },
+        { name: "sortOrder", label: "Sıralama", type: "number" },
+        { name: "isActive", label: "Aktivdir", type: "switch" },
+        { name: "startDate", label: "Başlama Tarixi", type: "date" },
+        { name: "endDate", label: "Bitmə Tarixi", type: "date" },
         {
             name: "existingMainImage",
             label: "Main Image",
@@ -113,7 +113,7 @@ export default function BannersPage() {
                 return (
                     <div className="space-y-4">
                         <FormLabel className="text-sm font-bold flex items-center gap-2">
-                            <ImageIcon className="h-4 w-4" /> Current Main Image
+                            <ImageIcon className="h-4 w-4" /> Mövcud Əsas Şəkil
                         </FormLabel>
                         <div className="relative aspect-video w-full max-w-xs border-2 border-border/50 rounded-2xl overflow-hidden shadow-sm group">
                             <img
@@ -128,13 +128,13 @@ export default function BannersPage() {
                                     size="icon"
                                     className="h-8 w-8 rounded-full"
                                     onClick={async () => {
-                                        if (confirm("Delete main image?")) {
+                                        if (confirm("Əsas şəkli silmək istədiyinizə əminsiniz?")) {
                                             try {
                                                 await deleteBannerImage({ id: editingBanner.id, imageType: "main" }).unwrap();
-                                                toast.success("Main image deleted!");
+                                                toast.success("Əsas şəkil silindi!");
                                                 setEditingBanner((prev) => prev ? { ...prev, imageUrl: null } : null);
                                             } catch {
-                                                toast.error("Failed to delete");
+                                                toast.error("Silinmə alınmadı");
                                             }
                                         }
                                     }}
@@ -157,7 +157,7 @@ export default function BannersPage() {
                 return (
                     <div className="space-y-4">
                         <FormLabel className="text-sm font-bold flex items-center gap-2">
-                            <ImageIcon className="h-4 w-4" /> Current Mobile Image
+                            <ImageIcon className="h-4 w-4" /> Mövcud Mobil Şəkil
                         </FormLabel>
                         <div className="relative aspect-square w-full max-w-[150px] border-2 border-border/50 rounded-2xl overflow-hidden shadow-sm group">
                             <img
@@ -172,13 +172,13 @@ export default function BannersPage() {
                                     size="icon"
                                     className="h-8 w-8 rounded-full"
                                     onClick={async () => {
-                                        if (confirm("Delete mobile image?")) {
+                                        if (confirm("Mobil şəkli silmək istədiyinizə əminsiniz?")) {
                                             try {
                                                 await deleteBannerImage({ id: editingBanner.id, imageType: "mobile" }).unwrap();
-                                                toast.success("Mobile image deleted!");
+                                                toast.success("Mobil şəkil silindi!");
                                                 setEditingBanner((prev) => prev ? { ...prev, mobileImageUrl: null } : null);
                                             } catch {
-                                                toast.error("Failed to delete");
+                                                toast.error("Silinmə alınmadı");
                                             }
                                         }
                                     }}
@@ -216,21 +216,21 @@ export default function BannersPage() {
         {
             id: "title",
             accessorKey: "title",
-            header: "Title",
+            header: "Başlıq",
             cell: ({ row }) => (
-                <span className="font-medium">{row.original.title || "Untitled"}</span>
+                <span className="font-medium">{row.original.title || "Başlıqsız"}</span>
             ),
         },
         {
             id: "type",
             accessorKey: "type",
-            header: "Type",
+            header: "Növ",
             cell: ({ row }) => row.original.type,
         },
         {
             id: "sortOrder",
             accessorKey: "sortOrder",
-            header: "Sort Order",
+            header: "Sıralama",
         },
         {
             id: "isActive",
@@ -238,19 +238,19 @@ export default function BannersPage() {
             header: "Status",
             cell: ({ row }) => (
                 <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${row.original.isActive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
-                    {row.original.isActive ? "Active" : "Inactive"}
+                    {row.original.isActive ? "Aktiv" : "Qeyri-aktiv"}
                 </div>
             ),
         },
         {
             id: "actions",
-            header: "Actions",
+            header: "Fəaliyyətlər",
             cell: ({ row }) => (
                 <div className="flex items-center gap-2">
                     <Button variant="outline" size="sm" asChild>
                         <Link href={`/dashboard/banners/${row.original.id}`}>
                             <Settings2 className="h-4 w-4 mr-2" />
-                            Manage Design
+                            Dizayni İdarə Et
                         </Link>
                     </Button>
                     <Button
@@ -258,18 +258,18 @@ export default function BannersPage() {
                         size="sm"
                         onClick={() => setEditingBanner(row.original)}
                     >
-                        Edit
+                        Düzəlt
                     </Button>
                     <Button
                         variant="destructive"
                         size="sm"
                         onClick={async () => {
-                            if (confirm("Delete this banner?")) {
+                            if (confirm("Bu banneri silmək istədiyinizə əminsiniz?")) {
                                 try {
                                     await deleteBanner(row.original.id).unwrap();
-                                    toast.success("Banner deleted!");
+                                    toast.success("Banner silindi!");
                                 } catch (err) {
-                                    toast.error("Failed to delete banner");
+                                    toast.error("Banner silinə bilmədi");
                                 }
                             }
                         }}
@@ -284,7 +284,7 @@ export default function BannersPage() {
     if (error) {
         return (
             <div className="flex items-center justify-center h-full">
-                <p className="text-red-500 font-bold">Failed to load banners.</p>
+                <p className="text-red-500 font-bold">Bannerlər yüklənilə bilmədi.</p>
             </div>
         );
     }
@@ -292,10 +292,10 @@ export default function BannersPage() {
     return (
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
             <div className="flex justify-between items-center">
-                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Banners</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Bannerlər</h1>
                 <DynamicAddPopup
-                    title="Add Banner"
-                    triggerText="Add Banner"
+                    title="Banner Əlavə Et"
+                    triggerText="Banner Əlavə Et"
                     schema={bannerSchema}
                     defaultValues={{
                         title: "", type: 0, sortOrder: 0, isActive: true, titleVisible: true, descriptionVisible: true, buttonVisible: true
@@ -318,7 +318,7 @@ export default function BannersPage() {
                         if (values.mobileImageFile instanceof File) formData.append("mobileImageFile", values.mobileImageFile);
 
                         await createBanner(formData).unwrap();
-                        toast.success("Banner created!");
+                        toast.success("Banner yaradıldı!");
                     }}
                 />
             </div>
@@ -335,7 +335,7 @@ export default function BannersPage() {
                 <DynamicEditPopup
                     open={!!editingBanner}
                     onOpenChange={(open) => !open && setEditingBanner(null)}
-                    title={`Edit Banner: ${editingBanner.title || "Untitled"}`}
+                    title={`Banneri Düzəlt: ${editingBanner.title || "Başlıqsız"}`}
                     schema={bannerSchema}
                     defaultValues={{
                         ...editingBanner,
@@ -354,7 +354,7 @@ export default function BannersPage() {
                         dataToUpdate.sortOrder = parseInt(dataToUpdate.sortOrder?.toString() || "0", 10);
 
                         await updateBanner({ id: editingBanner.id, data: dataToUpdate as any }).unwrap();
-                        toast.success("Banner updated!");
+                        toast.success("Banner yenilendi!");
                     }}
                 />
             )}
