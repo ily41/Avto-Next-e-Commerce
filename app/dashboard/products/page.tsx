@@ -3,15 +3,27 @@
 import Link from "next/link";
 import { DataTable } from "@/components/data-table/data-tables";
 import { createColumns } from "@/components/data-table/data-table-factory";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useDeleteProductMutation, type Product, useFilterProductsQuery, useCreateProductWithImageMutation, useUpdateProductWithImageMutation } from "@/lib/store/products/apislice";
 import { useUploadPrimaryImageMutation, useUploadDetailImagesMutation, useDeleteProductImageMutation } from "@/lib/store/products/editApis/apislice";
 import { useGetProductByIdQuery } from "@/lib/store/productDetails/apislice";
 import { useGetCategoriesQuery, type Category } from "@/lib/store/categories/apislice";
 import { useGetBrandsQuery } from "@/lib/store/brands/apislice";
 import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
 import { DynamicAddPopup, type FieldConfig } from "@/components/addEditElement/DynamicAddPopup";
 import { DynamicEditPopup } from "@/components/addEditElement/DynamicEditPopup";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { FormLabel } from "@/components/ui/form";
 import { Plus, ImageIcon, Trash2 } from "lucide-react";
@@ -24,8 +36,11 @@ export default function ProductsPage() {
     });
 
     const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
-    const [selectedBrandNames, setSelectedBrandNames] = useState<string[]>([]);
+    const [selectedBrandSlugs, setSelectedBrandSlugs] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+
+    const searchParams = useSearchParams();
+    const editId = searchParams.get("edit");
 
     const { data: categoriesData } = useGetCategoriesQuery();
 
@@ -49,12 +64,12 @@ export default function ProductsPage() {
     const filterRequestBody = useMemo(() => {
         return {
             categoryIds: selectedCategoryIds.length > 0 ? selectedCategoryIds : undefined,
-            brandSlug: selectedBrandNames.length > 0 ? selectedBrandNames[0] : undefined,
+            brandSlug: selectedBrandSlugs.length > 0 ? selectedBrandSlugs[0] : undefined,
             searchTerm: searchTerm || undefined,
             page: pageIndex + 1,
             pageSize: pageSize,
         };
-    }, [selectedCategoryIds, selectedBrandNames, searchTerm, pageIndex, pageSize]);
+    }, [selectedCategoryIds, selectedBrandSlugs, searchTerm, pageIndex, pageSize]);
 
     const { data: filteredData, isLoading, error } = useFilterProductsQuery(filterRequestBody);
 
@@ -66,6 +81,12 @@ export default function ProductsPage() {
 
     const [deleteProduct] = useDeleteProductMutation();
     const [editingProductId, setEditingProductId] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (editId) {
+            setEditingProductId(editId);
+        }
+    }, [editId]);
 
     const { data: productDetails, isLoading: isFetchingDetails } = useGetProductByIdQuery(editingProductId!, { skip: !editingProductId });
     console.log(productDetails)
@@ -130,25 +151,43 @@ export default function ProductsPage() {
                                 <div key={img.id} className="group relative aspect-square border-2 border-border/50 rounded-2xl overflow-hidden hover:border-primary/50 transition-all shadow-sm">
                                     <img src={`https://avtoo027-001-site1.ntempurl.com${img.imageUrl}`} alt="Detal" className="object-cover w-full h-full" />
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                        <Button
-                                            type="button"
-                                            variant="destructive"
-                                            size="icon"
-                                            className="h-8 w-8 rounded-full"
-                                            onClick={async () => {
-                                                if (confirm("Şəkli silmək istədiyinizə əminsiniz?")) {
-                                                    try {
-                                                        await deleteDetailImage(img.id).unwrap();
-                                                        toast.success("Şəkil uğurla silindi");
-                                                    } catch (err) {
-                                                        toast.error("Şəkil silinə bilmədi");
-                                                    }
-                                                }
-                                            }}
-                                            disabled={isDeletingImage}
-                                        >
-                                            <Trash2 size={14} />
-                                        </Button>
+                                        <AlertDialog>
+                                            <AlertDialogTrigger asChild>
+                                                <Button
+                                                    type="button"
+                                                    variant="destructive"
+                                                    size="icon"
+                                                    className="h-8 w-8 rounded-full"
+                                                    disabled={isDeletingImage}
+                                                >
+                                                    <Trash2 size={14} />
+                                                </Button>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>Şəkli silmək istədiyinizə əminsiniz?</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        Bu əməliyyat geri qaytarıla bilməz. Şəkil daimi olaraq silinəcəkdir.
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Ləğv et</AlertDialogCancel>
+                                                    <AlertDialogAction
+                                                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                                        onClick={async () => {
+                                                            try {
+                                                                await deleteDetailImage(img.id).unwrap();
+                                                                toast.success("Şəkil uğurla silindi");
+                                                            } catch (err) {
+                                                                toast.error("Şəkil silinə bilmədi");
+                                                            }
+                                                        }}
+                                                    >
+                                                        Sil
+                                                    </AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
                                     </div>
                                 </div>
                             ))}
@@ -310,7 +349,7 @@ export default function ProductsPage() {
                     if (column === "categoryId" || column === "categoryName") {
                         setSelectedCategoryIds(values);
                     } else if (column === "brandName") {
-                        setSelectedBrandNames(values);
+                        setSelectedBrandSlugs(values);
                     }
                     setPagination(prev => ({ ...prev, pageIndex: 0 }));
                 }}
@@ -328,7 +367,7 @@ export default function ProductsPage() {
                         title: "Brand",
                         options: brandsData?.items?.map((brand) => ({
                             label: brand.name,
-                            value: brand.name,
+                            value: brand.slug,
                         })) || [],
                     }
                 ]}

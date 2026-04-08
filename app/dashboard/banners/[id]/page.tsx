@@ -40,6 +40,7 @@ export default function BannerDesignPage() {
     const id = params.id as string;
 
     const { data: banner, isLoading } = useGetBannerByIdQuery(id);
+    console.log(banner)
     const [updateBanner, { isLoading: isUpdating }] = useUpdateBannerMutation();
     const containerRef = useRef<HTMLDivElement>(null);
     const [isInitialized, setIsInitialized] = useState(false);

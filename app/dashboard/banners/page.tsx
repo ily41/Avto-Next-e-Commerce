@@ -17,6 +17,7 @@ import {
     useUpdateBannerMutation,
     useDeleteBannerMutation,
     useDeleteBannerImageMutation,
+    useUploadBannerImagesMutation,
     type Banner,
 } from "@/lib/store/banners/apislice";
 
@@ -31,6 +32,7 @@ export default function BannersPage() {
     const { data: banners, isLoading: isFetchingBanners, error } = useGetBannersQuery();
     const [createBanner, { isLoading: isCreating }] = useCreateBannerWithImagesMutation();
     const [updateBanner, { isLoading: isUpdating }] = useUpdateBannerMutation();
+    const [uploadBannerImages, { isLoading: isUploadingImages }] = useUploadBannerImagesMutation();
     const [deleteBanner] = useDeleteBannerMutation();
     const [deleteBannerImage, { isLoading: isDeletingImage }] = useDeleteBannerImageMutation();
 
@@ -192,6 +194,8 @@ export default function BannersPage() {
                 );
             },
         },
+        { name: "imageFile", label: "Yeni Əsas Şəkil Əlavə Et", type: "file" },
+        { name: "mobileImageFile", label: "Yeni Mobil Şəkil Əlavə Et", type: "file" },
     ];
 
     const columns = useMemo<ColumnDef<Banner>[]>(() => [
@@ -344,7 +348,7 @@ export default function BannersPage() {
                         mobileImageFile: undefined,
                     }}
                     fields={bannerEditFields}
-                    isLoading={isUpdating}
+                    isLoading={isUpdating || isUploadingImages}
                     onSubmit={async (values) => {
                         const dataToUpdate = { ...editingBanner, ...values };
                         delete (dataToUpdate as any).imageFile;
@@ -353,7 +357,18 @@ export default function BannersPage() {
                         dataToUpdate.type = parseInt(dataToUpdate.type?.toString() || "0", 10);
                         dataToUpdate.sortOrder = parseInt(dataToUpdate.sortOrder?.toString() || "0", 10);
 
-                        await updateBanner({ id: editingBanner.id, data: dataToUpdate as any }).unwrap();
+                        const updatePromise = updateBanner({ id: editingBanner.id, data: dataToUpdate as any }).unwrap();
+
+                        const uploads = [];
+                        if (values.imageFile instanceof File || values.mobileImageFile instanceof File) {
+                            uploads.push(uploadBannerImages({
+                                id: editingBanner.id,
+                                imageFile: values.imageFile instanceof File ? values.imageFile : undefined,
+                                mobileImageFile: values.mobileImageFile instanceof File ? values.mobileImageFile : undefined
+                            }).unwrap());
+                        }
+
+                        await Promise.all([updatePromise, ...uploads]);
                         toast.success("Banner yenilendi!");
                     }}
                 />

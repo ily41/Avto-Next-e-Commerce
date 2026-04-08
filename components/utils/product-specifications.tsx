@@ -64,7 +64,7 @@ export function ProductSpecifications({ productId }: ProductSpecificationsProps)
         setGroups(newGroups);
     };
 
-    const updateItem = (groupIndex: number, itemIndex: number, field: keyof SpecificationItem, value: string | number) => {
+    const updateItem = (groupIndex: number, itemIndex: number, field: keyof SpecificationItem, value: any) => {
         const newGroups = [...groups];
         const newItems = [...newGroups[groupIndex].items];
         newItems[itemIndex] = { ...newItems[itemIndex], [field]: value };
@@ -74,17 +74,25 @@ export function ProductSpecifications({ productId }: ProductSpecificationsProps)
 
     const handleSave = async () => {
         try {
-            // Basic validation
+            // Basic validation and type normalization
             if (groups.some(g => !g.groupName)) {
                 toast.error("All groups must have a name");
                 return;
             }
 
+            const normalizedGroups = groups.map(group => ({
+                ...group,
+                items: group.items.map(item => ({
+                    ...item,
+                    type: typeof item.type === 'string' && item.type === '' ? 0 : Number(item.type)
+                }))
+            }));
+
             if (data?.specificationGroups && data.specificationGroups.length > 0) {
-                await updateSpecs({ productId, specificationGroups: groups }).unwrap();
+                await updateSpecs({ productId, specificationGroups: normalizedGroups }).unwrap();
                 toast.success("Specifications updated successfully");
             } else {
-                await createSpecs({ productId, specificationGroups: groups }).unwrap();
+                await createSpecs({ productId, specificationGroups: normalizedGroups }).unwrap();
                 toast.success("Specifications created successfully");
             }
             refetch();
@@ -213,7 +221,10 @@ export function ProductSpecifications({ productId }: ProductSpecificationsProps)
                                             <Input
                                                 type="number"
                                                 value={item.type}
-                                                onChange={(e) => updateItem(gIndex, iIndex, 'type', parseInt(e.target.value) || 0)}
+                                                onChange={(e) => {
+                                                    const val = e.target.value;
+                                                    updateItem(gIndex, iIndex, 'type', val === "" ? "" : parseInt(val));
+                                                }}
                                                 className="h-10 md:h-9 bg-background border-none shadow-sm md:shadow-none md:bg-background/50"
                                             />
                                         </div>

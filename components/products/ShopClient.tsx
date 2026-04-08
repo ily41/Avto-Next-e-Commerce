@@ -98,6 +98,7 @@ export default function ShopClient({ initialSearchParams }: { initialSearchParam
     filterCriteria: filterCriteria.length > 0 ? filterCriteria : undefined,
     sortBy: sortBy,
     sortOrder: sortOrder,
+    isActive: true,
     page: pageParam,
     pageSize: 16
   };

@@ -24,7 +24,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import StoreProvider from "@/lib/providers/store-provider";
 import { NavbarWrapper } from "@/components/NavbarWrapper";
-import Footer from "@/components/avto-ui/footer";
+import { FooterWrapper } from "@/components/FooterWrapper";
 
 export default function RootLayout({
   children,
@@ -49,7 +49,7 @@ export default function RootLayout({
               <main className="flex-grow">
                 {children}
               </main>
-              <Footer />
+              <FooterWrapper />
             </div>
             <Toaster />
           </StoreProvider>

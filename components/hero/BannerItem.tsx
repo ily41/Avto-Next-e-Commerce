@@ -45,6 +45,11 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
     const desktopSrc = fullUrl(imageUrl);
     const mobileSrc = mobileImageUrl ? fullUrl(mobileImageUrl) : desktopSrc;
 
+    const finalPaddingX = banner.buttonPaddingX ?? 24;
+    console.log(banner)
+    const finalPaddingY = banner.buttonPaddingY ?? 10;
+    const finalFontSize = banner.buttonFontSize ?? 14;
+
     return (
         <div className="relative w-full h-full overflow-hidden rounded-lg bg-gray-50 group cursor-pointer">
             <div className="absolute inset-0 w-full h-full">
@@ -111,17 +116,17 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
 
                 {buttonVisible && buttonText && (
                     <button
-                        className="absolute pointer-events-auto transition-all duration-300 hover:opacity-90 active:scale-95 shadow-md flex items-center justify-center"
+                        className="absolute pointer-events-auto transition-all duration-300 hover:opacity-90 active:scale-95 shadow-md flex items-center justify-center whitespace-nowrap"
                         style={{
                             left: `${buttonPositionX}%`,
                             top: `${buttonPositionY}%`,
                             backgroundColor: buttonColor || "#3b82f6",
                             color: buttonTextColor || "#fff",
                             borderRadius: `${buttonBorderRadius}px`,
-                            padding: buttonFontSize > 0 
-                                ? `${(buttonPaddingY || 0) / buttonFontSize}em ${(buttonPaddingX || 0) / buttonFontSize}em`
-                                : `${buttonPaddingY || 10}px ${buttonPaddingX || 24}px`,
-                            fontSize: getResponsiveStyle(buttonFontSize || 14),
+                            padding: finalFontSize > 0 
+                                ? `${finalPaddingY / finalFontSize}em ${finalPaddingX / finalFontSize}em`
+                                : `${finalPaddingY}px ${finalPaddingX}px`,
+                            fontSize: getResponsiveStyle(finalFontSize),
                             fontWeight: "600",
                         }}
                     >

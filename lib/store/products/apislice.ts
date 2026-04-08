@@ -101,6 +101,7 @@ export type ProductFilterRequest = {
   maxPrice?: number;
   sortBy?: string;
   sortOrder?: string;
+  isActive?: boolean;
   page?: number;
   pageSize?: number;
 };
