@@ -1,6 +1,7 @@
 "use client";
 
 import { WalletBalance } from "@/components/wallet/WalletBalance";
+export const dynamic = 'force-dynamic';
 import { OrderList } from "@/components/order/OrderList";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, ShoppingBag, Wallet } from "lucide-react";

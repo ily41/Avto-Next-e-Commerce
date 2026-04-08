@@ -1,6 +1,7 @@
 "use client";
 
 import { OrderList } from "@/components/order/OrderList";
+export const dynamic = 'force-dynamic';
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";

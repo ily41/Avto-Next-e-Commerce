@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = 'force-dynamic';
 
 import { useGetOrderByIdQuery } from "@/lib/store/order/orderApiSlice";
 import { useParams } from "next/navigation";

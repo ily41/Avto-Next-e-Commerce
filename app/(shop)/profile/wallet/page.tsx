@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = 'force-dynamic';
 
 import { WalletBalance } from "@/components/wallet/WalletBalance";
 import { TransactionList } from "@/components/wallet/TransactionList";
