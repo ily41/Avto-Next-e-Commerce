@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 import { Navbar } from "./avto-ui/navbar";
 
 export function NavbarWrapper() {
@@ -11,5 +12,10 @@ export function NavbarWrapper() {
     return null;
   }
 
-  return <Navbar />;
+  return (
+    <Suspense>
+      <Navbar />
+    </Suspense>
+  );
+
 }
