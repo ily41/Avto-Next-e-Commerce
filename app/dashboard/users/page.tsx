@@ -145,7 +145,7 @@ export default function UsersPage() {
             ) : (
                 <DataTable
                     columns={columns}
-                    data={usersData?.users || []}
+                    data={usersData?.items || []}
                     manualPagination={true}
                     pageCount={usersData?.totalPages || 0}
                     pagination={{ pageIndex, pageSize }}
