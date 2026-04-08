@@ -44,16 +44,16 @@ export default function ShopClient({ initialSearchParams }: { initialSearchParam
     const ids: string[] = [];
     
     // Flatten categories for easier searching
-    const flatList: any[] = [];
+    const flatList: { id: string; slug: string }[] = [];
     const flatten = (cats: any[]) => {
-      cats.forEach(c => {
+      cats.forEach((c: any) => {
         flatList.push(c);
         if (c.subCategories) flatten(c.subCategories);
       });
     };
     flatten(categories);
 
-    categorySlugs.forEach(slug => {
+    categorySlugs.forEach((slug: string) => {
       const found = flatList.find(c => c.slug === slug);
       if (found) ids.push(found.id);
     });
