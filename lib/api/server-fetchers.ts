@@ -8,7 +8,7 @@ import type { RecommendationResponse, Banner, Category, Brand } from "./types";
 
 // Plain env-var lookup — does NOT import from lib/store/api (which pulls in js-cookie)
 const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://evto027-001-site1.ktempurl.com";
+  process.env.NEXT_PUBLIC_API_URL || "https://avtoo027-001-site1.ntempurl.com";
 
 const API = `${BASE_URL}/api/v1`;
 

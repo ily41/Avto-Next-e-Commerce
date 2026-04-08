@@ -4,7 +4,7 @@
  */
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://evto027-001-site1.ktempurl.com";
+  process.env.NEXT_PUBLIC_API_URL || "http://avtoo027-001-site1.ntempurl.com";
 
 /**
  * Converts a relative API path to a full absolute URL.

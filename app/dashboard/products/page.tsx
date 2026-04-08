@@ -48,7 +48,7 @@ export default function ProductsPage() {
 
     const filterRequestBody = useMemo(() => {
         return {
-            categoryId: selectedCategoryIds.length > 0 ? selectedCategoryIds[0] : undefined,
+            categoryIds: selectedCategoryIds.length > 0 ? selectedCategoryIds : undefined,
             brandSlug: selectedBrandNames.length > 0 ? selectedBrandNames[0] : undefined,
             searchTerm: searchTerm || undefined,
             page: pageIndex + 1,
@@ -128,7 +128,7 @@ export default function ProductsPage() {
                         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
                             {detailImages.map((img) => (
                                 <div key={img.id} className="group relative aspect-square border-2 border-border/50 rounded-2xl overflow-hidden hover:border-primary/50 transition-all shadow-sm">
-                                    <img src={`https://evto027-001-site1.ktempurl.com${img.imageUrl}`} alt="Detal" className="object-cover w-full h-full" />
+                                    <img src={`https://avtoo027-001-site1.ntempurl.com${img.imageUrl}`} alt="Detal" className="object-cover w-full h-full" />
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <Button
                                             type="button"
@@ -170,7 +170,7 @@ export default function ProductsPage() {
                     <div className="h-10 w-10 flex items-center justify-center overflow-hidden rounded border bg-slate-50">
                         {value ? (
                             <img
-                                src={`https://evto027-001-site1.ktempurl.com${value}`}
+                                src={`https://avtoo027-001-site1.ntempurl.com${value}`}
                                 alt="Product"
                                 className="object-contain h-full w-full"
                             />
@@ -347,7 +347,7 @@ export default function ProductsPage() {
                     detailImageFiles: []
                 } : undefined}
                 initialPreviews={{
-                    imageFile: productDetails?.imageUrl ? `https://evto027-001-site1.ktempurl.com${productDetails.imageUrl}` : ""
+                    imageFile: productDetails?.imageUrl ? `https://avtoo027-001-site1.ntempurl.com${productDetails.imageUrl}` : ""
                 }}
                 fields={productFields}
                 onSubmit={async (values) => {

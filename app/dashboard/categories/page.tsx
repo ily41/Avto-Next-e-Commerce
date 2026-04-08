@@ -56,7 +56,7 @@ export default function Page() {
                 <div className="h-10 w-10 flex items-center justify-center overflow-hidden rounded border bg-slate-50">
                     {value ? (
                         <img
-                            src={`https://evto027-001-site1.ktempurl.com${value}`}
+                            src={`https://avtoo027-001-site1.ntempurl.com${value}`}
                             alt="Category"
                             className="object-contain h-full w-full"
                         />
@@ -156,7 +156,7 @@ export default function Page() {
                     imageFile: undefined
                 }}
                 initialPreviews={{
-                    imageFile: editingCategory?.imageUrl ? `https://evto027-001-site1.ktempurl.com${editingCategory.imageUrl}` : ""
+                    imageFile: editingCategory?.imageUrl ? `https://avtoo027-001-site1.ntempurl.com${editingCategory.imageUrl}` : ""
                 }}
                 fields={categoryFields}
                 isLoading={isUpdating}

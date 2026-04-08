@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import ShopClient from "@/components/products/ShopClient";
 import { fetchCategories } from "@/lib/api/server-fetchers";
-import { Suspense } from "react";
 
 interface PageProps {
   searchParams: Promise<{
@@ -104,15 +103,13 @@ export default async function ShopPage({ searchParams }: PageProps) {
           </h1>
           {resolvedParams.searchTerm && (
             <p className="text-gray-500 mt-2 text-[15px] font-medium italic">
-               "{resolvedParams.searchTerm}" üçün axtarış nəticələri
+              "{resolvedParams.searchTerm}" üçün axtarış nəticələri
             </p>
           )}
         </div>
 
         {/* Shop Client manages Sidebar, Sort Header, and Product Grid */}
-        <Suspense fallback={<div className="text-center py-20 text-gray-400">Produktlar yüklənir...</div>}>
-          <ShopClient initialSearchParams={resolvedParams} />
-        </Suspense>
+        <ShopClient initialSearchParams={resolvedParams} />
       </div>
     </main>
   );

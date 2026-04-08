@@ -25,7 +25,7 @@ import { notFound } from "next/navigation";
 
 import { productDetailsApi } from "@/lib/store/productDetails/apislice";
 
-const BASE_URL = "https://evto027-001-site1.ktempurl.com/api/v1";
+const BASE_URL = "https://avtoo027-001-site1.ntempurl.com/api/v1";
 
 // Using the same data-fetching logic as defined in store/productDetails/apislice.ts
 async function getProduct(id: string) {
@@ -115,7 +115,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
                             <div className="aspect-[4/5] relative flex items-center justify-center rounded-[2rem] overflow-hidden bg-accent/20 transition-transform duration-500 group-hover/main-img:scale-[1.02]">
                                 {primaryImage ? (
                                     <img
-                                        src={primaryImage.startsWith('http') ? primaryImage : `https://evto027-001-site1.ktempurl.com${primaryImage}`}
+                                        src={primaryImage.startsWith('http') ? primaryImage : `https://avtoo027-001-site1.ntempurl.com${primaryImage}`}
                                         alt={product.name}
                                         className="object-contain w-full h-full drop-shadow-2xl p-4"
                                     />
@@ -134,7 +134,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
                             {images.map((img: any, idx: number) => (
                                 <div key={idx} className="aspect-square rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/50 hover:scale-105 transition-all cursor-pointer shadow-sm">
                                     <img
-                                        src={img.imageUrl.startsWith('http') ? img.imageUrl : `https://evto027-001-site1.ktempurl.com${img.imageUrl}`}
+                                        src={img.imageUrl.startsWith('http') ? img.imageUrl : `https://avtoo027-001-site1.ntempurl.com${img.imageUrl}`}
                                         alt={`Detail ${idx}`}
                                         className="object-cover w-full h-full"
                                     />

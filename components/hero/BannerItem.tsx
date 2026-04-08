@@ -118,8 +118,10 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
                             backgroundColor: buttonColor || "#3b82f6",
                             color: buttonTextColor || "#fff",
                             borderRadius: `${buttonBorderRadius}px`,
-                            padding: `${buttonPaddingY / buttonFontSize}em ${buttonPaddingX / buttonFontSize}em`,
-                            fontSize: getResponsiveStyle(buttonFontSize),
+                            padding: buttonFontSize > 0 
+                                ? `${(buttonPaddingY || 0) / buttonFontSize}em ${(buttonPaddingX || 0) / buttonFontSize}em`
+                                : `${buttonPaddingY || 10}px ${buttonPaddingX || 24}px`,
+                            fontSize: getResponsiveStyle(buttonFontSize || 14),
                             fontWeight: "600",
                         }}
                     >

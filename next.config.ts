@@ -1,18 +1,18 @@
 import type { NextConfig } from "next";
 
-const nextConfig: any = {
+const nextConfig: NextConfig = {
   /* config options here */
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'evto027-001-site1.ktempurl.com',
+        hostname: 'avtoo027-001-site1.ntempurl.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'avtoo027-001-site1.ntempurl.com',
         port: '',
         pathname: '/**',
       },

@@ -62,7 +62,7 @@ export default function Page() {
                 <div className="h-10 w-10 flex items-center justify-center overflow-hidden rounded border bg-slate-50">
                     {value ? (
                         <img
-                            src={`https://evto027-001-site1.ktempurl.com${value}`}
+                            src={`https://avtoo027-001-site1.ntempurl.com${value}`}
                             alt="Logo"
                             className="object-contain h-full w-full"
                         />
@@ -162,7 +162,7 @@ export default function Page() {
                     imageFile: undefined
                 }}
                 initialPreviews={{
-                    imageFile: editingBrand?.logoUrl ? `https://evto027-001-site1.ktempurl.com${editingBrand.logoUrl}` : ""
+                    imageFile: editingBrand?.logoUrl ? `https://avtoo027-001-site1.ntempurl.com${editingBrand.logoUrl}` : ""
                 }}
                 fields={brandFields}
                 isLoading={isUpdating}

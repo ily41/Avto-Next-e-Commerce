@@ -117,7 +117,7 @@ export default function BannersPage() {
                         </FormLabel>
                         <div className="relative aspect-video w-full max-w-xs border-2 border-border/50 rounded-2xl overflow-hidden shadow-sm group">
                             <img
-                                src={`https://evto027-001-site1.ktempurl.com${editingBanner.imageUrl}`}
+                                src={`https://avtoo027-001-site1.ntempurl.com${editingBanner.imageUrl}`}
                                 alt="Main"
                                 className="object-cover w-full h-full"
                             />
@@ -161,7 +161,7 @@ export default function BannersPage() {
                         </FormLabel>
                         <div className="relative aspect-square w-full max-w-[150px] border-2 border-border/50 rounded-2xl overflow-hidden shadow-sm group">
                             <img
-                                src={`https://evto027-001-site1.ktempurl.com${editingBanner.mobileImageUrl}`}
+                                src={`https://avtoo027-001-site1.ntempurl.com${editingBanner.mobileImageUrl}`}
                                 alt="Mobile"
                                 className="object-cover w-full h-full"
                             />
@@ -203,7 +203,7 @@ export default function BannersPage() {
                 const url = row.original.imageUrl;
                 return url ? (
                     <div className="h-10 w-20 overflow-hidden rounded-md border">
-                        <img src={`https://evto027-001-site1.ktempurl.com${url}`} alt="Banner" className="h-full w-full object-cover" />
+                        <img src={`https://avtoo027-001-site1.ntempurl.com${url}`} alt="Banner" className="h-full w-full object-cover" />
                     </div>
                 ) : (
                     <div className="flex h-10 w-20 items-center justify-center rounded-md border bg-muted">

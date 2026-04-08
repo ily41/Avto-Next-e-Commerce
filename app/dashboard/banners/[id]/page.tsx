@@ -59,6 +59,9 @@ export default function BannerDesignPage() {
         buttonColor: "#000000",
         buttonTextColor: "#ffffff",
         buttonBorderRadius: 4,
+        buttonPaddingX: 24,
+        buttonPaddingY: 8,
+        buttonFontSize: 14,
     });
 
     useEffect(() => {
@@ -90,6 +93,9 @@ export default function BannerDesignPage() {
                     buttonColor: banner.buttonColor || "#000000",
                     buttonTextColor: banner.buttonTextColor || "#ffffff",
                     buttonBorderRadius: banner.buttonBorderRadius || 4,
+                    buttonPaddingX: banner.buttonPaddingX || 24,
+                    buttonPaddingY: banner.buttonPaddingY || 8,
+                    buttonFontSize: banner.buttonFontSize || 14,
                 });
                 setIsInitialized(true);
             }
@@ -170,6 +176,9 @@ export default function BannerDesignPage() {
                     buttonColor: styles.buttonColor,
                     buttonTextColor: styles.buttonTextColor,
                     buttonBorderRadius: styles.buttonBorderRadius,
+                    buttonPaddingX: styles.buttonPaddingX,
+                    buttonPaddingY: styles.buttonPaddingY,
+                    buttonFontSize: styles.buttonFontSize,
                 },
             }).unwrap();
             toast.success("Banner aesthetics updated successfully!");
@@ -187,7 +196,7 @@ export default function BannerDesignPage() {
     }
 
     const bannerBackground = banner.imageUrl
-        ? `url(https://evto027-001-site1.ktempurl.com${banner.imageUrl})`
+        ? `url(https://avtoo027-001-site1.ntempurl.com${banner.imageUrl})`
         : "linear-gradient(135deg, #4f46e5, #0ea5e9)";
 
     return (
@@ -261,11 +270,13 @@ export default function BannerDesignPage() {
                             {banner.buttonVisible && banner.buttonText && (
                                 <DraggableItem id="button" x={positions.button.x} y={positions.button.y}>
                                     <button
-                                        className="px-6 py-2 font-semibold shadow-md focus:outline-none select-none"
+                                        className="font-semibold shadow-md focus:outline-none select-none"
                                         style={{
                                             backgroundColor: styles.buttonColor,
                                             color: styles.buttonTextColor,
                                             borderRadius: `${styles.buttonBorderRadius}px`,
+                                            padding: `${styles.buttonPaddingY}px ${styles.buttonPaddingX}px`,
+                                            fontSize: `${styles.buttonFontSize}px`,
                                         }}
                                         onClick={(e) => e.preventDefault()}
                                     >
@@ -339,6 +350,18 @@ export default function BannerDesignPage() {
                         <div className="space-y-2 pt-2">
                             <Label>Corner Radius ({styles.buttonBorderRadius}px)</Label>
                             <Slider value={[styles.buttonBorderRadius]} min={0} max={40} step={1} onValueChange={(val) => setStyles(s => ({ ...s, buttonBorderRadius: val[0] }))} />
+                        </div>
+                        <div className="space-y-2 pt-2">
+                            <Label>Font Size ({styles.buttonFontSize}px)</Label>
+                            <Slider value={[styles.buttonFontSize]} min={10} max={48} step={1} onValueChange={(val) => setStyles(s => ({ ...s, buttonFontSize: val[0] }))} />
+                        </div>
+                        <div className="space-y-2 pt-2">
+                            <Label>Horizontal Padding ({styles.buttonPaddingX}px)</Label>
+                            <Slider value={[styles.buttonPaddingX]} min={0} max={100} step={1} onValueChange={(val) => setStyles(s => ({ ...s, buttonPaddingX: val[0] }))} />
+                        </div>
+                        <div className="space-y-2 pt-2">
+                            <Label>Vertical Padding ({styles.buttonPaddingY}px)</Label>
+                            <Slider value={[styles.buttonPaddingY]} min={0} max={100} step={1} onValueChange={(val) => setStyles(s => ({ ...s, buttonPaddingY: val[0] }))} />
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://evto027-001-site1.ktempurl.com';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://avtoo027-001-site1.ntempurl.com';
 export const api = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({
@@ -18,4 +18,4 @@ export const api = createApi({
     tagTypes: ["Product", "Brand", "Category", "ProductSpecification", "Banner", "User", "Filter", "PromoCode", "Favorite", "Cart", "Payment", "Wallet", "Order", "Statistics", "Settings"],
     // We leave endpoints empty here and inject them from other files
     endpoints: () => ({}),
-});
+})

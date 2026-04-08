@@ -20,7 +20,6 @@ export const metadata: Metadata = {
   description: "Avto027",
 };
 
-import { Suspense } from "react";
 import { Toaster } from "@/components/ui/sonner";
 
 import StoreProvider from "@/lib/providers/store-provider";
@@ -46,9 +45,7 @@ export default function RootLayout({
         >
           <StoreProvider>
             <div className="min-h-screen flex flex-col bg-white">
-              <Suspense>
-                <NavbarWrapper />
-              </Suspense>
+              <NavbarWrapper />
               <main className="flex-grow">
                 {children}
               </main>

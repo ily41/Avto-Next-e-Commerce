@@ -91,7 +91,7 @@ export type ProductFilterCriteria = {
 };
 
 export type ProductFilterRequest = {
-  categoryId?: string;
+  categoryIds?: string[];
   brandSlug?: string;
   isHotDeal?: boolean;
   isRecommended?: boolean;

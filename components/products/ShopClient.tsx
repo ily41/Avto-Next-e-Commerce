@@ -16,7 +16,8 @@ export default function ShopClient({ initialSearchParams }: { initialSearchParam
   const pathname = usePathname();
 
   // URL synced state
-  const categorySlug = searchParams.get("category") || initialSearchParams.category || undefined;
+  const categoryParam = searchParams.get("category") || initialSearchParams.category || "";
+  const categorySlugs = categoryParam ? categoryParam.split(",") : [];
   const brandSlug = searchParams.get("brand") || initialSearchParams.brand || undefined;
   const searchTerm = searchParams.get("searchTerm") || initialSearchParams.searchTerm || undefined;
   const sortByParam = searchParams.get("sort") || "default"; 
@@ -37,15 +38,27 @@ export default function ShopClient({ initialSearchParams }: { initialSearchParam
   // RTK Queries
   const { data: categories } = useGetCategoriesQuery();
   
-  // Find category by slug (recursively for subcategories)
-  const categoryId = (() => {
-    if (!categorySlug || !categories) return undefined;
-    for (const cat of categories) {
-      if (cat.slug === categorySlug) return cat.id;
-      const foundSub = cat.subCategories?.find((s: any) => s.slug === categorySlug);
-      if (foundSub) return foundSub.id;
-    }
-    return undefined;
+  // Find category IDs by slugs
+  const categoryIds = (() => {
+    if (categorySlugs.length === 0 || !categories) return undefined;
+    const ids: string[] = [];
+    
+    // Flatten categories for easier searching
+    const flatList: any[] = [];
+    const flatten = (cats: any[]) => {
+      cats.forEach(c => {
+        flatList.push(c);
+        if (c.subCategories) flatten(c.subCategories);
+      });
+    };
+    flatten(categories);
+
+    categorySlugs.forEach(slug => {
+      const found = flatList.find(c => c.slug === slug);
+      if (found) ids.push(found.id);
+    });
+
+    return ids.length > 0 ? ids : undefined;
   })();
 
   // Sorting parser
@@ -79,7 +92,7 @@ export default function ShopClient({ initialSearchParams }: { initialSearchParam
   }));
 
   const queryArgs = {
-    categoryId: categoryId,
+    categoryIds: categoryIds,
     brandSlug: brandSlug,
     searchTerm: searchTerm,
     filterCriteria: filterCriteria.length > 0 ? filterCriteria : undefined,
@@ -136,7 +149,7 @@ export default function ShopClient({ initialSearchParams }: { initialSearchParam
                 </div>
 
                 <FilterSidebar 
-                  currentCategory={categorySlug} 
+                  currentCategories={categorySlugs} 
                   currentBrand={brandSlug}
                   currentFilters={customFiltersFromUrl}
                   onFilterChange={setQueryParam} 

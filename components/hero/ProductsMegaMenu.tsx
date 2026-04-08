@@ -29,7 +29,7 @@ const ProductsMegaMenu = ({ isOpen, setHoveredLink }: ProductsMegaMenuProps) => 
     // Fetch products for the dropdown, filtered by selected category
     const { data: productData, isFetching: isProductsFetching } = useFilterProductsQuery({
         pageSize: 8,
-        categoryId: selectedCategoryId || undefined
+        categoryIds: selectedCategoryId ? [selectedCategoryId] : undefined
     });
     const products = productData?.products || [];
 

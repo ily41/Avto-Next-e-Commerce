@@ -7,14 +7,14 @@ import { useGetFiltersQuery } from "@/lib/store/filters/apislice";
 import { IconCheck, IconChevronDown, IconChevronRight } from "@tabler/icons-react";
 
 interface FilterSidebarProps {
-   currentCategory?: string;
+   currentCategories?: string[];
    currentBrand?: string;
    currentFilters?: Record<string, string[]>;
    onFilterChange: (key: string, value: string | null) => void;
 }
 
 export default function FilterSidebar({
-   currentCategory,
+   currentCategories = [],
    currentBrand,
    currentFilters,
    onFilterChange
@@ -25,16 +25,16 @@ export default function FilterSidebar({
 
    const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
 
-   // Auto-expand parent if currentCategory is a subcategory
+   // Auto-expand parent if any currentCategory is a subcategory
    useEffect(() => {
-      if (currentCategory && categories) {
+      if (currentCategories.length > 0 && categories) {
          categories.forEach(cat => {
-            if (cat.subCategories?.some(sub => sub.slug === currentCategory)) {
+            if (cat.subCategories?.some(sub => currentCategories.includes(sub.slug))) {
                setExpandedCategories(prev => ({ ...prev, [cat.id]: true }));
             }
          });
       }
-   }, [currentCategory, categories]);
+   }, [currentCategories, categories]);
 
    const toggleExpand = (e: React.MouseEvent, categoryId: string) => {
       e.preventDefault();
@@ -43,6 +43,16 @@ export default function FilterSidebar({
          ...prev,
          [categoryId]: !prev[categoryId]
       }));
+   };
+
+   const handleCategoryToggle = (slug: string) => {
+      let nextCategories;
+      if (currentCategories.includes(slug)) {
+         nextCategories = currentCategories.filter(s => s !== slug);
+      } else {
+         nextCategories = [...currentCategories, slug];
+      }
+      onFilterChange("category", nextCategories.length > 0 ? nextCategories.join(",") : null);
    };
 
 
@@ -59,7 +69,7 @@ export default function FilterSidebar({
                {categories?.map((cat) => {
                   const hasSubCategories = cat.subCategories && cat.subCategories.length > 0;
                   const isExpanded = expandedCategories[cat.id];
-                  const isSelected = currentCategory === cat.slug;
+                  const isSelected = currentCategories.includes(cat.slug);
 
                   return (
                      <div key={cat.id} className="flex flex-col">
@@ -67,7 +77,7 @@ export default function FilterSidebar({
                            <div
                               className="relative flex-grow flex items-center gap-3 py-1.5 cursor-pointer"
                               onClick={() => {
-                                 onFilterChange("category", isSelected ? null : cat.slug);
+                                 handleCategoryToggle(cat.slug);
                                  if (hasSubCategories && !isExpanded) {
                                     setExpandedCategories(prev => ({ ...prev, [cat.id]: true }));
                                  }
@@ -99,12 +109,12 @@ export default function FilterSidebar({
                         {hasSubCategories && isExpanded && (
                            <div className="flex flex-col gap-1 ml-7 mt-1 border-l border-gray-100 pl-3">
                               {cat.subCategories?.map((sub) => {
-                                 const isSubSelected = currentCategory === sub.slug;
+                                 const isSubSelected = currentCategories.includes(sub.slug);
                                  return (
                                     <div 
                                        key={sub.id} 
                                        className="relative flex items-center gap-3 py-1 cursor-pointer group/sub"
-                                       onClick={() => onFilterChange("category", isSubSelected ? null : sub.slug)}
+                                       onClick={() => handleCategoryToggle(sub.slug)}
                                     >
                                        <div className={`w-3.5 h-3.5 rounded-sm border ${isSubSelected ? "bg-blue-600 border-blue-600" : "border-gray-300 group-hover/sub:border-blue-500"} flex items-center justify-center transition-colors flex-shrink-0`}>
                                           {isSubSelected && <IconCheck size={10} className="text-white" />}
