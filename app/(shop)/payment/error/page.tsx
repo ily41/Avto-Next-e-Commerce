@@ -1,5 +1,6 @@
 import { PaymentErrorClient } from "@/components/payment/PaymentErrorClient";
 import { Suspense } from "react";
+export const dynamic = 'force-dynamic';
 
 export default function PaymentErrorPage() {
   return (
