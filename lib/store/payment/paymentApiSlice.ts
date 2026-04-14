@@ -22,6 +22,7 @@ export interface PaymentInitiateResponse {
   status: string;
   transaction_id: string;
   payment_url: string;
+  redirect_url: string; // Added to match backend/component changes
   message?: string;
 }
 
