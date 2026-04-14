@@ -345,14 +345,14 @@ export default function AdminOrderDetailPage() {
 
           {/* Order Notes */}
           {order.notes && (
-            <Card className="border-gray-100 shadow-sm rounded-[32px] overflow-hidden bg-white">
-              <CardHeader className="bg-gray-50/50 border-b border-gray-50 px-8 py-6">
-                <CardTitle className="text-[11px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
+            <Card className="border-white/5 shadow-2xl rounded-[32px] overflow-hidden bg-[#141414] text-white">
+              <CardHeader className="bg-white/5 border-b border-white/5 px-8 py-6">
+                <CardTitle className="text-[11px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-2">
                    Notes
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-8">
-                 <p className="text-sm text-gray-600 italic bg-gray-50 p-5 rounded-3xl border border-gray-100">
+                 <p className="text-sm text-gray-400 italic bg-white/[0.02] p-6 rounded-[24px] border border-white/5">
                    "{order.notes}"
                  </p>
               </CardContent>
@@ -375,12 +375,12 @@ function DetailItem({ label, value, icon, isMono = false, className = "" }: {
 }) {
   return (
     <div className={`flex items-start gap-4 ${className}`}>
-      <div className="h-10 w-10 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 shrink-0">
+      <div className="h-10 w-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-gray-500 shrink-0">
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">{label}</p>
-        <p className={`text-sm font-bold text-gray-900 break-words mt-0.5 leading-snug ${isMono ? "font-mono" : ""}`}>
+        <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">{label}</p>
+        <p className={`text-sm font-bold text-white break-words mt-0.5 leading-snug ${isMono ? "font-mono" : ""}`}>
           {value}
         </p>
       </div>
