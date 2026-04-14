@@ -5,8 +5,9 @@
   
   "scripts": {
   "dev": "next dev",
-  "build": "next build --no-turbo", 
-  "start": "next start"
+  "build": "next build --webpack", 
+  "start": "next start",
+  "lint": "next lint"
 },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
