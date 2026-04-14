@@ -91,8 +91,8 @@ export default function UsersPage() {
             key: "isActive",
             label: "Status",
             render: (value) => (
-                <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${value ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
-                    {value ? "Aktiv" : "Qeyri-aktiv"}
+                <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest ${value ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20" : "bg-rose-500/10 text-rose-500 border border-rose-500/20"}`}>
+                    {value ? "Aktiv" : "Deaktiv"}
                 </div>
             )
         },
@@ -129,31 +129,56 @@ export default function UsersPage() {
     }
 
     return (
-        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
+        <div className="flex flex-col gap-8 py-8 px-6 md:px-10 min-h-screen bg-[#0a0a0a] text-white">
+            <style dangerouslySetInnerHTML={{ __html: `
+                .admin-table-dark table thead tr {
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+                    background: rgba(255, 255, 255, 0.02) !important;
+                }
+                .admin-table-dark table thead th {
+                    color: #6b7280 !important;
+                    font-weight: 900 !important;
+                    text-transform: uppercase !important;
+                    letter-spacing: 0.1em !important;
+                    font-size: 10px !important;
+                }
+                .admin-table-dark table tbody tr {
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+                    background: transparent !important;
+                }
+                .admin-table-dark table tbody tr:hover {
+                    background: rgba(255, 255, 255, 0.03) !important;
+                }
+                .admin-table-dark table td {
+                    color: #e5e7eb !important;
+                }
+                .admin-table-dark .rounded-md.border {
+                    border-color: rgba(255, 255, 255, 0.05) !important;
+                }
+            `}} />
             <div className="flex justify-between items-center">
-                <h1 className="text-base md:text-xl lg:text-2xl font-bold">İstifadəçilər</h1>
-                {/* No Add Popup here as requested */}
+                <h1 className="text-3xl font-black text-white tracking-tight">İstifadəçilər</h1>
             </div>
 
             {isFetchingUsers ? (
                 <div className="flex flex-col items-center justify-center min-h-[400px]">
-                    <div className="flex flex-col items-center gap-2">
-                        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-                        <p className="text-muted-foreground animate-pulse">İstifadəçilər yüklənir...</p>
-                    </div>
+                    <Loader2 className="h-10 w-10 animate-spin text-blue-500" />
+                    <p className="text-gray-500 font-bold mt-4 uppercase tracking-widest text-xs">Yüklənir...</p>
                 </div>
             ) : (
-                <DataTable
-                    columns={columns}
-                    data={usersData?.users || []}
-                    manualPagination={true}
-                    pageCount={usersData?.totalPages || 0}
-                    pagination={{ pageIndex, pageSize }}
-                    onPaginationChange={setPagination}
-                    filterMode="server"
-                    onFilterChange={setSearchTerm}
-                    filterColumn="email"
-                />
+                <div className="admin-table-dark">
+                    <DataTable
+                        columns={columns}
+                        data={usersData?.items || []}
+                        manualPagination={true}
+                        pageCount={usersData?.totalPages || 0}
+                        pagination={{ pageIndex, pageSize }}
+                        onPaginationChange={setPagination}
+                        filterMode="server"
+                        onFilterChange={setSearchTerm}
+                        filterColumn="email"
+                    />
+                </div>
             )}
 
             {editingUser && (
