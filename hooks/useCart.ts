@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import Cookies from "js-cookie";
+import { useSelector, useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 import {
   useGetCartQuery,
   useAddItemMutation,
@@ -8,17 +9,18 @@ import {
   useDeleteCartMutation,
   useApplyPromoMutation,
   useRemovePromoMutation,
-  Cart,
   CartItem
 } from "../lib/store/cart/cartApiSlice";
 import { Product } from "../lib/api/types";
-import { v4 as uuidv4 } from "uuid";
-
-const GUEST_CART_KEY = "avto_guest_cart";
+import { useAuth } from "./useAuth";
+import { RootState } from "../lib/store/store";
+import { setGuestItems, clearGuestCart as clearGuestCartAction } from "../lib/store/cart/cartSlice";
+import { toast } from "sonner";
 
 export function useCart() {
-  const [isAuth, setIsAuth] = useState(false);
-  const [guestCart, setGuestCart] = useState<CartItem[]>([]);
+  const dispatch = useDispatch();
+  const { isAuth } = useAuth();
+  const guestCart = useSelector((state: RootState) => state.cart.guestItems);
   const [isSyncing, setIsSyncing] = useState(false);
 
   // RTK Query hooks
@@ -34,137 +36,135 @@ export function useCart() {
   const [removePromoApi] = useRemovePromoMutation();
   const [deleteCartApi] = useDeleteCartMutation();
 
-  // Evaluate authentication status
-  useEffect(() => {
-    const token = Cookies.get("token");
-    setIsAuth(!!token);
-  }, []);
-
-  // Hydrate guest cart from localStorage
-  useEffect(() => {
-    if (!isAuth) {
-      const storedMap = localStorage.getItem(GUEST_CART_KEY);
-      if (storedMap) {
-        try {
-          const parsed = JSON.parse(storedMap);
-          setGuestCart(parsed);
-        } catch (e) {
-          console.error("Failed to parse guest cart", e);
-        }
-      }
-    }
-  }, [isAuth]);
-
   // Sync logic to run exactly once when transitioning to auth with items in guest cart
   const syncGuestCart = useCallback(async () => {
-    const storedMap = localStorage.getItem(GUEST_CART_KEY);
-    if (storedMap) {
+    if (guestCart.length > 0) {
+      setIsSyncing(true);
       try {
-        const parsed: CartItem[] = JSON.parse(storedMap);
-        if (parsed.length > 0) {
-          setIsSyncing(true);
-          // Use Promise.allSettled to ensure we know exactly which ones succeeded
-          const syncPromises = parsed.map((item) =>
-            addItemApi({
-              productId: item.productId,
-              quantity: item.quantity,
-            }).unwrap()
-          );
+        const syncPromises = guestCart.map((item) =>
+          addItemApi({
+            productId: item.productId,
+            quantity: item.quantity,
+          }).unwrap()
+        );
 
-          const results = await Promise.allSettled(syncPromises);
+        const results = await Promise.allSettled(syncPromises);
 
-          const failedItems: CartItem[] = [];
-          results.forEach((result, index) => {
-            if (result.status === "rejected") {
-              console.error("Failed to sync item", parsed[index].productId, result.reason);
-              failedItems.push(parsed[index]);
-            }
-          });
-
-          if (failedItems.length > 0) {
-            localStorage.setItem(GUEST_CART_KEY, JSON.stringify(failedItems));
-            setGuestCart(failedItems);
-          } else {
-            localStorage.removeItem(GUEST_CART_KEY);
-            setGuestCart([]);
+        const failedItems: CartItem[] = [];
+        results.forEach((result, index) => {
+          if (result.status === "rejected") {
+            console.error("Failed to sync item", guestCart[index].productId, result.reason);
+            failedItems.push(guestCart[index]);
           }
-          refetch(); // Ensure Cart is up to date after sync
+        });
+
+        if (failedItems.length > 0) {
+          toast.error(`${failedItems.length} məhsul səbətə sinxronizasiya edilə bilmədi.`);
         }
+        // Həmişə qonaq səbətini təmizlə ki, sonsuz dövrə (infinite loop) yaranmasın
+        dispatch(clearGuestCartAction());
+        refetch();
       } catch (e) {
         console.error("Failed to sync guest cart", e);
+        toast.error("Səbəti sinxronlaşdırmaq mümkün olmadı.");
       } finally {
         setIsSyncing(false);
       }
     }
-  }, [addItemApi, refetch]);
+  }, [addItemApi, refetch, guestCart, dispatch]);
 
   useEffect(() => {
-    if (isAuth && !isSyncing) {
+    if (isAuth && !isSyncing && guestCart.length > 0) {
       syncGuestCart();
     }
-  }, [isAuth, syncGuestCart, isSyncing]);
-
-  const saveGuestCart = (newCart: CartItem[]) => {
-    setGuestCart(newCart);
-    localStorage.setItem(GUEST_CART_KEY, JSON.stringify(newCart));
-  };
+  }, [isAuth, syncGuestCart, isSyncing, guestCart.length]);
 
   const addItem = async (product: Product, quantity: number = 1) => {
     if (isAuth) {
-      await addItemApi({ productId: product.id, quantity }).unwrap();
+      try {
+        await addItemApi({ productId: product.id, quantity }).unwrap();
+      } catch (err: any) {
+        toast.error(err?.data?.message || "Məhsul səbətə əlavə edilə bilmədi.");
+        return;
+      }
     } else {
-      const existing = guestCart.find((i) => i.productId === product.id);
-      let newCart = [...guestCart];
-      if (existing) {
-        existing.quantity += quantity;
+      const existingIndex = guestCart.findIndex((i) => i.productId === product.id);
+      let newCart;
+
+      if (existingIndex > -1) {
+        newCart = guestCart.map((item, index) => {
+          if (index === existingIndex) {
+            const newQuantity = item.quantity + quantity;
+            return {
+              ...item,
+              quantity: newQuantity,
+              totalPrice: (item.unitPrice || 0) * newQuantity
+            };
+          }
+          return item;
+        });
       } else {
         const newItem: CartItem = {
           id: uuidv4(),
           productId: product.id,
           productName: product.name,
-          productSku: "", // Fill if available
+          productSku: product.sku || "",
           productDescription: product.shortDescription || "",
           productImageUrl: product.primaryImageUrl || product.imageUrl,
           quantity: quantity,
           unitPrice: product.discountedPrice || product.price,
           totalPrice: (product.discountedPrice || product.price) * quantity,
           createdAt: new Date().toISOString(),
-          product: product, // Store full product for UI convenience
+          product: product,
         };
-        newCart.push(newItem);
+        newCart = [...guestCart, newItem];
       }
-      saveGuestCart(newCart);
+      dispatch(setGuestItems(newCart));
     }
   };
 
   const updateQuantity = async (cartItemId: string, productId: string, quantity: number) => {
     if (isAuth) {
-      await updateItemApi({ cartItemId, quantity }).unwrap();
+      try {
+        await updateItemApi({ cartItemId, quantity }).unwrap();
+      } catch (err: any) {
+        toast.error(err?.data?.message || "Miqdar yenilənə bilmədi.");
+        return;
+      }
     } else {
       const newCart = guestCart.map(item =>
         item.productId === productId
           ? { ...item, quantity, totalPrice: (item.unitPrice || 0) * quantity }
           : item
       );
-      saveGuestCart(newCart);
+      dispatch(setGuestItems(newCart));
     }
   };
 
   const removeItem = async (cartItemId: string, productId: string) => {
     if (isAuth) {
-      await removeItemApi(cartItemId).unwrap();
+      try {
+        await removeItemApi(cartItemId).unwrap();
+      } catch (err: any) {
+        toast.error(err?.data?.message || "Məhsul silinə bilmədi.");
+        return;
+      }
     } else {
       const newCart = guestCart.filter((item) => item.productId !== productId);
-      saveGuestCart(newCart);
+      dispatch(setGuestItems(newCart));
     }
   };
 
   const deleteCart = async () => {
     if (isAuth) {
-      await deleteCartApi().unwrap();
+      try {
+        await deleteCartApi().unwrap();
+      } catch (err: any) {
+        toast.error(err?.data?.message || "Səbət silinə bilmədi.");
+        return;
+      }
     } else {
-      setGuestCart([]);
-      localStorage.removeItem(GUEST_CART_KEY);
+      dispatch(clearGuestCartAction());
     }
   };
 

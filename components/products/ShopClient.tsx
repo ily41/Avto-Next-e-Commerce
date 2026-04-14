@@ -127,14 +127,14 @@ export default function ShopClient({ initialSearchParams }: { initialSearchParam
             {/* Mobile Sidebar Overlay */}
             {isSidebarOpen && (
                 <div 
-                    className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] lg:hidden"
+                    className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[110] lg:hidden"
                     onClick={() => setIsSidebarOpen(false)}
                 />
             )}
 
             {/* Sidebar Content */}
             <aside className={cn(
-                "fixed inset-y-0 left-0 w-[300px] bg-white z-[70] p-6 overflow-y-auto transition-transform duration-300 transform lg:static lg:w-full lg:translate-x-0 lg:p-0 lg:bg-transparent lg:block lg:sticky lg:top-4 lg:h-fit",
+                "fixed inset-y-0 left-0 w-[300px] bg-white z-[120] lg:z-10 p-6 overflow-y-auto transition-transform duration-300 transform lg:static lg:w-full lg:translate-x-0 lg:p-0 lg:bg-transparent lg:block lg:sticky lg:top-4 lg:h-fit",
                 isSidebarOpen ? "translate-x-0" : "-translate-x-full"
             )}>
                 {/* Mobile Header */}

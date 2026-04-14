@@ -64,7 +64,7 @@ export function Navbar() {
     const handleDropdownClose = () => setIsSearchFocused(false);
 
     return (
-        <header className="sticky top-0 z-50 w-full bg-white flex flex-col items-center shadow-sm">
+        <header className="sticky top-0 z-[100] w-full bg-white flex flex-col items-center shadow-sm">
             {/* 1. Mobile Search Overlay (Fullscreen when header icon is clicked) */}
             <MobileSearchOverlay 
                 isActive={isMobileSearchActive}

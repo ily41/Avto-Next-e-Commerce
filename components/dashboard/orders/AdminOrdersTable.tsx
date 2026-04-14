@@ -1,0 +1,258 @@
+"use client";
+
+import * as React from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import { 
+  MoreHorizontal, 
+  Eye, 
+  Truck, 
+  Send, 
+  Clock, 
+  CheckCircle2, 
+  XCircle, 
+  AlertTriangle,
+  RefreshCcw,
+  ExternalLink
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import { DataTable } from "@/components/data-table/data-tables";
+import { 
+  Order, 
+  useGetAdminOrdersQuery, 
+  useUpdateOrderStatusMutation, 
+  useSendToAzerpostMutation 
+} from "@/lib/store/order/orderApiSlice";
+import { formatDate } from "@/lib/utils";
+import { toast } from "sonner";
+import Link from "next/link";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+// ── Status Enums & Labels ──────────────────────────────────────────────────────
+const STATUS_ENUMS = [
+  { value: 0, label: "Pending",          color: "bg-zinc-100  text-zinc-600    border-zinc-200" },
+  { value: 1, label: "PaymentInitiated", color: "bg-blue-50    text-blue-600    border-blue-100" },
+  { value: 2, label: "Paid",             color: "bg-blue-600   text-white       border-transparent" },
+  { value: 3, label: "Processing",       color: "bg-blue-50    text-blue-600    border-blue-100" },
+  { value: 4, label: "Shipped",          color: "bg-amber-50   text-amber-600   border-amber-100" },
+  { value: 5, label: "Delivered",        color: "bg-emerald-50 text-emerald-600 border-emerald-100" },
+  { value: 6, label: "Cancelled",        color: "bg-rose-50    text-rose-600    border-rose-100" },
+  { value: 7, label: "Refunded",         color: "bg-zinc-50    text-zinc-400    border-zinc-100" },
+  { value: 8, label: "Failed",           color: "bg-rose-50    text-rose-600    border-rose-100" },
+];
+
+const getStatusById = (id: number) => STATUS_ENUMS.find(s => s.value === id) || STATUS_ENUMS[0];
+const getStatusByName = (name: string) => STATUS_ENUMS.find(s => s.label.toLowerCase() === name.toLowerCase()) || STATUS_ENUMS[0];
+
+// ── Component ──────────────────────────────────────────────────────────────────
+export function AdminOrdersTable() {
+  const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 10 });
+  const [statusFilter, setStatusFilter] = React.useState<string | undefined>(undefined);
+
+  const { data, isLoading, isFetching } = useGetAdminOrdersQuery({
+    page: pagination.pageIndex + 1,
+    pageSize: pagination.pageSize,
+    status: statusFilter,
+  });
+
+  const [updateStatus, { isLoading: isUpdatingStatus }] = useUpdateOrderStatusMutation();
+  const [sendToAzerpost, { isLoading: isSendingToAzerpost }] = useSendToAzerpostMutation();
+
+  const handleStatusChange = async (orderId: string, statusValue: number) => {
+    try {
+      await updateStatus({ id: orderId, status: statusValue }).unwrap();
+      toast.success("Order status updated successfully");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to update status");
+    }
+  };
+
+  const handleSendToAzerpost = async (orderId: string) => {
+    try {
+      const result = await sendToAzerpost(orderId).unwrap();
+      toast.success(result.message);
+    } catch (err: any) {
+      toast.error(err?.data?.error || "Azerpost dispatch failed");
+    }
+  };
+
+  const columns: ColumnDef<Order>[] = [
+    {
+      accessorKey: "orderNumber",
+      header: "Order #",
+      cell: ({ row }) => (
+        <div className="font-bold flex items-center gap-2 text-white">
+          {row.getValue("orderNumber")}
+          <Link href={`/dashboard/orders/${row.original.id}`}>
+            <ExternalLink className="h-3 w-3 text-gray-500 hover:text-blue-500 transition-colors" />
+          </Link>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "customerName",
+      header: "Customer",
+      cell: ({ row }) => (
+        <div className="flex flex-col">
+          <span className="font-medium text-gray-200">{row.original.customerName}</span>
+          <span className="text-[10px] text-gray-500">{row.original.customerEmail}</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "totalAmount",
+      header: "Total",
+      cell: ({ row }) => <span className="font-bold text-white">${row.original.totalAmount.toFixed(2)}</span>,
+    },
+    {
+      accessorKey: "createdAt",
+      header: "Date",
+      cell: ({ row }) => <span className="text-gray-500 text-xs">{formatDate(row.original.createdAt)}</span>,
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => {
+        const currentStatus = getStatusByName(row.original.status);
+        return (
+          <Select
+            disabled={isUpdatingStatus}
+            onValueChange={(val) => handleStatusChange(row.original.id, parseInt(val))}
+            defaultValue={currentStatus.value.toString()}
+          >
+            <SelectTrigger className={`h-8 w-[140px] text-xs font-bold bg-transparent border-white/10 ${currentStatus.color}`}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
+              {STATUS_ENUMS.map((s) => (
+                <SelectItem key={s.value} value={s.value.toString()} className="text-xs hover:bg-white/10">
+                  {s.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        );
+      },
+    },
+    {
+      id: "azerpost",
+      header: "Azerpost Tracking",
+      cell: ({ row }) => {
+        const order = row.original;
+        
+        if (order.azerpostOrderId) {
+          return (
+            <div className="flex flex-col gap-1">
+              <Badge variant="outline" className="text-[10px] font-mono bg-blue-50 text-blue-700 border-blue-200">
+                {order.azerpostOrderId}
+              </Badge>
+              <a 
+                href={`https://azerpost.az/tracking?id=${order.azerpostOrderId}`} 
+                target="_blank" 
+                className="text-[10px] text-blue-600 hover:underline flex items-center gap-1"
+              >
+                Track <ExternalLink className="h-2 w-2" />
+              </a>
+            </div>
+          );
+        }
+
+        const isPaidOrProcessing = ["paid", "processing", "shipped"].includes(order.status.toLowerCase());
+        
+        if (isPaidOrProcessing) {
+          return (
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-7 text-[10px] font-bold gap-1 transition-all hover:bg-blue-50 hover:text-blue-600"
+              onClick={() => handleSendToAzerpost(order.id)}
+              disabled={isSendingToAzerpost}
+            >
+              <Send className="h-3 w-3" /> Send to Azerpost
+            </Button>
+          );
+        }
+
+        return <span className="text-[10px] text-gray-400">—</span>;
+      },
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const order = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[160px]">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem asChild>
+                <Link href={`/dashboard/orders/${order.id}`} className="flex items-center gap-2 cursor-pointer">
+                  <Eye className="h-4 w-4" /> View Details
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem 
+                className="text-red-600 focus:text-red-600 cursor-pointer"
+                onClick={() => handleStatusChange(order.id, 6)} // Cancel
+              >
+                <XCircle className="h-4 w-4 mr-2" /> Cancel Order
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Select onValueChange={(val) => setStatusFilter(val === "all" ? undefined : val)}>
+            <SelectTrigger className="w-[180px] bg-[#1a1a1a] border-white/5 text-white">
+              <SelectValue placeholder="All Statuses" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
+              <SelectItem value="all">All Statuses</SelectItem>
+              {STATUS_ENUMS.map(s => (
+                <SelectItem key={s.value} value={s.label}>{s.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {isFetching && <RefreshCcw className="h-4 w-4 animate-spin text-gray-500" />}
+        </div>
+      </div>
+
+      <div className="admin-table-dark">
+        <DataTable
+          columns={columns}
+          data={data?.items || []}
+          pageCount={data?.totalPages || 0}
+          manualPagination={true}
+          pagination={pagination}
+          onPaginationChange={setPagination}
+          filterMode="server"
+        />
+      </div>
+    </div>
+  );
+}

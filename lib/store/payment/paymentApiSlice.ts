@@ -1,3 +1,5 @@
+"use client";
+
 import { api } from "../api";
 
 export interface PaymentInitiateRequest {
@@ -6,8 +8,21 @@ export interface PaymentInitiateRequest {
   customerPhone: string;
   shippingAddress: string;
   notes?: string;
-  installmentOptionId?: string;
+  deliveryPostCode: string;
+  userPassport: string;
+  packageWeight?: number;
+  fragile?: boolean;
+  /** 0 = post_office_lcl, 1 = home_delivery_lcl */
+  deliveryType: 0 | 1;
   walletAmountToUse?: number;
+  installmentOptionId?: string | null;
+}
+
+export interface PaymentInitiateResponse {
+  status: string;
+  transaction_id: string;
+  payment_url: string;
+  message?: string;
 }
 
 export interface PaymentResultRequest {
@@ -22,13 +37,13 @@ export interface PaymentResultRequest {
 
 export const paymentApiSlice = api.injectEndpoints({
   endpoints: (builder) => ({
-    initiatePayment: builder.mutation<{ redirectUrl?: string }, PaymentInitiateRequest>({
+    initiatePayment: builder.mutation<PaymentInitiateResponse, PaymentInitiateRequest>({
       query: (body) => ({
         url: "/Payment/initiate",
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Cart"], // Empty the cart on successful payment initiation or depend on webhook
+      invalidatesTags: ["Cart"],
     }),
     getPaymentSuccess: builder.query<any, { order_id: string; transaction_id: string }>({
       query: ({ order_id, transaction_id }) => ({

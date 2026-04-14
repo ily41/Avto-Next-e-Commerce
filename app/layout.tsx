@@ -25,6 +25,7 @@ import { Toaster } from "@/components/ui/sonner";
 import StoreProvider from "@/lib/providers/store-provider";
 import { NavbarWrapper } from "@/components/NavbarWrapper";
 import { FooterWrapper } from "@/components/FooterWrapper";
+import { SplashLoader } from "@/components/SplashLoader";
 
 export default function RootLayout({
   children,
@@ -37,6 +38,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
+        <SplashLoader />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

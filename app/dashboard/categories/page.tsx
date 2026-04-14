@@ -23,7 +23,7 @@ export default function Page() {
 
     const categorySchema = z.object({
         name: z.string().min(2, "Name is required"),
-        description: z.string().min(5, "Description must be at least 5 characters"),
+        description: z.string().optional(),
         sortOrder: z.number().min(1, "Sort order must be at least 1"),
         parentCategoryId: z.string().nullable().optional(),
         imageFile: z.instanceof(File, { message: "Image is required" }).nullable().optional(),
@@ -32,7 +32,6 @@ export default function Page() {
 
     const categoryFields: FieldConfig[] = [
         { name: "name", label: "Kateqoriyanın Adı", type: "text", placeholder: "məsələn: Köynəklər" },
-        { name: "description", label: "Təsvir", type: "textarea", placeholder: "Kateqoriya təsviri..." },
         { name: "sortOrder", label: "Sıralama", type: "number" },
         {
             name: "parentCategoryId",
@@ -134,7 +133,7 @@ export default function Page() {
                     fields={categoryFields}
                     isLoading={isCreating}
                     onSubmit={async (values) => {
-                        await createCategory(values).unwrap();
+                        await createCategory({ ...values, description: "" }).unwrap();
                         toast.success("Kateqoriya əlavə edildi!");
                     }}
                 />
@@ -162,7 +161,7 @@ export default function Page() {
                 isLoading={isUpdating}
                 onSubmit={async (values) => {
                     if (!editingCategory) return;
-                    await updateCategory({ ...values, id: editingCategory.id }).unwrap();
+                    await updateCategory({ ...values, id: editingCategory.id, description: "" }).unwrap();
                     toast.success("Kateqoriya yenilendi!");
                 }}
             />

@@ -233,23 +233,55 @@ export function DynamicEditPopup({
                                                     break;
                                                 case "file-multiple":
                                                     const multiPreview = (imagePreviews[fieldConfig.name] as string[]) || [];
+                                                    const currentFiles = (field.value as File[]) || [];
                                                     content = (
                                                         <div className="flex flex-col gap-2">
-                                                            <div className="flex flex-wrap gap-2 mb-2">
+                                                            <div className="grid grid-cols-4 gap-2 mb-2">
                                                                 {multiPreview.map((src, i) => (
-                                                                    <div key={i} className="relative w-24 h-24 border rounded-md overflow-hidden">
+                                                                    <div key={i} className="relative aspect-square border rounded-md overflow-hidden">
                                                                         <img src={src} alt={`Preview ${i}`} className="object-cover w-full h-full" />
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => {
+                                                                                const newFiles = [...currentFiles];
+                                                                                newFiles.splice(i, 1);
+                                                                                field.onChange(newFiles);
+
+                                                                                const newPreviews = [...multiPreview];
+                                                                                if (typeof newPreviews[i] === 'string' && newPreviews[i].startsWith('blob:')) {
+                                                                                    URL.revokeObjectURL(newPreviews[i]);
+                                                                                }
+                                                                                newPreviews.splice(i, 1);
+                                                                                setImagePreviews(p => ({ ...p, [fieldConfig.name]: newPreviews }));
+                                                                            }}
+                                                                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                                                                        >
+                                                                            <X size={12} />
+                                                                        </button>
                                                                     </div>
                                                                 ))}
                                                             </div>
                                                             <FormControl>
-                                                                <Input type="file" accept="image/*" multiple onChange={(e) => {
-                                                                    const files = Array.from(e.target.files || [])
-                                                                    if (files.length > 0) {
-                                                                        field.onChange(files)
-                                                                        setImagePreviews(p => ({ ...p, [fieldConfig.name]: files.map(f => URL.createObjectURL(f)) }))
-                                                                    }
-                                                                }} />
+                                                                <Input 
+                                                                    type="file" 
+                                                                    accept="image/*" 
+                                                                    multiple 
+                                                                    onChange={(e) => {
+                                                                        const files = Array.from(e.target.files || [])
+                                                                        if (files.length > 0) {
+                                                                            const combinedFiles = [...currentFiles, ...files];
+                                                                            field.onChange(combinedFiles);
+
+                                                                            const newPreviews = files.map(f => URL.createObjectURL(f));
+                                                                            setImagePreviews(p => ({ 
+                                                                                ...p, 
+                                                                                [fieldConfig.name]: [...multiPreview, ...newPreviews] 
+                                                                            }));
+                                                                        }
+                                                                        // Reset input value so it can trigger onChange again for the same file if needed
+                                                                        e.target.value = "";
+                                                                    }} 
+                                                                />
                                                             </FormControl>
                                                         </div>
                                                     )
