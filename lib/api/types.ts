@@ -177,16 +177,42 @@ export type DashboardStatistics = {
 // Settings & Configuration
 // ---------------------------------------------------------------------------
 
+export type InstallmentOption = {
+  id: string;
+  bankName: string;
+  installmentPeriod: number;
+  interestPercentage: number;
+  isActive: boolean;
+  minimumAmount: number;
+  displayOrder: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type InstallmentCalculation = {
+  installmentOptionId: string;
+  bankName: string;
+  installmentPeriod: number;
+  interestPercentage: number;
+  originalAmount: number;
+  interestAmount: number;
+  totalAmount: number;
+  monthlyPayment: number;
+};
+
+export type InstallmentConfiguration = {
+  id: string;
+  isEnabled: boolean;
+  minimumAmount: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type CartMinimumAmountSetting = {
   minimumAmount: number;
 };
 
 export type LoyaltySettings = {
   bonusPercentage: number;
-};
-
-export type InstallmentConfiguration = {
-  isEnabled: boolean;
-  minimumAmount: number;
 };
 

@@ -14,7 +14,7 @@ export type User = {
 };
 
 export type PaginatedResponse<T> = {
-    items: T[];
+    users: T[];
     totalCount: number;
     page: number;
     pageSize: number;

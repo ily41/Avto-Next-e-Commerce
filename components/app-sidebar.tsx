@@ -95,7 +95,7 @@ const data = {
     },
     {
       title: "Hissəli Ödənişlər",
-      url: "/dashboard/installment-payments",
+      url: "/dashboard/installments",
       icon: IconMoneybag,
     },
 

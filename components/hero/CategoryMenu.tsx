@@ -38,7 +38,7 @@ const CategoryMenu = () => {
 
                     {/* Mega Menu Content */}
                     {hoveredCategory === "our-store" && categories && categories.length > 0 && (
-                        <div className="absolute left-full top-0 w-[700px] bg-white border border-gray-100 shadow-2xl z-50 p-8 rounded-r-2xl grid grid-cols-3 gap-x-8 gap-y-10 animate-in fade-in slide-in-from-left-2 duration-200">
+                        <div className="absolute left-full top-0 w-[700px] bg-white border border-gray-100 shadow-2xl z-40 p-8 rounded-r-2xl grid grid-cols-3 gap-x-8 gap-y-10 animate-in fade-in slide-in-from-left-2 duration-200">
                             {categories.map((category) => (
                                 <div key={category.id} className="flex flex-col space-y-4">
                                     <Link href={`shop?category=${category.slug}`} className="font-bold text-gray-900 text-base hover:text-blue-600 transition-colors">
@@ -79,7 +79,7 @@ const CategoryMenu = () => {
 
                         {/* Optional: Render subcategories in a simple dropdown if needed */}
                         {hoveredCategory === category.id && category.subCategories && category.subCategories.length > 0 && (
-                            <div className="absolute left-full top-0 w-64 bg-white border border-gray-100 shadow-xl z-50 py-3 rounded-r-xl animate-in fade-in slide-in-from-left-1 duration-150">
+                            <div className="absolute left-full top-0 w-64 bg-white border border-gray-100 shadow-xl z-40 py-3 rounded-r-xl animate-in fade-in slide-in-from-left-1 duration-150">
                                 {category.subCategories.map((sub) => (
                                     <Link
                                         key={sub.id}

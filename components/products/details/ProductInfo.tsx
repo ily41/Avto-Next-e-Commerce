@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import * as React from "react";
+import { useState } from "react";
 import { useToggleFavoriteMutation } from "@/lib/store/favorites/apislice";
 import {
   IconHeart,
@@ -15,6 +16,7 @@ import {
 import { Product } from "@/lib/api/types";
 import { useCart } from "@/hooks/useCart";
 import { toast } from "sonner";
+import { useGetInstallmentConfigurationQuery, useGetInstallmentOptionsQuery } from "@/lib/store/installment/installmentApiSlice";
 
 interface ProductInfoProps {
   product: Product;
@@ -26,6 +28,20 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
   const [toggleFavorite] = useToggleFavoriteMutation();
   const { addItem } = useCart();
   const [isAdded, setIsAdded] = useState(false);
+
+  // Installment logic
+  const { data: instConfig } = useGetInstallmentConfigurationQuery();
+  const totalPrice = (product.discountedPrice || product.price) * quantity;
+  const { data: instOptions } = useGetInstallmentOptionsQuery(
+    { amount: totalPrice },
+    { skip: !instConfig?.isEnabled || totalPrice < instConfig?.minimumAmount }
+  );
+
+  const maxPeriod = instOptions 
+    ? Math.max(...instOptions.filter(o => o.isActive).map(o => o.installmentPeriod), 0) 
+    : 0;
+
+  const monthlyPayment = maxPeriod > 0 ? (totalPrice / maxPeriod).toFixed(2) : null;
 
   const handleFavoriteClick = async () => {
     try {
@@ -41,7 +57,7 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
       setIsAdded(true);
       setTimeout(() => setIsAdded(false), 2000);
     } catch (err: any) {
-      toast.error(err?.data || err?.data || "Səbətə əlavə edərkən xəta baş verdi");
+      // Error is handled by the useCart hook
     }
   };
 
@@ -95,10 +111,18 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
           <span>İndi al</span>
         </button>
 
-        <button className="w-full h-12 bg-white border-2 border-[#E7E7E7] hover:border-black hover:bg-black hover:text-white text-black font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer">
-          <IconCreditCard size={20} className="transition-transform group-hover:scale-110" />
-          <span>Hissəli ödəniş</span>
-        </button>
+        {maxPeriod > 0 && (
+          <button 
+            className="w-full h-12 bg-white border-2 border-blue-600 hover:bg-blue-600 hover:text-white text-blue-600 font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer"
+            onClick={async () => {
+              await handleAddToCart();
+              window.location.href = "/cart";
+            }}
+          >
+            <IconCreditCard size={20} className="transition-transform group-hover:scale-110" />
+            <span>Hissəli ödəniş ({maxPeriod} aya qədər)</span>
+          </button>
+        )}
 
         {/* Wishlist & Share */}
         <div className="flex items-center gap-8 justify-center mt-2 border-t border-gray-50 pt-4">

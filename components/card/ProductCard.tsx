@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { Product } from "@/lib/api/types";
 import { useToggleFavoriteMutation } from "@/lib/store/favorites/apislice";
 import { IconHeart, IconChartBar, IconEye, IconShoppingCart, IconHeartFilled } from "@tabler/icons-react";
@@ -9,6 +10,7 @@ import { useState } from "react";
 import { fullUrl } from "@/lib/api/url-utils";
 import { useCart } from "@/hooks/useCart";
 import { toast } from "sonner";
+import { useGetInstallmentConfigurationQuery, useGetInstallmentOptionsQuery } from "@/lib/store/installment/installmentApiSlice";
 
 interface ProductCardProps {
     product: Product;
@@ -22,6 +24,20 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
     const [toggleFavorite] = useToggleFavoriteMutation();
     const { addItem } = useCart();
     const [isAdded, setIsAdded] = useState(false);
+
+    // Installment logic
+    const { data: instConfig } = useGetInstallmentConfigurationQuery();
+    const productPrice = product.discountedPrice || product.price;
+    const { data: instOptions } = useGetInstallmentOptionsQuery(
+        { amount: productPrice },
+        { skip: !instConfig?.isEnabled || productPrice < instConfig?.minimumAmount }
+    );
+
+    const maxPeriod = instOptions 
+        ? Math.max(...instOptions.filter(o => o.isActive).map(o => o.installmentPeriod), 0) 
+        : 0;
+    
+    const monthlyPayment = maxPeriod > 0 ? (productPrice / maxPeriod).toFixed(2) : null;
 
     const handleFavoriteClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -46,7 +62,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
             setIsAdded(true);
             setTimeout(() => setIsAdded(false), 2000);
         } catch (err: any) {
-            toast.error(err?.data || err?.data || "Səbətə əlavə edərkən xəta baş verdi");
+            // Error is handled by the useCart hook
         }
     };
 
@@ -70,6 +86,14 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
             {discount > 0 && (
                 <div className="absolute top-2 right-2 bg-blue-600 text-white text-[10px] b-badge font-bold px-1.5 py-0.5 rounded-sm z-10 transition-transform duration-300 group-hover:scale-110">
                     -{discount}%
+                </div>
+            )}
+
+            {/* Installment Badge */}
+            {maxPeriod > 0 && (
+                <div className="absolute top-2 left-2 bg-black/90 text-[9px] font-black text-white px-2 py-0.5 rounded-sm z-10 uppercase tracking-tight flex items-center gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                    {maxPeriod} ay x ${monthlyPayment}
                 </div>
             )}
 

@@ -84,8 +84,14 @@ export function useCart() {
       try {
         await addItemApi({ productId: product.id, quantity }).unwrap();
       } catch (err: any) {
-        toast.error(err?.data?.message || "Məhsul səbətə əlavə edilə bilmədi.");
-        return;
+        let errorMsg = "Məhsul səbətə əlavə edilə bilmədi.";
+        if (err?.data) {
+          if (typeof err.data === 'string') errorMsg = err.data;
+          else if (err.data.message) errorMsg = err.data.message;
+          else if (err.data.error) errorMsg = err.data.error;
+        }
+        toast.error(errorMsg);
+        throw err;
       }
     } else {
       const existingIndex = guestCart.findIndex((i) => i.productId === product.id);
@@ -128,8 +134,14 @@ export function useCart() {
       try {
         await updateItemApi({ cartItemId, quantity }).unwrap();
       } catch (err: any) {
-        toast.error(err?.data?.message || "Miqdar yenilənə bilmədi.");
-        return;
+        let errorMsg = "Miqdar yenilənə bilmədi.";
+        if (err?.data) {
+          if (typeof err.data === 'string') errorMsg = err.data;
+          else if (err.data.message) errorMsg = err.data.message;
+          else if (err.data.error) errorMsg = err.data.error;
+        }
+        toast.error(errorMsg);
+        throw err;
       }
     } else {
       const newCart = guestCart.map(item =>
@@ -146,8 +158,14 @@ export function useCart() {
       try {
         await removeItemApi(cartItemId).unwrap();
       } catch (err: any) {
-        toast.error(err?.data?.message || "Məhsul silinə bilmədi.");
-        return;
+        let errorMsg = "Məhsul silinə bilmədi.";
+        if (err?.data) {
+          if (typeof err.data === 'string') errorMsg = err.data;
+          else if (err.data.message) errorMsg = err.data.message;
+          else if (err.data.error) errorMsg = err.data.error;
+        }
+        toast.error(errorMsg);
+        throw err;
       }
     } else {
       const newCart = guestCart.filter((item) => item.productId !== productId);
@@ -160,8 +178,14 @@ export function useCart() {
       try {
         await deleteCartApi().unwrap();
       } catch (err: any) {
-        toast.error(err?.data?.message || "Səbət silinə bilmədi.");
-        return;
+        let errorMsg = "Səbət silinə bilmədi.";
+        if (err?.data) {
+          if (typeof err.data === 'string') errorMsg = err.data;
+          else if (err.data.message) errorMsg = err.data.message;
+          else if (err.data.error) errorMsg = err.data.error;
+        }
+        toast.error(errorMsg);
+        throw err;
       }
     } else {
       dispatch(clearGuestCartAction());

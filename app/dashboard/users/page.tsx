@@ -169,7 +169,7 @@ export default function UsersPage() {
                 <div className="admin-table-dark">
                     <DataTable
                         columns={columns}
-                        data={usersData?.items || []}
+                        data={usersData?.users || []}
                         manualPagination={true}
                         pageCount={usersData?.totalPages || 0}
                         pagination={{ pageIndex, pageSize }}

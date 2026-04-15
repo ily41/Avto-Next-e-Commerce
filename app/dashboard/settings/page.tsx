@@ -28,18 +28,18 @@ export default function SettingsPage() {
     // Cart Minimum Amount
     const { data: cartMinData, isLoading: isCartLoading } = useGetCartMinimumAmountQuery()
     const [updateCartMin, { isLoading: isUpdatingCart }] = useUpdateCartMinimumAmountMutation()
-    const [cartMin, setCartMin] = React.useState(0)
+    const [cartMin, setCartMin] = React.useState<string | number>("")
 
     // Loyalty
     const { data: loyaltyData, isLoading: isLoyaltyLoading } = useGetLoyaltySettingsQuery()
     const [updateLoyalty, { isLoading: isUpdatingLoyalty }] = useUpdateLoyaltySettingsMutation()
-    const [loyaltyPercent, setLoyaltyPercent] = React.useState(0)
+    const [loyaltyPercent, setLoyaltyPercent] = React.useState<string | number>("")
 
     // Installment
     const { data: installmentData, isLoading: isInstallmentLoading } = useGetInstallmentConfigurationQuery()
     const [updateInstallment, { isLoading: isUpdatingInstallment }] = useUpdateInstallmentConfigurationMutation()
     const [installmentEnabled, setInstallmentEnabled] = React.useState(false)
-    const [installmentMin, setInstallmentMin] = React.useState(0)
+    const [installmentMin, setInstallmentMin] = React.useState<string | number>("")
 
     React.useEffect(() => {
         if (cartMinData) setCartMin(cartMinData.minimumAmount)
@@ -52,7 +52,7 @@ export default function SettingsPage() {
 
     const handleSaveCartMin = async () => {
         try {
-            await updateCartMin({ minimumAmount: cartMin }).unwrap()
+            await updateCartMin({ minimumAmount: Number(cartMin) || 0 }).unwrap()
             toast.success("Minimum səbət məbləği uğurla yenilendi")
         } catch (e) {
             toast.error("Minimum səbət məbləği yenilənə bilmədi")
@@ -61,7 +61,7 @@ export default function SettingsPage() {
 
     const handleSaveLoyalty = async () => {
         try {
-            await updateLoyalty({ bonusPercentage: loyaltyPercent }).unwrap()
+            await updateLoyalty({ bonusPercentage: Number(loyaltyPercent) || 0 }).unwrap()
             toast.success("Loyallıq parametrləri uğurla yenilendi")
         } catch (e) {
             toast.error("Loyallıq parametrləri yenilənə bilmədi")
@@ -70,7 +70,7 @@ export default function SettingsPage() {
 
     const handleSaveInstallment = async () => {
         try {
-            await updateInstallment({ isEnabled: installmentEnabled, minimumAmount: installmentMin }).unwrap()
+            await updateInstallment({ isEnabled: installmentEnabled, minimumAmount: Number(installmentMin) || 0 }).unwrap()
             toast.success("Hissəli ödəniş konfiqurasiyası uğurla yenilendi")
         } catch (e) {
             toast.error("Hissəli ödəniş konfiqurasiyası yenilənə bilmədi")
@@ -124,8 +124,9 @@ export default function SettingsPage() {
                                     id="cart-min" 
                                     type="number" 
                                     className="pl-8 h-12 text-lg focus-visible:ring-primary/20 transition-all font-semibold"
-                                    value={cartMin} 
-                                    onChange={(e) => setCartMin(Number(e.target.value))} 
+                                    value={cartMin === 0 ? "" : cartMin} 
+                                    placeholder="0"
+                                    onChange={(e) => setCartMin(e.target.value)} 
                                 />
                             </div>
                             <p className="text-sm text-muted-foreground bg-secondary/30 p-3 rounded-md italic">
@@ -167,8 +168,9 @@ export default function SettingsPage() {
                                     id="bonus-percent" 
                                     type="number" 
                                     className="pr-8 h-12 text-lg focus-visible:ring-primary/20 transition-all font-semibold"
-                                    value={loyaltyPercent} 
-                                    onChange={(e) => setLoyaltyPercent(Number(e.target.value))} 
+                                    value={loyaltyPercent === 0 ? "" : loyaltyPercent} 
+                                    placeholder="0"
+                                    onChange={(e) => setLoyaltyPercent(e.target.value)} 
                                 />
                             </div>
                             <p className="text-sm text-muted-foreground bg-green-50/50 dark:bg-green-500/5 p-3 rounded-md italic border border-green-500/10">
@@ -225,8 +227,9 @@ export default function SettingsPage() {
                                         id="installment-min" 
                                         type="number" 
                                         className="pl-8 h-12 text-lg focus-visible:ring-primary/20 transition-all font-semibold"
-                                        value={installmentMin} 
-                                        onChange={(e) => setInstallmentMin(Number(e.target.value))} 
+                                        value={installmentMin === 0 ? "" : installmentMin} 
+                                        placeholder="0"
+                                        onChange={(e) => setInstallmentMin(e.target.value)} 
                                     />
                                 </div>
                                 <p className="text-sm text-balance text-muted-foreground leading-relaxed">

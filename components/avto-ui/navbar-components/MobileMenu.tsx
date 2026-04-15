@@ -34,7 +34,7 @@ export function MobileMenu({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-[110] lg:hidden">
+        <div className="fixed inset-0 z-40 lg:hidden">
             <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
             <nav className="fixed top-0 left-0 bottom-0 w-[280px] bg-white shadow-xl p-6 flex flex-col gap-6 animate-in slide-in-from-left duration-300 overflow-y-auto overflow-x-visible">
                 <div className="flex justify-between items-center pb-4 border-b border-gray-100 shrink-0">

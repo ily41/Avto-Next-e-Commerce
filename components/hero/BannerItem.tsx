@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import Image from "next/image";
 import { Banner } from "@/lib/api/types";
 import { fullUrl } from "@/lib/api/url-utils";
@@ -44,9 +45,12 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
     };
     const desktopSrc = fullUrl(imageUrl);
     const mobileSrc = mobileImageUrl ? fullUrl(mobileImageUrl) : desktopSrc;
+    const FALLBACK_IMAGE = "/logos/logo3.svg";
+
+    const [src, setSrc] = React.useState(desktopSrc);
+    const [mSrc, setMSrc] = React.useState(mobileSrc);
 
     const finalPaddingX = banner.buttonPaddingX ?? 24;
-    console.log(banner)
     const finalPaddingY = banner.buttonPaddingY ?? 10;
     const finalFontSize = banner.buttonFontSize ?? 14;
 
@@ -55,7 +59,7 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
             <div className="absolute inset-0 w-full h-full">
             {/* Desktop image — hidden on small screens if a mobile version exists */}
             <Image
-                src={desktopSrc}
+                src={src}
                 alt={title || "Banner"}
                 fill
                 priority={variant === "main"}
@@ -64,19 +68,21 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
                         ? "(max-width: 1024px) 100vw, 1100px"
                         : "(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 360px"
                 }
-                className={`object-cover ${mobileSrc !== desktopSrc ? "hidden sm:block" : ""}`}
+                className={`${src === FALLBACK_IMAGE ? "object-contain bg-white p-6 opacity-80" : "object-cover"} ${mSrc !== src ? "hidden sm:block" : ""}`}
+                onError={() => setSrc(FALLBACK_IMAGE)}
                 {...(variant === "main" ? { fetchPriority: "high" } : {})}
             />
 
             {/* Mobile image — only rendered when a separate mobile URL exists */}
-            {mobileSrc !== desktopSrc && (
+            {mSrc !== src && (
                 <Image
-                    src={mobileSrc}
+                    src={mSrc}
                     alt={title || "Banner"}
                     fill
                     priority={variant === "main"}
                     sizes="100vw"
-                    className="object-cover block sm:hidden"
+                    className={`${mSrc === FALLBACK_IMAGE ? "object-contain bg-white p-4 opacity-80" : "object-cover"} block sm:hidden`}
+                    onError={() => setMSrc(FALLBACK_IMAGE)}
                 />
             )}
             </div>

@@ -44,15 +44,15 @@ import {
 
 // ── Status Enums & Labels ──────────────────────────────────────────────────────
 const STATUS_ENUMS = [
-  { value: 0, label: "Pending",          color: "bg-zinc-100  text-zinc-600    border-zinc-200" },
-  { value: 1, label: "PaymentInitiated", color: "bg-blue-50    text-blue-600    border-blue-100" },
+  { value: 0, label: "Pending",          color: "bg-zinc-500  text-white    border-transparent" },
+  { value: 1, label: "PaymentInitiated", color: "bg-blue-400    text-white    border-transparent" },
   { value: 2, label: "Paid",             color: "bg-blue-600   text-white       border-transparent" },
-  { value: 3, label: "Processing",       color: "bg-blue-50    text-blue-600    border-blue-100" },
-  { value: 4, label: "Shipped",          color: "bg-amber-50   text-amber-600   border-amber-100" },
-  { value: 5, label: "Delivered",        color: "bg-emerald-50 text-emerald-600 border-emerald-100" },
-  { value: 6, label: "Cancelled",        color: "bg-rose-50    text-rose-600    border-rose-100" },
-  { value: 7, label: "Refunded",         color: "bg-zinc-50    text-zinc-400    border-zinc-100" },
-  { value: 8, label: "Failed",           color: "bg-rose-50    text-rose-600    border-rose-100" },
+  { value: 3, label: "Processing",       color: "bg-indigo-500    text-white    border-transparent" },
+  { value: 4, label: "Shipped",          color: "bg-amber-500   text-white   border-transparent" },
+  { value: 5, label: "Delivered",        color: "bg-emerald-500 text-white border-transparent" },
+  { value: 6, label: "Cancelled",        color: "bg-rose-500    text-white    border-transparent" },
+  { value: 7, label: "Refunded",         color: "bg-zinc-400    text-white    border-transparent" },
+  { value: 8, label: "Failed",           color: "bg-red-600    text-white    border-transparent" },
 ];
 
 const getStatusById = (id: number) => STATUS_ENUMS.find(s => s.value === id) || STATUS_ENUMS[0];
@@ -157,7 +157,7 @@ export function AdminOrdersTable() {
         if (order.azerpostOrderId) {
           return (
             <div className="flex flex-col gap-1">
-              <Badge variant="outline" className="text-[10px] font-mono bg-blue-50 text-blue-700 border-blue-200">
+              <Badge variant="outline" className="text-[10px] font-mono bg-blue-600 text-white border-transparent shadow-sm">
                 {order.azerpostOrderId}
               </Badge>
               <a 

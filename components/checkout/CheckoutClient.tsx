@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useInitiatePaymentMutation } from "@/lib/store/payment/paymentApiSlice";
-import { useCart } from "@/hooks/useCart";
+import { useGetCartMinimumAmountQuery } from "@/lib/store/settings/apislice";
+import { toast } from "sonner";
 import { X, User, Mail, Phone, MapPin, FileText, Package2, Truck, CreditCard, AlertCircle, ChevronDown, Loader2 } from "lucide-react";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -36,6 +37,7 @@ const PASSPORT_RE = /^[A-Z]{2}\d{7}$/i;
 // ── Component ──────────────────────────────────────────────────────────────────
 export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 }: CheckoutModalProps) {
   const [initiatePayment, { isLoading }] = useInitiatePaymentMutation();
+  const { data: minAmountData } = useGetCartMinimumAmountQuery();
   const [serverError, setServerError] = useState("");
 
   const {
@@ -79,6 +81,15 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 
   if (!isOpen) return null;
 
   const onSubmit = async (values: CheckoutFormValues) => {
+    // Backend-driven minimum order amount validation
+    const minAmount = minAmountData?.minimumAmount ?? 0;
+    if (totalAmount < minAmount) {
+      const msg = `Minimum sifariş məbləği $${minAmount.toFixed(2)} olmalıdır. Cari: $${totalAmount.toFixed(2)}`;
+      setServerError(msg);
+      toast.error(msg);
+      return;
+    }
+
     setServerError("");
     try {
       const result = await initiatePayment({
@@ -110,12 +121,9 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 
 
       setServerError("Ödəniş keçidi URL-i alınmadı.");
     } catch (err: any) {
-      setServerError(
-        err?.data?.message ||
-        err?.data?.title ||
-        err?.message ||
-        "Ödəniş başladıla bilmədi. Xahiş edirik yenidən cəhd edin."
-      );
+      const msg = err?.data?.message || err?.data?.title || err?.message || "Ödəniş başladıla bilmədi. Xəta baş verdi.";
+      setServerError(msg);
+      toast.error(msg);
     }
   };
 
@@ -222,8 +230,8 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 
                       {...register("deliveryType", { required: "Çatdırılma növü seçin" })}
                       className={`${inputClass(!!errors.deliveryType)} appearance-none pr-10 cursor-pointer`}
                     >
-                      <option value="0">Poçt şöbəsinə çatdırılma (post_office_lcl)</option>
-                      <option value="1">Evə çatdırılma (home_delivery_lcl)</option>
+                      <option value="0">Poçt şöbəsinə çatdırılma </option>
+                      <option value="1">Evə çatdırılma</option>
                     </select>
                     <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   </div>
@@ -450,11 +458,11 @@ function Field({
 
 function inputClass(hasError: boolean) {
   return [
-    "w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all outline-none",
-    "placeholder:text-gray-300 focus:ring-2",
+    "w-full px-4 py-3 rounded-xl border text-sm font-bold transition-all outline-none",
+    "placeholder:text-gray-400 focus:ring-2",
     hasError
-      ? "border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-100"
-      : "border-gray-200 bg-white focus:border-blue-400 focus:ring-blue-100",
+      ? "border-red-300 bg-red-50 text-red-900 focus:border-red-400 focus:ring-red-100"
+      : "border-gray-300 bg-white text-gray-950 focus:border-blue-400 focus:ring-blue-100",
   ].join(" ");
 }
 

@@ -21,7 +21,7 @@ export function MobileSearchOverlay({
     if (!isActive) return null;
 
     return (
-        <div className="fixed inset-0 z-[110] bg-white lg:hidden animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-40 bg-white lg:hidden animate-in fade-in duration-200">
             <div className="flex items-center gap-4 p-4 border-b border-gray-100">
                 <button onClick={onClose} className="text-gray-500">
                     <X size={24} />

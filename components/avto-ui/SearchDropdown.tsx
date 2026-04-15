@@ -51,7 +51,7 @@ export function SearchDropdown({ searchTerm, onClose, className }: SearchDropdow
 
   return (
     <div className={cn(
-      "absolute top-full left-0 right-0 mt-3 bg-white border border-gray-200 shadow-xl rounded-xl z-[100] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300",
+      "absolute top-full left-0 right-0 mt-3 bg-white border border-gray-200 shadow-xl rounded-xl z-40 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300",
       className
     )}>
       <div className="max-h-[500px] overflow-y-auto">
