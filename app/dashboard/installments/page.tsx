@@ -149,7 +149,7 @@ export default function InstallmentDashboardPage() {
                         <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Səbət Minimum Həddi (AZN)</Label>
                         <div className="flex gap-4">
                             <div className="relative flex-1">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">$</span>
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">₼</span>
                                 <Input 
                                     type="number" 
                                     value={configState.minimumAmount} 

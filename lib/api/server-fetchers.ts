@@ -12,8 +12,8 @@ const BASE_URL =
 
 const API = `${BASE_URL}/api/v1`;
 
-// Revalidation interval in seconds (60 minutes). Adjust as needed.
-const REVALIDATE = 3600;
+// Revalidation interval in seconds. Lowered for better sync between Admin and Site.
+const REVALIDATE = 10;
 
 /** Shared fetch helper with ISR caching */
 async function apiFetch<T>(path: string, tag: string): Promise<T | null> {

@@ -5,11 +5,9 @@ import Link from "next/link";
 import { Package2 } from "lucide-react";
 
 const topNavLinks = [
-    { name: "Sifarişi İzlə", href: "#", icon: Package2 },
-    { name: "Haqqımızda", href: "#" },
-    { name: "Bloq", href: "#" },
-    { name: "Bizimlə Əlaqə", href: "#" },
-    { name: "Tez-tez Verilən Suallar", href: "#" },
+    { name: "Sifarişi İzlə", href: "/profile/orders", icon: Package2 },
+    { name: "Haqqımızda", href: "/about" },
+    { name: "Bizimlə Əlaqə", href: "/contact-us" },
 ];
 
 export function TopBar() {
@@ -29,7 +27,7 @@ export function TopBar() {
                     ))}
                 </div>
                 <div className="font-medium text-gray-700">
-                    $100-dan yuxarı sifarişlərdə Pulsuz Çatdırılma!
+                    100 AZN-dan yuxarı sifarişlərdə Pulsuz Çatdırılma!
                 </div>
             </div>
         </div>

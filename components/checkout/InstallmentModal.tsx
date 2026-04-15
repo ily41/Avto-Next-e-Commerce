@@ -123,7 +123,7 @@ export function InstallmentModal({ isOpen, onClose, totalAmount }: InstallmentMo
               <div className="flex items-center gap-3 p-4 bg-blue-50/50 rounded-2xl border border-blue-100/50">
                 <Info className="text-blue-600 shrink-0" size={20} />
                 <p className="text-[13px] font-bold text-blue-900">
-                  Toplam məbləğ: <span className="font-black">${totalAmount.toFixed(2)}</span>
+                  Toplam məbləğ: <span className="font-black">₼{totalAmount.toFixed(2)}</span>
                 </p>
               </div>
 
@@ -158,7 +158,7 @@ export function InstallmentModal({ isOpen, onClose, totalAmount }: InstallmentMo
                         <div className="text-right">
                           <p className="text-[11px] font-bold text-gray-400 uppercase">Aylıq ödəniş</p>
                           <p className={`text-lg font-black ${selectedOptionId === opt.id ? 'text-blue-600' : 'text-gray-900 group-hover:text-blue-600'}`}>
-                             ${(totalAmount / opt.installmentPeriod).toFixed(2)}
+                             ₼{(totalAmount / opt.installmentPeriod).toFixed(2)}
                           </p>
                         </div>
                       </div>

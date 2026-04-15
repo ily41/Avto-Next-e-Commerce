@@ -93,7 +93,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
             {maxPeriod > 0 && (
                 <div className="absolute top-2 left-2 bg-black/90 text-[9px] font-black text-white px-2 py-0.5 rounded-sm z-10 uppercase tracking-tight flex items-center gap-1">
                     <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                    {maxPeriod} ay x ${monthlyPayment}
+                    {maxPeriod} ay x ₼{monthlyPayment}
                 </div>
             )}
 
@@ -114,12 +114,12 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
             </div>
 
             {/* Product Image Area */}
-            <div className={`relative ${noBorder ? "flex-1 min-h-0" : "aspect-square"} mb-2 min-h- flex items-center justify-center px-1 md:px-4 overflow-hidden`}>
+            <div className={`relative ${noBorder ? "h-[160px]" : "aspect-square"} mb-2 flex items-center justify-center px-1 md:px-4 overflow-hidden`}>
                 <img
                     src={fullPrimaryUrl}
                     alt={product.name}
                     onError={(e) => (e.currentTarget.src = PLACEHOLDER_IMAGE)}
-                    className={`max-h-full max-w-full object-contain min-h-[190px] transition-all duration-700 ease-in-out ${isHovered && fullSecondaryUrl ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}
+                    className={`max-h-full max-w-full object-contain transition-all duration-700 ease-in-out ${isHovered && fullSecondaryUrl ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}
                 />
                 {fullSecondaryUrl && (
                     <img
@@ -143,10 +143,10 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                     className={`flex flex-col flex-1 transition-transform duration-500 ease-in-out md:translate-y-0 md:group-hover:-translate-y-12`}
                 >
                     {/* Product Metadata */}
-                    <div className="flex flex-col flex-1">
+                    <div className="flex flex-col flex-1 min-h-[4.5rem]">
                         <Link
                             href={`/product/${product.slug || product.id}`}
-                            className={`text-[11px] md:text-[13px] font-medium ${noBorder ? "text-center" : "text-left"} text-gray-800 leading-snug mb-2 line-clamp-2 hover:text-blue-600 transition-colors`}
+                            className={`text-[11px] md:text-[13px] font-medium ${noBorder ? "text-center" : "text-left"} text-gray-800 leading-snug mb-2 line-clamp-2 h-[2.5rem] flex items-center ${noBorder ? "justify-center" : "justify-start"} hover:text-blue-600 transition-colors`}
                         >
                             {product.name}
                         </Link>
@@ -155,11 +155,11 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                         <div className={`flex ${noBorder ? "justify-center" : "justify-start"} items-center gap-2.5 mt-auto`}>
                             {discount > 0 && (
                                 <span className={`text-[14px] text-gray-400 line-through decoration-1 font-normal ${noBorder ? "text-center" : "text-left"}`}>
-                                    ${product.price}
+                                    ₼{product.price}
                                 </span>
                             )}
                             <span className={`text-[14px] md:text-[14px] lg:text-[17px] font-bold text-[#1a1a1a] ${noBorder ? "text-center" : "text-left"}`}>
-                                ${product.discountedPrice || product.price}
+                                ₼{product.discountedPrice || product.price}
                             </span>
                         </div>
                     </div>

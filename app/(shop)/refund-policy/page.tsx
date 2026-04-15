@@ -55,7 +55,7 @@ const RefundPolicy = () => {
             </div>
             {/* Background elements */}
             <div className="absolute top-0 right-0 p-12 opacity-10">
-               <IconRotate2 size={120} />
+              <IconRotate2 size={120} />
             </div>
           </div>
 
@@ -64,7 +64,7 @@ const RefundPolicy = () => {
             <div className="space-y-12">
               <div className="flex gap-6 items-start ">
                 <p className="text-gray-600 text-lg leading-relaxed font-medium">
-                  Avto027.az platforması olaraq, müştərilərimizin alış-veriş təcrübəsinin mümkün qədər rəvan olmasını təmin etməyə çalışırıq. Aldığınız məhsul hər hansı bir səbəbdən sizi qane etmirsə, geri qaytarmaya müraciət edə bilərsiniz.
+                  Avto027.com platforması olaraq, müştərilərimizin alış-veriş təcrübəsinin mümkün qədər rəvan olmasını təmin etməyə çalışırıq. Aldığınız məhsul hər hansı bir səbəbdən sizi qane etmirsə, geri qaytarmaya müraciət edə bilərsiniz.
                 </p>
               </div>
 
@@ -83,20 +83,20 @@ const RefundPolicy = () => {
               </div>
 
               <div className="bg-blue-50 rounded-3xl p-10 flex flex-col md:flex-row items-center gap-10">
-                 <div className="bg-white p-6 rounded-2xl shadow-sm rotate-3">
-                    <IconTruckDelivery size={48} className="text-blue-600" />
-                 </div>
-                 <div className="">
-                    <h4 className="text-2xl font-bold text-gray-900 mb-2 font-outfit uppercase tracking-tight">Kuryer vasitəsilə qaytarma</h4>
-                    <p className="text-gray-600 font-medium">Bakı şəhəri daxilində geri qaytarma üçün kuryer çağıra bilərsiniz. Biz hər şeyi sizin üçün asanlaşdırırıq.</p>
-                 </div>
+                <div className="bg-white p-6 rounded-2xl shadow-sm rotate-3">
+                  <IconTruckDelivery size={48} className="text-blue-600" />
+                </div>
+                <div className="">
+                  <h4 className="text-2xl font-bold text-gray-900 mb-2 font-outfit uppercase tracking-tight">Kuryer vasitəsilə qaytarma</h4>
+                  <p className="text-gray-600 font-medium">Bakı şəhəri daxilində geri qaytarma üçün kuryer çağıra bilərsiniz. Biz hər şeyi sizin üçün asanlaşdırırıq.</p>
+                </div>
               </div>
             </div>
           </div>
-          
+
           <div className="bg-gray-50 p-8 border-t border-gray-100 flex justify-between items-center">
-             <Link href="/help-center" className="text-blue-600 font-bold hover:underline">Daha çox məlumat üçün kömək mərkəzi</Link>
-             <button className="bg-gray-900 text-white px-8 py-3 rounded-2xl font-bold hover:bg-black transition-all">Müraciət et</button>
+            <Link href="/help-center" className="text-blue-600 font-bold hover:underline">Daha çox məlumat üçün kömək mərkəzi</Link>
+            <button className="bg-gray-900 text-white px-8 py-3 rounded-2xl font-bold hover:bg-black transition-all">Müraciət et</button>
           </div>
         </div>
       </div>

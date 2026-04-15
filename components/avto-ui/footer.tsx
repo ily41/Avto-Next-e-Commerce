@@ -2,13 +2,13 @@
 
 import React from "react";
 import Link from "next/link";
-import { 
-  IconMail, 
-  IconBrandFacebook, 
-  IconBrandTwitter, 
-  IconBrandInstagram, 
-  IconBrandTiktok, 
-  IconBrandPinterest 
+import {
+  IconMail,
+  IconBrandFacebook,
+  IconBrandTwitter,
+  IconBrandInstagram,
+  IconBrandTiktok,
+  IconBrandPinterest
 } from "@tabler/icons-react";
 
 export default function Footer() {
@@ -53,8 +53,8 @@ export default function Footer() {
               <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">BİZİMLƏ ƏLAQƏ</h4>
               <div className="space-y-6">
                 <div>
-                  <a href="tel:+994500000000" className="text-xl lg:text-2xl font-bold text-gray-900 hover:text-[#007aff] transition-colors leading-none">
-                    (+994) 50 000 00 00
+                  <a href="tel:+994103165103" className="text-xl lg:text-2xl font-bold text-gray-900 hover:text-[#007aff] transition-colors leading-none">
+                    (+994) 10 316 51 03
                   </a>
                   <p className="text-gray-500 mt-4 leading-relaxed font-medium">
                     Bakı şəhəri, Azərbaycan. <br />
@@ -62,26 +62,17 @@ export default function Footer() {
                   </p>
                 </div>
                 <div>
-                  <a href="mailto:info@avto027.az" className="text-gray-900 font-bold border-b-2 border-gray-900 pb-1 hover:text-[#007aff] hover:border-[#007aff] transition-colors">
-                    info@avto027.az
+                  <a href="mailto:info@avto027.com" className="text-gray-900 font-bold border-b-2 border-gray-900 pb-1 hover:text-[#007aff] hover:border-[#007aff] transition-colors">
+                    info@avto027.com
                   </a>
                 </div>
                 <div className="flex items-center gap-4 pt-4">
-                  <Link href="#" className="p-2 rounded-full border border-gray-100 hover:bg-[#007aff] hover:text-white transition-all text-gray-600">
-                    <IconBrandFacebook size={20} stroke={1.5} />
-                  </Link>
-                  <Link href="#" className="p-2 rounded-full border border-gray-100 hover:bg-[#1a1a1a] hover:text-white transition-all text-gray-600">
-                    <IconBrandTwitter size={20} stroke={1.5} />
-                  </Link>
-                  <Link href="#" className="p-2 rounded-full border border-gray-100 hover:bg-[#e1306c] hover:text-white transition-all text-gray-600">
+                  <a href="https://www.instagram.com/avto__027?igsh=dzdpbGl0d2FnNncz" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full border border-gray-100 hover:bg-[#e1306c] hover:text-white transition-all text-gray-600">
                     <IconBrandInstagram size={20} stroke={1.5} />
-                  </Link>
-                  <Link href="#" className="p-2 rounded-full border border-gray-100 hover:bg-black hover:text-white transition-all text-gray-600">
+                  </a>
+                  <a href="https://www.tiktok.com/@avto.027?_r=1&_t=ZS-95ZGieLyRHD" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full border border-gray-100 hover:bg-black hover:text-white transition-all text-gray-600">
                     <IconBrandTiktok size={20} stroke={1.5} />
-                  </Link>
-                  <Link href="#" className="p-2 rounded-full border border-gray-100 hover:bg-[#bd081c] hover:text-white transition-all text-gray-600">
-                    <IconBrandPinterest size={20} stroke={1.5} />
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
@@ -90,35 +81,21 @@ export default function Footer() {
             <div>
               <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">BİZİ TANIYIN</h4>
               <ul className="space-y-4">
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Haqqımızda</Link></li>
+                <li><Link href="/about" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Haqqımızda</Link></li>
                 <li><Link href="/privacy-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Məxfilik Siyasəti</Link></li>
                 <li><Link href="/terms-and-conditions" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">İstifadə Şərtləri</Link></li>
                 <li><Link href="/refund-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Geri Qaytarılma</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Bizimlə Əlaqə</Link></li>
+                <li><Link href="/contact-us" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Bizimlə Əlaqə</Link></li>
               </ul>
             </div>
 
-            {/* Footer Column 3 */}
             <div>
               <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">MƏLUMAT</h4>
               <ul className="space-y-4">
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Kömək Mərkəzi</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Rəylər</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">FAQ</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Ölçü Cədvəli</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Ödəniş Üsulları</Link></li>
-              </ul>
-            </div>
-
-            {/* Footer Column 4 */}
-            <div>
-              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">SİFARİŞLƏR</h4>
-              <ul className="space-y-4">
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Sifarişi İzlə</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Çatdırılma</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Xidmətlər</Link></li>
+                <li><Link href="/about" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Haqqımızda</Link></li>
+                <li><Link href="/contact-us" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Bizimlə Əlaqə</Link></li>
+                <li><Link href="/privacy-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Məxfilik Siyasəti</Link></li>
                 <li><Link href="/refund-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Geri Qaytarma</Link></li>
-                <li><Link href="#" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Dəyişdirilmə</Link></li>
               </ul>
             </div>
 
@@ -140,10 +117,10 @@ export default function Footer() {
       {/* Copyright Section */}
       <div className="bg-[#f8f8f8] py-8">
         <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-[13px] text-gray-500 font-medium text-center md:text-left">
-            © 2026 Avto027.az
+          <p className="text-[13px] text-gray-500 font-medium text-center w-full">
+            © 2026 Avto027.az. Bütün hüquqlar qorunur.
           </p>
-          
+
           {/* <div className="flex items-center gap-1">
             <div className="flex items-center gap-2 grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/Visa_2021.svg" alt="Visa" className="h-6 w-auto" />

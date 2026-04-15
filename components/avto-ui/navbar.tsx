@@ -15,11 +15,9 @@ import { MobileMenu } from "./navbar-components/MobileMenu";
 import { Package2 } from "lucide-react";
 
 const topNavLinks = [
-    // { name: "Sifarişi İzlə", href: "#", icon: Package2 },    
-    { name: "Haqqımızda", href: "#" },
-    { name: "Bloq", href: "#" },
-    { name: "Bizimlə Əlaqə", href: "#" },
-    { name: "Tez-tez Verilən Suallar", href: "#" },
+    { name: "Sifarişi İzlə", href: "/profile/orders" },
+    { name: "Haqqımızda", href: "/about" },
+    { name: "Bizimlə Əlaqə", href: "/contact-us" },
 ];
 
 import { useAuth } from "@/hooks/useAuth";
@@ -79,7 +77,7 @@ export function Navbar() {
 
             {/* 3. Mobile Header Sub-info */}
             <div className="w-full bg-white py-2 px-4 text-center lg:hidden text-[13px] font-medium text-gray-700 border-b border-gray-100">
-                $100-dan yuxarı sifarişlərdə Pulsuz Çatdırılma!
+                100 AZN-dan yuxarı sifarişlərdə Pulsuz Çatdırılma!
             </div>
 
             {/* 4. Main Navbar Row */}

@@ -108,12 +108,12 @@ export function SearchDropdown({ searchTerm, onClose, className }: SearchDropdow
                         <div className="flex items-center gap-2 mt-1">
                             <span className="text-[14px] font-extrabold text-blue-600">
                                 {product.discountedPrice && product.price > product.discountedPrice 
-                                ? `$${product.discountedPrice}`
-                                : `$${product.price}`
+                                ? `₼${product.discountedPrice}`
+                                : `₼${product.price}`
                                 }
                             </span>
                             {product.discountedPrice && product.price > product.discountedPrice && (
-                                <span className="text-[12px] text-gray-400 line-through font-medium">${product.price}</span>
+                                <span className="text-[12px] text-gray-400 line-through font-medium">₼{product.price}</span>
                             )}
                         </div>
                     </div>

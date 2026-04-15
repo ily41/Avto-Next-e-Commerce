@@ -124,7 +124,7 @@ export default function SettingsPage() {
                         <div className="space-y-3">
                             <Label htmlFor="cart-min" className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Minimum Sifariş Məbləği (AZN)</Label>
                             <div className="relative">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">$</span>
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">₼</span>
                                 <Input 
                                     id="cart-min" 
                                     type="number" 
@@ -227,7 +227,7 @@ export default function SettingsPage() {
                             <div className="space-y-4">
                                 <Label htmlFor="installment-min" className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Minimum Hədd (AZN)</Label>
                                 <div className="relative">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">$</span>
+                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">₼</span>
                                     <Input 
                                         id="installment-min" 
                                         type="number" 

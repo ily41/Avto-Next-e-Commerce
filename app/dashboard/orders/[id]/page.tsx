@@ -202,8 +202,8 @@ export default function AdminOrderDetailPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-base font-black text-gray-100">${item.unitPrice.toFixed(2)}</p>
-                      <p className="text-[10px] text-blue-500 font-black uppercase tracking-widest mt-1">Total: ${item.totalPrice.toFixed(2)}</p>
+                      <p className="text-base font-black text-gray-100">₼{item.unitPrice.toFixed(2)}</p>
+                      <p className="text-[10px] text-blue-500 font-black uppercase tracking-widest mt-1">Total: ₼{item.totalPrice.toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
@@ -211,17 +211,17 @@ export default function AdminOrderDetailPage() {
               <div className="bg-white/[0.01] p-8 flex flex-col items-end gap-3 text-sm">
                 <div className="flex justify-between w-full max-w-[240px] text-gray-500 font-bold">
                   <span>Subtotal</span>
-                  <span className="text-gray-300 font-black">${order.subTotal.toFixed(2)}</span>
+                  <span className="text-gray-300 font-black">₼{order.subTotal.toFixed(2)}</span>
                 </div>
                 {order.discountAmount > 0 && (
                   <div className="flex justify-between w-full max-w-[240px] text-rose-500 font-bold">
                     <span>Discount</span>
-                    <span className="font-black">-${order.discountAmount.toFixed(2)}</span>
+                    <span className="font-black">−₼{order.discountAmount.toFixed(2)}</span>
                   </div>
                 )}
                 <div className="flex justify-between w-full max-w-[240px] text-xl font-black text-white pt-6 border-t border-white/5 mt-3">
                   <span>Total</span>
-                  <span className="tracking-tighter">${order.totalAmount.toFixed(2)}</span>
+                  <span className="tracking-tighter">₼{order.totalAmount.toFixed(2)}</span>
                 </div>
               </div>
             </CardContent>
@@ -331,7 +331,7 @@ export default function AdminOrderDetailPage() {
               <div className="space-y-4 pt-6 border-t border-white/5 text-sm">
                 <div className="flex justify-between font-bold text-gray-500">
                   <span>Amount Paid</span>
-                  <span className="text-white font-black">${order.payment.amount.toFixed(2)}</span>
+                  <span className="text-white font-black">₼{order.payment.amount.toFixed(2)}</span>
                 </div>
                 {order.payment.epointTransactionId && (
                   <div className="pt-2">

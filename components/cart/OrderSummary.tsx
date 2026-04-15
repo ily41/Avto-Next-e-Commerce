@@ -57,20 +57,20 @@ export function OrderSummary({
         <div className="space-y-3 text-sm">
           <div className="flex justify-between text-gray-500 font-medium">
             <span>Aralıq cəm</span>
-            <span className="font-bold text-gray-900">${subTotal.toFixed(2)}</span>
+            <span className="font-bold text-gray-900">₼{subTotal.toFixed(2)}</span>
           </div>
 
           {totalDiscount > 0 && (
             <div className="flex justify-between text-green-600 font-bold">
               <span>Endirim (Promo)</span>
-              <span>−${totalDiscount.toFixed(2)}</span>
+              <span>−₼{totalDiscount.toFixed(2)}</span>
             </div>
           )}
 
           {isAuth && wallet && wallet.balance > 0 && (
             <div className="flex justify-between text-blue-500 font-medium text-xs">
               <span>Mövcud balans</span>
-              <span className="font-bold">${wallet.balance.toFixed(2)}</span>
+              <span className="font-bold">₼{wallet.balance.toFixed(2)}</span>
             </div>
           )}
         </div>
@@ -78,7 +78,7 @@ export function OrderSummary({
         <div className="pt-4 mt-6 border-t border-gray-200">
           <div className="flex justify-between items-end">
             <span className="text-base font-black text-gray-900">Yekun məbləğ</span>
-            <span className="text-2xl font-black text-gray-900 tracking-tight">${finalAmount.toFixed(2)}</span>
+            <span className="text-2xl font-black text-gray-900 tracking-tight">₼{finalAmount.toFixed(2)}</span>
           </div>
           
           {finalAmount < minAmount && (

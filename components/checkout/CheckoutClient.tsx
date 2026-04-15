@@ -84,7 +84,7 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 
     // Backend-driven minimum order amount validation
     const minAmount = minAmountData?.minimumAmount ?? 0;
     if (totalAmount < minAmount) {
-      const msg = `Minimum sifariş məbləği $${minAmount.toFixed(2)} olmalıdır. Cari: $${totalAmount.toFixed(2)}`;
+      const msg = `Minimum sifariş məbləği ${minAmount.toFixed(2)} AZN olmalıdır. Cari: ${totalAmount.toFixed(2)} AZN`;
       setServerError(msg);
       toast.error(msg);
       return;
@@ -328,7 +328,7 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 
                 <div className="mt-4 bg-blue-50 border border-blue-100 rounded-2xl p-5">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-sm font-bold text-gray-700">Mövcud balans:</span>
-                    <span className="font-black text-blue-600">${walletBalance.toFixed(2)}</span>
+                    <span className="font-black text-blue-600">₼{walletBalance.toFixed(2)}</span>
                   </div>
                   <Field
                     label="İstifadə ediləcək məbləğ"
@@ -337,7 +337,7 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 
                     <input
                       {...register("walletAmountToUse", {
                         min: { value: 0, message: "0 və ya müsbət dəyər daxil edin" },
-                        max: { value: Math.min(walletBalance, totalAmount), message: `Maksimum $${Math.min(walletBalance, totalAmount).toFixed(2)}` },
+                        max: { value: Math.min(walletBalance, totalAmount), message: `Maksimum ₼${Math.min(walletBalance, totalAmount).toFixed(2)}` },
                       })}
                       type="number"
                       step="0.01"
@@ -347,9 +347,9 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 
                       className={inputClass(!!errors.walletAmountToUse)}
                     />
                   </Field>
-                  {walletToUse > 0 && (
+                   {walletToUse > 0 && (
                     <p className="text-xs text-gray-500 mt-2 font-medium">
-                      Balansdan istifadəndən sonra ödəniləcək: <span className="font-black text-gray-900">${remainingAfterWallet.toFixed(2)}</span>
+                      Balansdan istifadəndən sonra ödəniləcək: <span className="font-black text-gray-900">₼{remainingAfterWallet.toFixed(2)}</span>
                     </p>
                   )}
                 </div>
@@ -378,7 +378,7 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 
             <div>
               <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Ödəniləcək məbləğ</p>
               <p className="text-2xl font-black text-gray-900 tracking-tighter">
-                ${walletToUse > 0 ? remainingAfterWallet.toFixed(2) : totalAmount.toFixed(2)}
+                ₼{walletToUse > 0 ? remainingAfterWallet.toFixed(2) : totalAmount.toFixed(2)}
               </p>
             </div>
             <div className="flex gap-3">

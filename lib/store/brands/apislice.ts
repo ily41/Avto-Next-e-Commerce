@@ -1,4 +1,14 @@
-import { Brand } from "@/app/dashboard/brands/page";
+export type Brand = {
+    id: string;
+    name: string;
+    slug: string;
+    logoUrl: string;
+    isActive: boolean;
+    sortOrder: number;
+    createdAt: string;
+    productCount: number;
+}
+
 import { api } from "../api";
 
 export const brandApi = api.injectEndpoints({
@@ -6,8 +16,37 @@ export const brandApi = api.injectEndpoints({
 
 
 
-    getBrands: builder.query<{ items: Brand[], totalCount: number }, { pageIndex: number, pageSize: number }>({
-      query: ({ pageIndex, pageSize }) => `Brands/paginated?pageIndex=${pageIndex}&pageSize=${pageSize}`,
+    searchBrandsAdmin: builder.query<{ 
+        items: Brand[], 
+        totalCount: number,
+        page: number,
+        pageSize: number,
+        totalPages: number,
+        hasNextPage: boolean,
+        hasPreviousPage: boolean,
+        count: number,
+        query: string | null
+    }, { 
+        q?: string, 
+        page?: number, 
+        pageSize?: number,
+        sortBy?: string,
+        sortOrder?: string,
+        includeInactive?: boolean,
+        hasProducts?: boolean
+    }>({
+      query: (params) => ({
+        url: "Brands/search/admin",
+        params: {
+            Q: params.q,
+            Page: params.page,
+            PageSize: params.pageSize,
+            SortBy: params.sortBy,
+            SortOrder: params.sortOrder,
+            IncludeInactive: true,
+            HasProducts: params.hasProducts
+        }
+      }),
       providesTags: ["Brand"],
     }),
 
@@ -79,4 +118,4 @@ export const brandApi = api.injectEndpoints({
 });
 
 // Hooks are generated based on the endpoints
-export const { useGetBrandsQuery, useCreateBrandWithImageMutation, useDeleteBrandMutation, useEditBrandMutation } = brandApi;
+export const { useSearchBrandsAdminQuery, useCreateBrandWithImageMutation, useDeleteBrandMutation, useEditBrandMutation } = brandApi;

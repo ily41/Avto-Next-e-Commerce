@@ -8,7 +8,7 @@ import { useDeleteProductMutation, type Product, useFilterProductsQuery, useCrea
 import { useUploadPrimaryImageMutation, useUploadDetailImagesMutation, useDeleteProductImageMutation } from "@/lib/store/products/editApis/apislice";
 import { useGetProductByIdQuery } from "@/lib/store/productDetails/apislice";
 import { useGetCategoriesQuery, type Category } from "@/lib/store/categories/apislice";
-import { useGetBrandsQuery } from "@/lib/store/brands/apislice";
+import { useSearchBrandsAdminQuery } from "@/lib/store/brands/apislice";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { DynamicAddPopup, type FieldConfig } from "@/components/addEditElement/DynamicAddPopup";
@@ -59,7 +59,7 @@ export default function ProductsPage() {
         return flatList;
     }, [categoriesData]);
 
-    const { data: brandsData } = useGetBrandsQuery({ pageIndex: 0, pageSize: 100 });
+    const { data: brandsData } = useSearchBrandsAdminQuery({ page: 1, pageSize: 100 });
 
     const filterRequestBody = useMemo(() => {
         return {
@@ -234,15 +234,6 @@ export default function ProductsPage() {
             key: "stockQuantity",
             label: "Stok",
             sortable: true
-        },
-        {
-            key: "isActive",
-            label: "Status",
-            render: (value) => (
-                <span className={`px-2 py-1 rounded text-xs ${value ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                    {value ? "Aktiv" : "Qeyri-aktiv"}
-                </span>
-            )
         },
         {
             key: "id",

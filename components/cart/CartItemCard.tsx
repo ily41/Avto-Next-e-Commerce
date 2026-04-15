@@ -67,7 +67,7 @@ export function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardP
 
   return (
     <div className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4 border-b border-gray-100 ${isRemoving ? "opacity-50 pointer-events-none" : "opacity-100"} transition-opacity`}>
-      <Link href={`/product/${item.product?.slug || item.productId}`} className="shrink-0">
+      <Link href={`/product/${item.productSlug || item.product?.slug || item.productId}`} className="shrink-0">
         <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-50 flex items-center justify-center rounded-md border border-gray-100 relative">
           <Image
             src={fullImageUrl}
@@ -79,7 +79,7 @@ export function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardP
       </Link>
 
       <div className="flex-1 min-w-0">
-        <Link href={`/product/${item.product?.slug || item.productId}`}>
+        <Link href={`/product/${item.productSlug || item.product?.slug || item.productId}`}>
           <h4 className="text-sm font-semibold text-gray-800 hover:text-blue-600 transition-colors line-clamp-2">
             {item.productName}
           </h4>
@@ -88,7 +88,7 @@ export function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardP
         {item.productSku && <p className="text-xs text-gray-400 mt-0.5">SKU: {item.productSku}</p>}
 
         <div className="mt-2 text-sm font-bold text-gray-900">
-          ${unitPrice.toFixed(2)}
+          ₼{unitPrice.toFixed(2)}
         </div>
       </div>
 

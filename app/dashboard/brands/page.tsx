@@ -2,7 +2,7 @@
 
 import { DataTable } from "@/components/data-table/data-tables";
 import { createColumns } from "@/components/data-table/data-table-factory";
-import { useDeleteBrandMutation, useGetBrandsQuery } from "@/lib/store/brands/apislice";
+import { useDeleteBrandMutation, useSearchBrandsAdminQuery, useCreateBrandWithImageMutation, useEditBrandMutation, type Brand } from "@/lib/store/brands/apislice";
 import React from "react";
 import { PaginationState } from "@tanstack/react-table";
 import { DynamicAddPopup, type FieldConfig } from "@/components/addEditElement/DynamicAddPopup";
@@ -10,18 +10,6 @@ import { DynamicEditPopup } from "@/components/addEditElement/DynamicEditPopup";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import * as z from "zod";
-import { useCreateBrandWithImageMutation, useEditBrandMutation } from "@/lib/store/brands/apislice";
-
-export type Brand = {
-    id: string;
-    name: string;
-    slug: string;
-    logoUrl: string;
-    isActive: boolean;
-    sortOrder: number;
-    createdAt: string;
-    productCount: number;
-}
 
 
 
@@ -34,6 +22,7 @@ export default function Page() {
     })
 
     const [editingBrand, setEditingBrand] = React.useState<Brand | null>(null);
+    const [searchQuery, setSearchQuery] = React.useState("");
 
     const brandSchema = z.object({
         name: z.string().min(2, "Name is required"),
@@ -49,7 +38,11 @@ export default function Page() {
         { name: "imageFile", label: "Brend Loqosu (İxtiyari)", type: "file" }
     ];
 
-    const { data, isLoading, error } = useGetBrandsQuery(pagination);
+    const { data, isLoading, error } = useSearchBrandsAdminQuery({
+        q: searchQuery,
+        page: pagination.pageIndex + 1,
+        pageSize: pagination.pageSize
+    });
     const [createBrand, { isLoading: isCreating }] = useCreateBrandWithImageMutation();
     const [updateBrand, { isLoading: isUpdating }] = useEditBrandMutation();
     const [deleteBrand, { isLoading: isDeleting }] = useDeleteBrandMutation();
@@ -147,9 +140,14 @@ export default function Page() {
                 columns={brandColumns}
                 data={data?.items || []}
                 filterColumn="name"
+                filterMode="server"
+                onFilterChange={(val) => {
+                    setSearchQuery(val);
+                    setPagination(prev => ({ ...prev, pageIndex: 0 }));
+                }}
                 pagination={pagination}
                 onPaginationChange={setPagination}
-                pageCount={data?.totalCount || 0}
+                pageCount={data?.totalPages || 0}
                 manualPagination
             />
             <DynamicEditPopup

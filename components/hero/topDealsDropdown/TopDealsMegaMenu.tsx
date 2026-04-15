@@ -60,7 +60,7 @@ const TopDealsMegaMenu = ({ isOpen, setHoveredLink }: TopDealsMegaMenuProps) => 
 
             {/* Right Side: Top Rated Grid (3 rows x 2 columns) */}
             <div className="w-[50%] bg-gray-50/50 p-6 border-l border-gray-100">
-                <h3 className="text-center text-[14px] font-semibold text-gray-900 mb-6">Ən Reytinqli</h3>
+                <h3 className="text-center text-[14px] font-semibold text-gray-900 mb-6">Ən çox satılanlar</h3>
 
                 <div className="grid grid-cols-2 gap-px bg-gray-100 border border-gray-100 rounded-lg overflow-hidden">
                     {displayProducts.length > 0 ? (

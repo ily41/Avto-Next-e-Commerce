@@ -9,7 +9,7 @@ const TermsAndConditions = () => {
     {
       title: "1. Ümumi müddəalar",
       icon: <IconScale size={24} className="text-blue-600" />,
-      content: "Bu sənəd Avto027.az veb saytından istifadə edərkən müştərilərin və platformanın qarşılıqlı öhdəliklərini müəyyən edir. Saytdan istifadə etməklə siz bütün şərtləri qəbul etmiş sayılırsınız."
+      content: "Bu sənəd Avto027.com veb saytından istifadə edərkən müştərilərin və platformanın qarşılıqlı öhdəliklərini müəyyən edir. Saytdan istifadə etməklə siz bütün şərtləri qəbul etmiş sayılırsınız."
     },
     {
       title: "2. Qeydiyyat və Hesab Təhlükəsizliyi",
@@ -24,7 +24,7 @@ const TermsAndConditions = () => {
     {
       title: "4. Çatdırılma Şərtləri",
       icon: <IconTruck size={24} className="text-blue-600" />,
-      content: "Çatdırılma müddəti və qiyməti sifarişin növündən və çatdırılma ünvanından asılı olaraq dəyişə bilər. Avto027.az for-major hallarda çatdırılma müddətində yarana biləcək gecikmələrə görə məsuliyyət daşımır."
+      content: "Çatdırılma müddəti və qiyməti sifarişin növündən və çatdırılma ünvanından asılı olaraq dəyişə bilər. Avto027.com for-major hallarda çatdırılma müddətində yarana biləcək gecikmələrə görə məsuliyyət daşımır."
     },
     {
       title: "5. Məhsulun Geri Qaytarılması",
@@ -34,7 +34,7 @@ const TermsAndConditions = () => {
     {
       title: "6. Əqli Mülkiyyət",
       icon: <IconGavel size={24} className="text-blue-600" />,
-      content: "Saytda yerləşdirilən bütün mətnlər, şəkillər, loqolar və proqram təminatı Avto027.az-ın mülkiyyətidir. Onların icazəsiz kopyalanması və ya istifadəsi qadağandır."
+      content: "Saytda yerləşdirilən bütün mətnlər, şəkillər, loqolar və proqram təminatı Avto027.com-ın mülkiyyətidir. Onların icazəsiz kopyalanması və ya istifadəsi qadağandır."
     }
   ];
 
@@ -90,8 +90,8 @@ const TermsAndConditions = () => {
                   <h3 className="text-2xl font-bold mb-2 font-outfit uppercase tracking-tight">Qaydaları qəbul edirsiniz?</h3>
                   <p className="text-blue-100/90 font-medium">Platformadan istifadəyə davam etməklə siz bu şərtləri avtomatik olaraq qəbul edirsiniz.</p>
                 </div>
-                <Link 
-                  href="/shop" 
+                <Link
+                  href="/shop"
                   className="bg-white text-blue-600 px-10 py-4 rounded-2xl font-bold hover:bg-gray-100 transition-all hover:shadow-xl active:scale-95 whitespace-nowrap"
                 >
                   Alış-verişə davam et

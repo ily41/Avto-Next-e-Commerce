@@ -2,6 +2,7 @@
 
 import React from "react";
 import { X, Search } from "lucide-react";
+import { SearchDropdown } from "../SearchDropdown";
 
 interface MobileSearchOverlayProps {
     isActive: boolean;
@@ -39,6 +40,16 @@ export function MobileSearchOverlay({
                         <Search size={20} />
                     </button>
                 </form>
+            </div>
+
+            <div className="relative px-2">
+                {searchTerm.length >= 2 && (
+                    <SearchDropdown 
+                        searchTerm={searchTerm} 
+                        onClose={onClose}
+                        className="mt-0 border-none shadow-none static max-h-[calc(100vh-80px)]"
+                    />
+                )}
             </div>
         </div>
     );

@@ -8,7 +8,7 @@ const PrivacyPolicy = () => {
   const sections = [
     {
       title: "1. Ümumi müddəalar",
-      content: "Bu Məxfilik Siyasəti Avto027.az platformasının istifadəçilərindən toplanan məlumatların necə idarə olunduğunu tənzimləyir. Biz sizin məxfiliyinizə ciddi yanaşırıq və şəxsi məlumatlarınızın qorunmasına təminat veririk."
+      content: "Bu Məxfilik Siyasəti Avto027.com platformasının istifadəçilərindən toplanan məlumatların necə idarə olunduğunu tənzimləyir. Biz sizin məxfiliyinizə ciddi yanaşırıq və şəxsi məlumatlarınızın qorunmasına təminat veririk."
     },
     {
       title: "2. Hansı məlumatları toplayırıq?",
@@ -24,7 +24,7 @@ const PrivacyPolicy = () => {
     },
     {
       title: "5. Üçüncü tərəflərlə məlumat paylaşımı",
-      content: "Avto027.az istifadəçilərin şəxsi məlumatlarını satmır və ya icarəyə vermir. Məlumatlar yalnız qanunvericiliklə tələb olunan hallarda və ya xidmətin göstərilməsi üçün zəruri olan partnyorlarla (məsələn, kuryer xidmətləri) paylaşıla bilər."
+      content: "Avto027.com istifadəçilərin şəxsi məlumatlarını satmır və ya icarəyə vermir. Məlumatlar yalnız qanunvericiliklə tələb olunan hallarda və ya xidmətin göstərilməsi üçün zəruri olan partnyorlarla (məsələn, kuryer xidmətləri) paylaşıla bilər."
     },
     {
       title: "6. Kuki (Cookie) faylları",
@@ -36,7 +36,7 @@ const PrivacyPolicy = () => {
     },
     {
       title: "8. Əlaqə",
-      content: "Məxfilik siyasəti ilə bağlı hər hansı sualınız olarsa, info@avto027.az ünvanına müraciət edə bilərsiniz."
+      content: "Məxfilik siyasəti ilə bağlı hər hansı sualınız olarsa, info@avto027.com ünvanına müraciət edə bilərsiniz."
     }
   ];
 
@@ -120,8 +120,8 @@ const PrivacyPolicy = () => {
             <h3 className="text-xl font-bold text-gray-900 mb-1">Suallarınız var?</h3>
             <p className="text-gray-500 font-medium">Dəstək komandamız sizə kömək etməyə hazırdır.</p>
           </div>
-          <Link 
-            href="/contact-us" 
+          <Link
+            href="/contact-us"
             className="bg-gray-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-black transition-all hover:shadow-lg active:scale-95"
           >
             Bizimlə Əlaqə
