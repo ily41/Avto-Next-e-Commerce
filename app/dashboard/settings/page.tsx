@@ -69,8 +69,13 @@ export default function SettingsPage() {
     }
 
     const handleSaveInstallment = async () => {
+        if (!installmentData) return;
         try {
-            await updateInstallment({ isEnabled: installmentEnabled, minimumAmount: Number(installmentMin) || 0 }).unwrap()
+            await updateInstallment({ 
+                ...installmentData,
+                isEnabled: installmentEnabled, 
+                minimumAmount: Number(installmentMin) || 0 
+            }).unwrap()
             toast.success("Hissəli ödəniş konfiqurasiyası uğurla yenilendi")
         } catch (e) {
             toast.error("Hissəli ödəniş konfiqurasiyası yenilənə bilmədi")
