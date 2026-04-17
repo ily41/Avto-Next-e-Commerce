@@ -118,7 +118,7 @@ export default function Footer() {
       <div className="bg-[#f8f8f8] py-8">
         <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-[13px] text-gray-500 font-medium text-center w-full">
-            © 2026 Avto027.az. Bütün hüquqlar qorunur.
+            © 2026 Avto027.com. Bütün hüquqlar qorunur.
           </p>
 
           {/* <div className="flex items-center gap-1">

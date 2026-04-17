@@ -347,7 +347,7 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 
                       className={inputClass(!!errors.walletAmountToUse)}
                     />
                   </Field>
-                   {walletToUse > 0 && (
+                  {walletToUse > 0 && (
                     <p className="text-xs text-gray-500 mt-2 font-medium">
                       Balansdan istifadəndən sonra ödəniləcək: <span className="font-black text-gray-900">₼{remainingAfterWallet.toFixed(2)}</span>
                     </p>

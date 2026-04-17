@@ -74,12 +74,14 @@ const ProductsMegaMenu = ({ isOpen, setHoveredLink }: ProductsMegaMenuProps) => 
             <div className="relative group/slider ">
                 <div
                     ref={scrollRef}
-                    className={`flex justify-start items-start overflow-x-hidden scroll-smooth border-l border-t border-b border-gray-100 transition-opacity duration-300 ${isProductsFetching ? "opacity-50" : "opacity-100"}`}
+                    className={`flex justify-start items-stretch overflow-x-hidden scroll-smooth border-l border-t border-b border-gray-100 transition-opacity duration-300 ${isProductsFetching ? "opacity-50" : "opacity-100"}`}
                 >
                     {products.length > 0 ? (
                         products.map((product) => (
-                            <div key={product.id} className="w-1/4 min-w-[250px] max-w-[300px] border-r border-gray-100 flex-shrink-0">
-                                <ProductCard product={product} />
+                            <div key={product.id} className="w-1/4 min-w-[250px] max-w-[300px] border-r border-gray-100 flex-shrink-0 flex flex-col h-full">
+                                <div className="flex flex-col h-full">
+                                    <ProductCard product={product} />
+                                </div>
                             </div>
                         ))
                     ) : (

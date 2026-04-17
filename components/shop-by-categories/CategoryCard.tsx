@@ -32,7 +32,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
                     {category.name}
                 </p>
                 <p className="text-xs text-gray-500 mt-0.5">
-                    {category.productCount ?? category.subCategories?.length ?? 0} Məhsul
+                    {category.productCount ?? category.subCategories?.length ?? 0} Alt kateqoriya
                 </p>
             </div>
         </Link>

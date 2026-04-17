@@ -40,10 +40,12 @@ const TechGadgets = async () => {
 
         {/* Layout Containers — Reversed Order for Side Banner on Desktop */}
         <div className="flex flex-col md:flex-row-reverse gap-6">
-          {/* Banner Column — Right on Desktop */}
-          <div className="w-full md:w-[30%] lg:w-[25%] xl:w-[20%] aspect-[16/9] md:aspect-[14/10]">
+          {/* Banner Column — Right on Desktop, stretches to match card row */}
+          <div className="w-full md:w-[30%] lg:w-[25%] xl:w-[20%] self-stretch flex flex-col">
             {activeBanner ? (
-              <BannerItem banner={activeBanner} variant="secondary" />
+              <div className="h-full">
+                <BannerItem banner={activeBanner} variant="secondary" />
+              </div>
             ) : null}
           </div>
 
@@ -59,7 +61,7 @@ const TechGadgets = async () => {
                 else if (i === 3) displayClass = "hidden lg:block";
 
                 return (
-                  <div key={product.id} className={`aspect-[10/14] ${displayClass}`}>
+                  <div key={product.id} className={displayClass}>
                     <ProductCard product={product} />
                   </div>
                 );

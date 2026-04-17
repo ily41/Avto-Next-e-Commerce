@@ -3,13 +3,12 @@
 import * as React from "react";
 import { Product } from "@/lib/api/types";
 import { useToggleFavoriteMutation } from "@/lib/store/favorites/apislice";
-import { IconHeart, IconChartBar, IconEye, IconShoppingCart, IconHeartFilled } from "@tabler/icons-react";
+import { IconHeart, IconHeartFilled, IconShoppingCart } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { fullUrl } from "@/lib/api/url-utils";
 import { useCart } from "@/hooks/useCart";
-import { toast } from "sonner";
 import { useGetInstallmentConfigurationQuery, useGetInstallmentOptionsQuery } from "@/lib/store/installment/installmentApiSlice";
 
 interface ProductCardProps {
@@ -17,9 +16,25 @@ interface ProductCardProps {
     noBorder?: boolean;
 }
 
+// Countdown timer hook
+function useCountdown(targetSeconds: number) {
+    const [remaining, setRemaining] = useState(targetSeconds);
+    useEffect(() => {
+        if (!targetSeconds) return;
+        const timer = setInterval(() => {
+            setRemaining((prev) => (prev > 0 ? prev - 1 : 0));
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [targetSeconds]);
+    const h = Math.floor(remaining / 3600);
+    const m = Math.floor((remaining % 3600) / 60);
+    const s = remaining % 60;
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${pad(h)}:${pad(m)}:${pad(s)}`;
+}
+
 const ProductCard = ({ product, noBorder }: ProductCardProps) => {
     const router = useRouter();
-    const [isHovered, setIsHovered] = useState(false);
 
     const [toggleFavorite] = useToggleFavoriteMutation();
     const { addItem } = useCart();
@@ -33,11 +48,14 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
         { skip: !instConfig?.isEnabled || productPrice < instConfig?.minimumAmount }
     );
 
-    const maxPeriod = instOptions 
-        ? Math.max(...instOptions.filter(o => o.isActive).map(o => o.installmentPeriod), 0) 
+    const maxPeriod = instOptions
+        ? Math.max(...instOptions.filter((o) => o.isActive).map((o) => o.installmentPeriod), 0)
         : 0;
-    
+
     const monthlyPayment = maxPeriod > 0 ? (productPrice / maxPeriod).toFixed(2) : null;
+
+    // Countdown: 30 min from mount (for demo; real apps would use product.hotDealEndsAt)
+    const countdownDisplay = useCountdown(product.isHotDeal ? 29 * 60 + 32 : 0);
 
     const handleFavoriteClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -47,8 +65,8 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
             console.error("Favorite toggle failed:", err);
         }
     };
+
     const handleCardClick = (e: React.MouseEvent) => {
-        // Only navigate if the click was on the card itself or its text, not on a button
         const target = e.target as HTMLElement;
         if (!target.closest("button") && !target.closest("a")) {
             router.push(`/product/${product.slug || product.id}`);
@@ -62,123 +80,130 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
             setIsAdded(true);
             setTimeout(() => setIsAdded(false), 2000);
         } catch (err: any) {
-            // Error is handled by the useCart hook
+            // Error handled by useCart hook
         }
     };
 
     const PLACEHOLDER_IMAGE = "/logos/logo3.svg";
     const fullPrimaryUrl = fullUrl(product.primaryImageUrl || product.imageUrl);
-    const secondaryImgPath = product.detailImageUrl || (product.images && product.images.length > 1 ? product.images[1].imageUrl : null);
+    const secondaryImgPath =
+        product.detailImageUrl ||
+        (product.images && product.images.length > 1 ? product.images[1].imageUrl : null);
     const fullSecondaryUrl = secondaryImgPath ? fullUrl(secondaryImgPath) : null;
 
-    const discount = (product.discountedPrice && product.price > product.discountedPrice)
-        ? Math.round(((product.price - product.discountedPrice) / product.price) * 100)
-        : 0;
+    const discount =
+        product.discountedPrice && product.price > product.discountedPrice
+            ? Math.round(((product.price - product.discountedPrice) / product.price) * 100)
+            : 0;
+
+    const isNew = product.createdAt
+        ? (Date.now() - new Date(product.createdAt).getTime()) < 30 * 24 * 60 * 60 * 1000
+        : false;
 
     return (
         <div
-            className={`group relative bg-white ${noBorder ? " rounded-lg" : "border border-[#f2f2f2] "} p-4 pb-3 flex flex-col h-full transition-all duration-300 overflow-hidden cursor-pointer`}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            className={`relative bg-white h-full ${
+                noBorder ? "rounded-xl" : "border border-[#f0f0f0] rounded-xl"
+            } flex flex-col cursor-pointer select-none shadow-sm hover:shadow-md transition-shadow duration-300`}
             onClick={handleCardClick}
+            style={{ overflow: "hidden" }}
         >
-            {/* Discount Badge */}
-            {discount > 0 && (
-                <div className="absolute top-2 right-2 bg-blue-600 text-white text-[10px] b-badge font-bold px-1.5 py-0.5 rounded-sm z-10 transition-transform duration-300 group-hover:scale-110">
-                    -{discount}%
-                </div>
-            )}
+            {/* ── IMAGE AREA ─────────────────────────────────────── */}
+            <div className="relative  rounded-t-xl" style={{ aspectRatio: "1 / 1" }}>
+                {/* "Yenilik" badge — top left */}
+                {isNew && (
+                    <span className="absolute top-3 left-3 z-10 text-white text-[11px] font-bold px-2.5 py-0.5 rounded bg-blue-600">
+                        Yenilik
+                    </span>
+                )}
 
-            {/* Installment Badge */}
-            {maxPeriod > 0 && (
-                <div className="absolute top-2 left-2 bg-black/90 text-[9px] font-black text-white px-2 py-0.5 rounded-sm z-10 uppercase tracking-tight flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                    {maxPeriod} ay x ₼{monthlyPayment}
-                </div>
-            )}
-
-            {/* Action Icons - Left top side, slide from Left */}
-            <div className={`absolute top-4 left-4 flex flex-col gap-2 z-20 transition-all duration-500 ease-out ${isHovered ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"}`}>
+                {/* Heart — top right, always visible */}
                 <button
                     onClick={handleFavoriteClick}
-                    className={`w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm border border-gray-100 cursor-pointer ${product.isFavorite ? "bg-red-50 text-red-500 border-red-100" : "bg-gray-50 text-gray-700 hover:bg-blue-600 hover:text-white"}`}
+                    className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 transition-all duration-200 hover:scale-110 cursor-pointer"
                 >
-                    {product.isFavorite ? <IconHeartFilled size={18} /> : <IconHeart size={18} stroke={1.5} />}
+                    {product.isFavorite ? (
+                        <IconHeartFilled size={18} className="text-red-500" />
+                    ) : (
+                        <IconHeart size={18} stroke={1.5} className="text-gray-400" />
+                    )}
                 </button>
-                <button className="w-7 h-7 rounded-full bg-gray-50 flex items-center justify-center text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-sm border border-gray-100 cursor-pointer">
-                    <IconChartBar size={18} stroke={1.5} />
-                </button>
-                <button className="w-7 h-7 rounded-full bg-gray-50 flex items-center justify-center text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-sm border border-gray-100 cursor-pointer">
-                    <IconEye size={18} stroke={1.5} />
-                </button>
-            </div>
 
-            {/* Product Image Area */}
-            <div className={`relative ${noBorder ? "h-[160px]" : "aspect-square"} mb-2 flex items-center justify-center px-1 md:px-4 overflow-hidden`}>
-                <img
-                    src={fullPrimaryUrl}
-                    alt={product.name}
-                    onError={(e) => (e.currentTarget.src = PLACEHOLDER_IMAGE)}
-                    className={`max-h-full max-w-full object-contain transition-all duration-700 ease-in-out ${isHovered && fullSecondaryUrl ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}
-                />
-                {fullSecondaryUrl && (
+                {/* Product image */}
+                <div className="absolute inset-0 flex items-center justify-center p-5">
                     <img
-                        src={fullSecondaryUrl}
-                        alt={`${product.name} detail`}
+                        src={fullPrimaryUrl}
+                        alt={product.name}
                         onError={(e) => (e.currentTarget.src = PLACEHOLDER_IMAGE)}
-                        className={`absolute inset-0 m-auto max-h-full max-w-full object-contain transition-all duration-700 ease-in-out ${isHovered ? "opacity-100 scale-105" : "opacity-0 scale-100"}`}
+                        className="max-h-full max-w-full object-contain"
+                        style={{ maxHeight: "160px" }}
                     />
-                )}
+                </div>
 
-                {/* Hot Deal Countdown */}
-                {product.isHotDeal && (
-                    <div className="absolute bottom-0 left-0 right-0 p-2 flex justify-center gap-1.5 z-10 scale-90 sm:scale-100">
-                    </div>
+                {/* Discount badge — bottom left of image area */}
+                {discount > 0 && (
+                    <span className="absolute bottom-3 left-3 z-10 text-red-600 bg-red-50 text-[11px] font-bold px-2 py-0.5 rounded">
+                        -{discount} %
+                    </span>
                 )}
             </div>
 
-            {/* Content Slider Container - Shifts up on hover */}
-            <div className="flex flex-col flex-1 mt-1 relative">
-                <div
-                    className={`flex flex-col flex-1 transition-transform duration-500 ease-in-out md:translate-y-0 md:group-hover:-translate-y-12`}
-                >
-                    {/* Product Metadata */}
-                    <div className="flex flex-col flex-1 min-h-[4.5rem]">
-                        <Link
-                            href={`/product/${product.slug || product.id}`}
-                            className={`text-[11px] md:text-[13px] font-medium ${noBorder ? "text-center" : "text-left"} text-gray-800 leading-snug mb-2 line-clamp-2 h-[2.5rem] flex items-center ${noBorder ? "justify-center" : "justify-start"} hover:text-blue-600 transition-colors`}
-                        >
-                            {product.name}
-                        </Link>
+            {/* ── CONTENT AREA ────────────────────────────────────── */}
+            <div className="flex flex-col flex-1 px-3 pt-3 pb-3 gap-1.5">
+                {/* Price row */}
+                <div className="flex items-baseline gap-2">
+                    {/* Discounted / main price */}
+                    <span className="text-[17px] font-bold leading-none text-[#1a1a1a]">
+                        {product.discountedPrice ?? product.price}
+                        {" "}
+                        <span className="text-[13px] font-semibold">₼</span>
+                    </span>
 
-                        {/* Price Information */}
-                        <div className={`flex ${noBorder ? "justify-center" : "justify-start"} items-center gap-2.5 mt-auto`}>
-                            {discount > 0 && (
-                                <span className={`text-[14px] text-gray-400 line-through decoration-1 font-normal ${noBorder ? "text-center" : "text-left"}`}>
-                                    ₼{product.price}
-                                </span>
-                            )}
-                            <span className={`text-[14px] md:text-[14px] lg:text-[17px] font-bold text-[#1a1a1a] ${noBorder ? "text-center" : "text-left"}`}>
-                                ₼{product.discountedPrice || product.price}
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Add to Cart Button - Revealed on hover on desktop, fixed position on mobile */}
-                    <div className="relative mt-4 md:absolute md:top-full md:left-0 md:right-0">
-                        <button 
-                            className={`w-full font-bold py-2 rounded-lg text-sm tracking-tight transition-all duration-300 shadow-md cursor-pointer flex items-center justify-center gap-2 ${
-                                isAdded 
-                                    ? "bg-green-600 hover:bg-green-700 text-white" 
-                                    : "bg-[#1a1a1a] hover:bg-blue-600 text-white active:scale-95"
-                            }`}
-                            onClick={handleAddToCart}
-                            disabled={isAdded}
-                        >
-                            {isAdded ? "Əlavə edildi" : "Səbətə at"}
-                        </button>
-                    </div>
+                    {/* Original price — gray strikethrough */}
+                    {discount > 0 && (
+                        <span className="text-[12px] text-gray-400 line-through font-normal">
+                            {product.price} ₼
+                        </span>
+                    )}
                 </div>
+
+                {/* Installment pill — yellow */}
+                {monthlyPayment && maxPeriod > 0 && (
+                    <div className="inline-flex items-center self-start">
+                        <span
+                            className="text-[12px] font-bold px-2.5 py-1 rounded"
+                            style={{ background: "#f5d000", color: "#1a1a1a" }}
+                        >
+                            {monthlyPayment} ₼ x {maxPeriod} ay
+                        </span>
+                    </div>
+                )}
+
+                {/* Product name */}
+                <Link
+                    href={`/product/${product.slug || product.id}`}
+                    className="text-[12px] text-[#1a1a1a] leading-snug line-clamp-2 hover:text-blue-600 transition-colors duration-200 mt-0.5"
+                    style={{ minHeight: "2.8em" }}
+                >
+                    {product.name}
+                </Link>
+
+                {/* Spacer pushes button to bottom */}
+                <div className="flex-1" />
+
+                {/* "Səbətə at" button */}
+                <button
+                    onClick={handleAddToCart}
+                    disabled={isAdded}
+                    className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 cursor-pointer mt-1 active:scale-95 ${
+                        isAdded
+                            ? "bg-green-600 text-white"
+                            : "bg-blue-600 hover:bg-black text-white"
+                    }`}
+                >
+                    <IconShoppingCart size={17} stroke={1.8} />
+                    {isAdded ? "Əlavə edildi" : "Səbətə at"}
+                </button>
             </div>
         </div>
     );

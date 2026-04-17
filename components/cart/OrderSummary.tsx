@@ -12,6 +12,8 @@ import { useGetInstallmentConfigurationQuery } from "@/lib/store/installment/ins
 import { toast } from "sonner";
 import { ShoppingCart, Lock, AlertCircle } from "lucide-react";
 import { IconCreditCard } from "@tabler/icons-react";
+import { InstallmentCalculator } from "./InstallmentCalculator";
+
 
 interface OrderSummaryProps {
   isAuth: boolean;
@@ -41,9 +43,9 @@ export function OrderSummary({
   // Pull wallet balance for authenticated users so the modal can offer wallet usage
   const { data: wallet } = useGetWalletQuery(undefined, { skip: !isAuth });
 
-  const subTotal     = isAuth ? serverCart?.subTotal      || 0 : guestCart.reduce((s, i) => s + (i.totalPrice || 0), 0);
+  const subTotal = isAuth ? serverCart?.subTotal || 0 : guestCart.reduce((s, i) => s + (i.totalPrice || 0), 0);
   const totalDiscount = isAuth ? serverCart?.totalDiscount || 0 : 0;
-  const finalAmount  = isAuth ? serverCart?.finalAmount   || 0 : subTotal;
+  const finalAmount = isAuth ? serverCart?.finalAmount || 0 : subTotal;
   const appliedPromo = isAuth ? serverCart?.appliedPromoCode || null : null;
 
   return (
@@ -80,7 +82,7 @@ export function OrderSummary({
             <span className="text-base font-black text-gray-900">Yekun məbləğ</span>
             <span className="text-2xl font-black text-gray-900 tracking-tight">₼{finalAmount.toFixed(2)}</span>
           </div>
-          
+
           {finalAmount < minAmount && (
             <div className="mt-4 p-3 bg-red-50 border border-red-100 rounded-xl flex items-start gap-3">
               <AlertCircle className="h-4 w-4 text-red-600 mt-0.5 shrink-0" />
@@ -105,11 +107,10 @@ export function OrderSummary({
 
         <div className="flex flex-col gap-3 mt-6">
           <Button
-            className={`w-full font-black py-6 rounded-xl transition-all flex items-center gap-2 justify-center ${
-              finalAmount < minAmount 
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed hover:bg-gray-200" 
+            className={`w-full font-black py-6 rounded-xl transition-all flex items-center gap-2 justify-center ${finalAmount < minAmount
+                ? "bg-gray-200 text-gray-400 cursor-not-allowed hover:bg-gray-200"
                 : "bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20"
-            }`}
+              }`}
             onClick={() => {
               if (finalAmount < minAmount) {
                 toast.error(`Minimum sifariş məbləği ${minAmount.toFixed(2)} AZN olmalıdır.`);
@@ -139,7 +140,12 @@ export function OrderSummary({
         <p className="text-[10px] text-gray-400 text-center mt-3 font-medium">
           SSL ilə qorunan ödəniş
         </p>
+
+        {instConfig?.isEnabled && finalAmount >= instConfig.minimumAmount && (
+          <InstallmentCalculator totalAmount={finalAmount} />
+        )}
       </div>
+
 
       <CheckoutModal
         isOpen={isCheckoutOpen}
@@ -148,7 +154,7 @@ export function OrderSummary({
         walletBalance={wallet?.balance ?? 0}
       />
 
-      <InstallmentModal 
+      <InstallmentModal
         isOpen={isInstallmentOpen}
         onClose={() => setIsInstallmentOpen(false)}
         totalAmount={finalAmount}
