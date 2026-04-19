@@ -25,7 +25,7 @@ export default function SortHeader({
     <div className="flex flex-col md:flex-row justify-between items-center w-full lg:pb-4 lg:mb-4">
        {/* Left side text */}
        <div className="text-[#555555] text-sm font-medium mb-4 md:mb-0">
-          Showing {startItem}–{endItem} of {totalItems} results
+          {totalItems} nəticədən {startItem}–{endItem} arası göstərilir
        </div>
 
        {/* Right side controls */}
@@ -43,13 +43,13 @@ export default function SortHeader({
              value={currentSort}
              onChange={(e) => onSortChange(e.target.value)}
              className="appearance-none bg-white border border-[#e5e5e5] text-gray-700 text-sm font-medium focus:ring-1 focus:outline-none focus:ring-blue-500 rounded-md py-2 pl-4 md:pr-10 hover:border-blue-400 transition-colors cursor-pointer"
-             aria-label="Sort products"
+             aria-label="Məhsulları sırala"
           >
-             <option value="default">Default sorting</option>
-             <option value="name_asc">Alphabetical, A-Z</option>
-             <option value="name_desc">Alphabetical, Z-A</option>
-             <option value="price_asc">Price, low to high</option>
-             <option value="price_desc">Price, high to low</option>
+             <option value="default">Standart sıralama</option>
+             <option value="name_asc">Əlifba sırası ilə, A-Z</option>
+             <option value="name_desc">Əlifba sırası ilə, Z-A</option>
+             <option value="price_asc">Qiymət, azdan çoxa</option>
+             <option value="price_desc">Qiymət, çoxdan aza</option>
           </select>
 
           {/* View Toggles (Visible on larger screens typically, but can be everywhere) */}

@@ -7,6 +7,7 @@ import { IconChevronRight, IconShoppingCart, IconX } from "@tabler/icons-react";
 import { useGetFavoritesQuery, useToggleFavoriteMutation } from "@/lib/store/favorites/apislice";
 import Image from "next/image";
 import { fullUrl } from "@/lib/api/url-utils";
+import { useCart } from "@/hooks/useCart";
 
 const LOCAL = {
   home: "Ana səhifə",
@@ -29,7 +30,19 @@ export default function WishlistClient() {
   );
   const [toggleFavorite] = useToggleFavoriteMutation();
   const router = useRouter();
-  const [wishlistLink, setWishlistLink] = React.useState("https://wordpresstheme"); // Placeholder for demonstration
+  const { addItem } = useCart();
+ 
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+ 
+  const handleAddToCart = async (product: any) => {
+    try {
+      await addItem(product, 1);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
 
   if (isLoading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Yüklənir...</div>;
 
@@ -109,11 +122,11 @@ export default function WishlistClient() {
                       <span className="text-[15px] font-bold text-gray-800">
                         {item.product.discountedPrice && item.product.price > item.product.discountedPrice ? (
                           <>
-                            <span className="line-through text-gray-400 mr-2">${item.product.price}</span>
-                            <span>${item.product.discountedPrice}</span>
+                            <span className="line-through text-gray-400 mr-2">₼{item.product.price.toFixed(2)}</span>
+                            <span className="text-gray-900 font-bold">₼{item.product.discountedPrice.toFixed(2)}</span>
                           </>
                         ) : (
-                          `$${item.product.price}`
+                          <span className="text-gray-900 font-bold">₼{item.product.price.toFixed(2)}</span>
                         )}
                       </span>
                       <span className="text-[13px] text-gray-500 font-medium">
@@ -124,8 +137,11 @@ export default function WishlistClient() {
 
                   {/* Action Button */}
                   <div className="flex items-center gap-4 w-full md:w-auto">
-                    <button className="w-full md:w-[150px] h-10 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-bold rounded-md transition-all active:scale-95 shadow-sm uppercase tracking-tight">
-                      {item.product.stockQuantity > 0 ? "Add To Cart" : "View Products"}
+                    <button 
+                      onClick={() => item.product.stockQuantity > 0 ? handleAddToCart(item.product) : router.push(`/product/${item.product.slug || item.product.id}`)}
+                      className="w-full md:w-[150px] h-10 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-bold rounded-md transition-all active:scale-95 shadow-sm uppercase tracking-tight"
+                    >
+                      {item.product.stockQuantity > 0 ? LOCAL.addToCart : LOCAL.viewProduct}
                     </button>
                     <button 
                       onClick={() => toggleFavorite(item.productId)}

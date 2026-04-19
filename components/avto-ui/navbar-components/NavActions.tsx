@@ -80,7 +80,7 @@ export function NavActions({ favoritesCount, onMobileSearchOpen }: NavActionsPro
                 </div>
                 <div className="hidden lg:flex flex-col text-left">
                     <span className="text-[10px] text-gray-500 uppercase font-semibold leading-tight">Səbətim</span>
-                    <span className="text-[14px] font-bold text-gray-800 leading-tight">${cartSubTotal.toFixed(2)}</span>
+                    <span className="text-[14px] font-bold text-gray-800 leading-tight">₼{cartSubTotal.toFixed(2)}</span>
                 </div>
             </Link>
         </div>

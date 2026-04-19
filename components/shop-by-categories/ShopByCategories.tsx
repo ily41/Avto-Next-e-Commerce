@@ -28,7 +28,7 @@ const ShopByCategories = async () => {
             href="/shop"
             className="text-sm font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded"
           >
-            View All <span aria-hidden="true">→</span>
+            Hamısını göstər <span aria-hidden="true">→</span>
           </Link>
         </div>
 

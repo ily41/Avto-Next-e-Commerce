@@ -105,69 +105,11 @@ const data = {
       icon: IconFingerprint,
     },
   ],
-  navClouds: [
-    {
-      title: "Capture",
-      icon: IconCamera,
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: IconFileDescription,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
-      icon: IconFileAi,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-  ],
   navSecondary: [
     {
       title: "Parametrlər",
       url: "/dashboard/settings",
       icon: IconSettings,
-    },
-    {
-      title: "Yardım",
-      url: "#",
-      icon: IconHelp,
-    },
-    {
-      title: "Axtarış",
-      url: "#",
-      icon: IconSearch,
     },
   ],
   marketing: [

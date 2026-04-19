@@ -37,14 +37,14 @@ export const favoritesApi = api.injectEndpoints({
                 url: `/Favorites/toggle/${productId}`,
                 method: "POST",
             }),
-            invalidatesTags: ["Favorite"],
+            invalidatesTags: ["Favorite", "Product"],
         }),
         clearFavorites: builder.mutation<void, void>({
             query: () => ({
                 url: "/Favorites/clear",
                 method: "DELETE",
             }),
-            invalidatesTags: ["Favorite"],
+            invalidatesTags: ["Favorite", "Product"],
         }),
     }),
 });

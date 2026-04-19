@@ -14,7 +14,16 @@ import { api } from "../api";
 export const brandApi = api.injectEndpoints({
   endpoints: (builder) => ({
 
-
+    getBrands: builder.query<{ items: Brand[] }, { page?: number; pageSize?: number }>({
+      query: (params) => ({
+        url: "Brands/paginated",
+        params: {
+            PageIndex: params.page || 1,
+            PageSize: params.pageSize || 20
+        }
+      }),
+      providesTags: ["Brand"],
+    }),
 
     searchBrandsAdmin: builder.query<{ 
         items: Brand[], 
@@ -118,4 +127,4 @@ export const brandApi = api.injectEndpoints({
 });
 
 // Hooks are generated based on the endpoints
-export const { useSearchBrandsAdminQuery, useCreateBrandWithImageMutation, useDeleteBrandMutation, useEditBrandMutation } = brandApi;
+export const { useGetBrandsQuery, useSearchBrandsAdminQuery, useCreateBrandWithImageMutation, useDeleteBrandMutation, useEditBrandMutation } = brandApi;

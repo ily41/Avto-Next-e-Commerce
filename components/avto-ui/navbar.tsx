@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useGetFavoritesCountQuery } from "@/lib/store/favorites/apislice";
+import { useGetFavoritesQuery } from "@/lib/store/favorites/apislice";
 import { Menu } from "lucide-react";
 
 // Sub-components
@@ -34,10 +34,11 @@ export function Navbar() {
     const [searchTerm, setSearchTerm] = useState("");
     
     // Data
-    const { data: favoritesCountData } = useGetFavoritesCountQuery(undefined, {
-        skip: !isAuth
-    });
-    const favoritesCount = favoritesCountData?.count || 0;
+    const { data: favorites } = useGetFavoritesQuery(
+        { page: 1, pageSize: 1 },
+        { skip: !isAuth }
+    );
+    const favoritesCount = favorites?.totalCount || 0;
 
     // Effects
     useEffect(() => {

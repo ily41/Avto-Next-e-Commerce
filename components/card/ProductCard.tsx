@@ -16,22 +16,6 @@ interface ProductCardProps {
     noBorder?: boolean;
 }
 
-// Countdown timer hook
-function useCountdown(targetSeconds: number) {
-    const [remaining, setRemaining] = useState(targetSeconds);
-    useEffect(() => {
-        if (!targetSeconds) return;
-        const timer = setInterval(() => {
-            setRemaining((prev) => (prev > 0 ? prev - 1 : 0));
-        }, 1000);
-        return () => clearInterval(timer);
-    }, [targetSeconds]);
-    const h = Math.floor(remaining / 3600);
-    const m = Math.floor((remaining % 3600) / 60);
-    const s = remaining % 60;
-    const pad = (n: number) => String(n).padStart(2, "0");
-    return `${pad(h)}:${pad(m)}:${pad(s)}`;
-}
 
 const ProductCard = ({ product, noBorder }: ProductCardProps) => {
     const router = useRouter();
@@ -39,6 +23,14 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
     const [toggleFavorite] = useToggleFavoriteMutation();
     const { addItem } = useCart();
     const [isAdded, setIsAdded] = useState(false);
+    
+    // Local favorite state for instant UI update
+    const [localIsFavorite, setLocalIsFavorite] = useState(product.isFavorite);
+ 
+    // Synchronize local state with prop if it changes from outside (e.g. page refresh)
+    useEffect(() => {
+        setLocalIsFavorite(product.isFavorite);
+    }, [product.isFavorite]);
 
     // Installment logic
     const { data: instConfig } = useGetInstallmentConfigurationQuery();
@@ -54,14 +46,16 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
 
     const monthlyPayment = maxPeriod > 0 ? (productPrice / maxPeriod).toFixed(2) : null;
 
-    // Countdown: 30 min from mount (for demo; real apps would use product.hotDealEndsAt)
-    const countdownDisplay = useCountdown(product.isHotDeal ? 29 * 60 + 32 : 0);
 
     const handleFavoriteClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
         try {
+            // Optimistic update
+            setLocalIsFavorite(!localIsFavorite);
             await toggleFavorite(product.id).unwrap();
         } catch (err) {
+            // Revert if failed
+            setLocalIsFavorite(product.isFavorite);
             console.error("Favorite toggle failed:", err);
         }
     };
@@ -122,7 +116,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                     onClick={handleFavoriteClick}
                     className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 transition-all duration-200 hover:scale-110 cursor-pointer"
                 >
-                    {product.isFavorite ? (
+                    {localIsFavorite ? (
                         <IconHeartFilled size={18} className="text-red-500" />
                     ) : (
                         <IconHeart size={18} stroke={1.5} className="text-gray-400" />

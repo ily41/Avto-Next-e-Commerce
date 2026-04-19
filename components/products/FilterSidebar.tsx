@@ -62,7 +62,7 @@ export default function FilterSidebar({
          {/* Categories */}
          <div className="border border-[#f2f2f2] rounded-lg p-5">
             <h3 className="text-[15px] font-bold text-[#1a1a1a] mb-5 flex justify-between items-center">
-               Shop By Categories
+               Kateqoriyalar
                <span className="text-gray-400 font-normal leading-none">-</span>
             </h3>
             <div className="flex flex-col gap-1">
@@ -98,7 +98,7 @@ export default function FilterSidebar({
                                     toggleExpand(e, cat.id);
                                  }}
                                  className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
-                                 aria-label={isExpanded ? "Collapse" : "Expand"}
+                                 aria-label={isExpanded ? "Yığ" : "Göstər"}
                               >
                                  {isExpanded ? <IconChevronDown size={16} /> : <IconChevronRight size={16} />}
                               </button>
@@ -136,7 +136,7 @@ export default function FilterSidebar({
          {/* Brands */}
          <div className="border border-[#f2f2f2] rounded-lg p-5">
             <h3 className="text-[15px] font-bold text-[#1a1a1a] mb-5 flex justify-between items-center">
-               Brands
+               Brendlər
                <span className="text-gray-400 font-normal leading-none">-</span>
             </h3>
             <div className="flex flex-col gap-3 max-h-[250px] overflow-y-auto no-scrollbar">

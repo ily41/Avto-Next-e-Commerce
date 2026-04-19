@@ -96,6 +96,7 @@ export type ProductFilterRequest = {
   brandSlug?: string;
   isHotDeal?: boolean;
   isRecommended?: boolean;
+  isNew?: boolean;
   searchTerm?: string;
   filterCriteria?: ProductFilterCriteria[];
   minPrice?: number;

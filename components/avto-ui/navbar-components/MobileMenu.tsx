@@ -55,13 +55,6 @@ export function MobileMenu({
                         <span>Ana Səhifə</span>
                     </Link>
                     <Link 
-                        href="/shop" 
-                        onClick={onClose} 
-                        className="hover:text-blue-600 py-3 px-2 rounded-xl hover:bg-blue-50 transition-all flex items-center justify-between group"
-                    >
-                        <span>Mağaza</span>
-                    </Link>
-                    <Link 
                         href="/wishlist" 
                         onClick={onClose} 
                         className="hover:text-blue-600 py-3 px-2 rounded-xl hover:bg-blue-50 transition-all flex items-center justify-between group"

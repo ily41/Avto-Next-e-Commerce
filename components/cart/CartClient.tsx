@@ -36,11 +36,11 @@ export function CartClient() {
   if (isEmpty) {
     return (
       <div className="text-center max-w-md mx-auto py-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Your cart is currently empty.</h2>
-        <p className="text-gray-500 mb-8">Before proceed to checkout you must add some products to your shopping cart.</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Səbətiniz hal-hazırda boşdur.</h2>
+        <p className="text-gray-500 mb-8">Sifarişi tamamlamaq üçün səbətinizə məhsul əlavə etməlisiniz.</p>
         <Link href="/shop">
           <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 rounded-lg font-medium">
-            Return To Shop
+            Mağazaya qayıt
           </Button>
         </Link>
       </div>
@@ -53,7 +53,7 @@ export function CartClient() {
       <div className="lg:w-2/3">
         <div className="bg-white rounded-xl border border-gray-100 p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">
-            Shopping Cart ({cartItems.length} items)
+            Səbət ({cartItems.length} məhsul)
           </h2>
           
           <div className="space-y-2">

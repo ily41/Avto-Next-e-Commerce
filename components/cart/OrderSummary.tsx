@@ -131,8 +131,7 @@ export function OrderSummary({
 
           {instConfig?.isEnabled && finalAmount >= instConfig.minimumAmount && (
             <Button
-              variant="outline"
-              className="w-full font-black py-6 rounded-xl border-2 border-blue-600 text-blue-700 hover:bg-white hover:border-blue-700 bg-white shadow-sm flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5"
+              className="w-full font-black py-6 rounded-xl border-2 border-blue-600 text-blue-700 bg-white hover:bg-blue-600 hover:text-white active:scale-[0.98] transition-all duration-300 shadow-sm flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
               onClick={() => {
                 setIsInstallmentOpen(true);
               }}
@@ -144,8 +143,7 @@ export function OrderSummary({
 
           {finalAmount > 100 && (
             <Button
-              variant="outline"
-              className="w-full font-black py-6 rounded-xl border-2 border-green-600 text-green-700 hover:bg-white hover:border-green-700 bg-white shadow-sm flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5"
+              className="w-full font-black py-6 rounded-xl border-2 border-green-600 text-green-700 bg-white hover:bg-green-600 hover:text-white active:scale-[0.98] transition-all duration-300 shadow-sm flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
               onClick={() => {
                 setIsCreditRequestOpen(true);
               }}

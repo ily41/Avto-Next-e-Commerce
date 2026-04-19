@@ -89,18 +89,18 @@ export default function AdminOrderDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="p-8 space-y-6 bg-[#0a0a0a] min-h-screen">
+      <div className="p-8 space-y-6 min-h-screen">
         <div className="flex items-center gap-4">
-          <Skeleton className="h-10 w-10 rounded-full bg-white/5" />
-          <Skeleton className="h-8 w-64 bg-white/5" />
+          <Skeleton className="h-10 w-10 rounded-full" />
+          <Skeleton className="h-8 w-64" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <Skeleton className="h-96 w-full rounded-3xl bg-white/5" />
+            <Skeleton className="h-96 w-full rounded-3xl" />
           </div>
           <div className="space-y-6">
-            <Skeleton className="h-64 w-full rounded-3xl bg-white/5" />
-            <Skeleton className="h-64 w-full rounded-3xl bg-white/5" />
+            <Skeleton className="h-64 w-full rounded-3xl" />
+            <Skeleton className="h-64 w-full rounded-3xl" />
           </div>
         </div>
       </div>
@@ -109,8 +109,8 @@ export default function AdminOrderDetailPage() {
 
   if (isError || !order) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center gap-4 bg-[#0a0a0a] text-white">
-        <Package className="h-16 w-16 text-gray-800" />
+      <div className="h-screen flex flex-col items-center justify-center gap-4">
+        <Package className="h-16 w-16 text-muted-foreground" />
         <h2 className="text-xl font-bold">Order not found</h2>
         <Button onClick={() => router.push("/dashboard/orders")}>Back to Orders</Button>
       </div>
@@ -120,7 +120,7 @@ export default function AdminOrderDetailPage() {
   const currentStatusConfig = getStatusByName(order.status);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8 bg-[#0a0a0a] min-h-screen text-white">
+    <div className="p-8 max-w-7xl mx-auto space-y-8 min-h-screen">
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
@@ -134,10 +134,10 @@ export default function AdminOrderDetailPage() {
           </Button>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-black text-white tracking-tight leading-none">Sifariş #{order.orderNumber}</h1>
-              <Badge className={`${currentStatusConfig.color} border-white/10 uppercase font-black text-[10px] tracking-widest`}>{currentStatusConfig.label}</Badge>
+              <h1 className="text-3xl font-black tracking-tight leading-none">Sifariş #{order.orderNumber}</h1>
+              <Badge className={`${currentStatusConfig.color} border uppercase font-black text-[10px] tracking-widest`}>{currentStatusConfig.label}</Badge>
             </div>
-            <div className="flex items-center gap-4 text-[11px] text-gray-500 font-black uppercase tracking-widest mt-2">
+            <div className="flex items-center gap-4 text-[11px] text-muted-foreground font-black uppercase tracking-widest mt-2">
               <span className="flex items-center gap-1.5"><Calendar className="h-3 w-3" /> {formatDate(order.createdAt)}</span>
               <span className="flex items-center gap-1.5"><Hash className="h-3 w-3" /> ID: {order.id.slice(0, 8)}</span>
             </div>
@@ -146,12 +146,12 @@ export default function AdminOrderDetailPage() {
 
         <div className="flex flex-wrap items-center gap-3">
           <Select disabled={isUpdating} onValueChange={handleStatusUpdate} defaultValue={currentStatusConfig.value.toString()}>
-            <SelectTrigger className="w-[180px] h-11 rounded-xl font-bold bg-[#141414] border-white/10 shadow-sm text-white">
+            <SelectTrigger className="w-[180px] h-11 rounded-xl font-bold border shadow-sm">
               <SelectValue placeholder="Statusu Dəyiş" />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
+            <SelectContent>
               {STATUS_OPTIONS.map((s) => (
-                <SelectItem key={s.value} value={s.value.toString()} className="font-bold hover:bg-white/10">
+                <SelectItem key={s.value} value={s.value.toString()} className="font-bold">
                   {s.label}
                 </SelectItem>
               ))}
@@ -180,38 +180,38 @@ export default function AdminOrderDetailPage() {
         <div className="lg:col-span-2 space-y-8">
           
           {/* Items Table */}
-          <Card className="border-white/5 shadow-2xl rounded-[32px] overflow-hidden bg-[#141414] text-white">
-            <CardHeader className="border-b border-white/5 px-8 py-6">
-              <CardTitle className="text-[11px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-2">
+          <Card className="shadow-2xl rounded-[32px] overflow-hidden">
+            <CardHeader className="border-b px-8 py-6">
+              <CardTitle className="text-[11px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                 <Package className="h-4 w-4" /> Order Items ({order.items.length})
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="divide-y divide-white/5">
+              <div className="divide-y">
                 {order.items.map((item) => (
-                  <div key={item.id} className="p-6 flex items-center justify-between hover:bg-white/[0.02] transition-colors">
+                  <div key={item.id} className="p-6 flex items-center justify-between hover:bg-accent transition-colors">
                     <div className="flex items-center gap-4">
-                      <div className="h-14 w-14 rounded-2xl bg-[#0a0a0a] flex items-center justify-center text-gray-700 border border-white/5 shrink-0">
+                      <div className="h-14 w-14 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground border shrink-0">
                         <Package className="h-7 w-7" />
                       </div>
                       <div className="min-w-0">
-                        <p className="font-bold text-gray-100 leading-none">{item.productName}</p>
-                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-2 flex items-center gap-2">
+                        <p className="font-bold leading-none">{item.productName}</p>
+                        <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-2 flex items-center gap-2">
                           SKU: {item.productSku || "N/A"} · Qty: {item.quantity}
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-base font-black text-gray-100">₼{item.unitPrice.toFixed(2)}</p>
+                      <p className="text-base font-black">₼{item.unitPrice.toFixed(2)}</p>
                       <p className="text-[10px] text-blue-500 font-black uppercase tracking-widest mt-1">Total: ₼{item.totalPrice.toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="bg-white/[0.01] p-8 flex flex-col items-end gap-3 text-sm">
-                <div className="flex justify-between w-full max-w-[240px] text-gray-500 font-bold">
+              <div className="bg-muted/10 p-8 flex flex-col items-end gap-3 text-sm">
+                <div className="flex justify-between w-full max-w-[240px] text-muted-foreground font-bold">
                   <span>Subtotal</span>
-                  <span className="text-gray-300 font-black">₼{order.subTotal.toFixed(2)}</span>
+                  <span className="font-black">₼{order.subTotal.toFixed(2)}</span>
                 </div>
                 {order.discountAmount > 0 && (
                   <div className="flex justify-between w-full max-w-[240px] text-rose-500 font-bold">
@@ -219,7 +219,7 @@ export default function AdminOrderDetailPage() {
                     <span className="font-black">−₼{order.discountAmount.toFixed(2)}</span>
                   </div>
                 )}
-                <div className="flex justify-between w-full max-w-[240px] text-xl font-black text-white pt-6 border-t border-white/5 mt-3">
+                <div className="flex justify-between w-full max-w-[240px] text-xl font-black pt-6 border-t mt-3">
                   <span>Total</span>
                   <span className="tracking-tighter">₼{order.totalAmount.toFixed(2)}</span>
                 </div>
@@ -228,9 +228,9 @@ export default function AdminOrderDetailPage() {
           </Card>
 
           {/* Delivery & Logistics */}
-          <Card className="border-white/5 shadow-2xl rounded-[32px] overflow-hidden bg-[#141414] text-white">
-            <CardHeader className="border-b border-white/5 px-8 py-6">
-              <CardTitle className="text-[11px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-2">
+          <Card className="shadow-2xl rounded-[32px] overflow-hidden">
+            <CardHeader className="border-b px-8 py-6">
+              <CardTitle className="text-[11px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                 <Truck className="h-4 w-4" /> Logistics & Shipping
               </CardTitle>
             </CardHeader>
@@ -276,9 +276,9 @@ export default function AdminOrderDetailPage() {
         <div className="space-y-8 text-white">
           
           {/* Customer Card */}
-          <Card className="border-white/5 shadow-2xl rounded-[32px] overflow-hidden bg-[#141414]">
-            <CardHeader className="bg-white/5 border-b border-white/5 px-8 py-6">
-              <CardTitle className="text-[11px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-2">
+          <Card className="shadow-2xl rounded-[32px] overflow-hidden">
+            <CardHeader className="bg-muted/50 border-b px-8 py-6">
+              <CardTitle className="text-[11px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                 <User className="h-4 w-4" /> Customer Details
               </CardTitle>
             </CardHeader>
@@ -306,9 +306,9 @@ export default function AdminOrderDetailPage() {
           </Card>
 
           {/* Payment Card */}
-          <Card className="border-white/5 shadow-2xl rounded-[32px] overflow-hidden bg-[#141414]">
-            <CardHeader className="bg-white/5 border-b border-white/5 px-8 py-6">
-              <CardTitle className="text-[11px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-2">
+          <Card className="shadow-2xl rounded-[32px] overflow-hidden">
+            <CardHeader className="bg-muted/50 border-b px-8 py-6">
+              <CardTitle className="text-[11px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                 <CreditCard className="h-4 w-4" /> Payment Info
               </CardTitle>
             </CardHeader>

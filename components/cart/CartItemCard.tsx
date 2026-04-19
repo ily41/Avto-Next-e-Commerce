@@ -40,7 +40,7 @@ export function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardP
         await onUpdateQuantity(item.id, item.productId, localQuantity);
       } catch (error: any) {
         setLocalQuantity(item.quantity);
-        toast.error(error?.data || error?.message || "Failed to update quantity");
+        toast.error(error?.data || error?.message || "Kəmiyyəti yeniləmək mümkün olmadı");
       } finally {
         setIsQuantityUpdating(false);
       }
@@ -71,7 +71,7 @@ export function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardP
         <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-50 flex items-center justify-center rounded-md border border-gray-100 relative">
           <Image
             src={fullImageUrl}
-            alt={item.productName || "Product"}
+            alt={item.productName || "Məhsul"}
             fill
             className="object-contain p-2"
           />
@@ -125,7 +125,7 @@ export function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardP
           type="button"
           onClick={handleRemove}
           className="text-red-500 hover:bg-red-50 p-2 rounded-full transition-colors self-end sm:self-auto"
-          aria-label="Remove item"
+          aria-label="Sil"
         >
           <Trash2 size={18} />
         </button>

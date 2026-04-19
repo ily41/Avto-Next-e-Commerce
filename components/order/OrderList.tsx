@@ -134,7 +134,7 @@ export function OrderList() {
               <div className="flex items-center gap-4 shrink-0">
                 <div className="text-right">
                   <p className="text-base font-black text-gray-900 tracking-tight">
-                    ${order.totalAmount.toFixed(2)}
+                    ₼{order.totalAmount.toFixed(2)}
                   </p>
                   <Badge
                     variant="outline"

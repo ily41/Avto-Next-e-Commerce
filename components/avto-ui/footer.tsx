@@ -104,10 +104,9 @@ export default function Footer() {
               <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">MAĞAZAMIZ</h4>
               <ul className="space-y-4">
                 <li><Link href="/shop" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Bütün Məhsullar</Link></li>
-                <li><Link href="/shop" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Ən Çox Satılanlar</Link></li>
-                <li><Link href="/shop" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Yeni Gələnlər</Link></li>
-                <li><Link href="/shop" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Endirimlər</Link></li>
-                <li><Link href="/shop" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Seçilmişlər</Link></li>
+                <li><Link href="/shop?isRecommended=true" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Tövsiyə olunanlar</Link></li>
+                <li><Link href="/shop?isNew=true" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Yeni Gələnlər</Link></li>
+                <li><Link href="/shop?isHotDeal=true" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Endirimlər</Link></li>
               </ul>
             </div>
           </div>

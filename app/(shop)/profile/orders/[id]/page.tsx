@@ -159,9 +159,9 @@ export default function OrderDetailsPage() {
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-lg font-black text-gray-900">${item.unitPrice.toFixed(2)}</p>
+                      <p className="text-lg font-black text-gray-900">₼{item.unitPrice.toFixed(2)}</p>
                       <p className="text-[10px] text-blue-600 font-black uppercase tracking-widest mt-1">
-                        Cəmi: ${item.totalPrice.toFixed(2)}
+                        Cəmi: ₼{item.totalPrice.toFixed(2)}
                       </p>
                     </div>
                   </div>
@@ -307,28 +307,28 @@ export default function OrderDetailsPage() {
             </CardHeader>
             <CardContent className="p-8 space-y-6">
               <div className="space-y-4">
-                <PriceLine label="Aralıq cəm" value={`$${order.subTotal.toFixed(2)}`} />
+                <PriceLine label="Aralıq cəm" value={`₼${order.subTotal.toFixed(2)}`} />
 
                 {order.discountAmount > 0 && (
                   <PriceLine
                     label={`Endirim${order.promoCode ? ` (${order.promoCode})` : ""}`}
-                    value={`−$${order.discountAmount.toFixed(2)}`}
+                    value={`−₼${order.discountAmount.toFixed(2)}`}
                     accent
                   />
                 )}
 
                 {order.walletAmountUsed > 0 && (
-                  <PriceLine label="Balansdan istifadə" value={`−$${order.walletAmountUsed.toFixed(2)}`} accent />
+                  <PriceLine label="Balansdan istifadə" value={`−₼${order.walletAmountUsed.toFixed(2)}`} accent />
                 )}
 
                 {order.installmentInterestAmount > 0 && (
-                  <PriceLine label="Taksit faizi" value={`+$${order.installmentInterestAmount.toFixed(2)}`} />
+                  <PriceLine label="Taksit faizi" value={`+₼${order.installmentInterestAmount.toFixed(2)}`} />
                 )}
               </div>
 
               <div className="pt-6 border-t border-white/10">
                 <p className="text-[10px] font-black uppercase tracking-widest text-blue-200 mb-1">Yekun ödəniş</p>
-                <p className="text-4xl font-black tracking-tighter">${order.totalAmount.toFixed(2)}</p>
+                <p className="text-4xl font-black tracking-tighter">₼{order.totalAmount.toFixed(2)}</p>
               </div>
             </CardContent>
           </Card>
@@ -361,7 +361,7 @@ export default function OrderDetailsPage() {
                 <AlertCircle className="h-5 w-5" />
               </div>
               <p className="text-xs font-bold text-gray-400 leading-relaxed uppercase tracking-tighter">
-                Sualınız var? <span className="text-blue-600 cursor-pointer hover:underline">Dəstək xidmətinə yazın</span>
+                Sualınız var? <Link href="/contact-us" className="text-blue-600 cursor-pointer hover:underline">Dəstək xidmətinə yazın</Link>
               </p>
             </CardContent>
           </Card>

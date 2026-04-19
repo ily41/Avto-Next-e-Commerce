@@ -37,7 +37,7 @@ export function WalletBalance() {
       </CardHeader>
       <CardContent className="relative z-10">
         <div className="text-4xl font-black tracking-tight text-gray-900">
-          ${wallet.balance.toFixed(2)}
+          ₼{wallet.balance.toFixed(2)}
         </div>
         <p className="text-[11px] text-gray-500 font-bold mt-1 uppercase tracking-tight">İstifadəyə hazır məbləğ</p>
       </CardContent>

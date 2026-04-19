@@ -91,11 +91,18 @@ export default function ShopClient({ initialSearchParams }: { initialSearchParam
     filterOptionIds: optionIds
   }));
 
+  const isHotDealParam = searchParams.get("isHotDeal") === "true" || initialSearchParams.isHotDeal === "true";
+  const isRecommendedParam = searchParams.get("isRecommended") === "true" || initialSearchParams.isRecommended === "true";
+  const isNewParam = searchParams.get("isNew") === "true" || initialSearchParams.isNew === "true";
+ 
   const queryArgs = {
     categoryIds: categoryIds,
     brandSlug: brandSlug,
     searchTerm: searchTerm,
     filterCriteria: filterCriteria.length > 0 ? filterCriteria : undefined,
+    isHotDeal: isHotDealParam || undefined,
+    isRecommended: isRecommendedParam || undefined,
+    isNew: isNewParam || undefined,
     sortBy: sortBy,
     sortOrder: sortOrder,
     isActive: true,

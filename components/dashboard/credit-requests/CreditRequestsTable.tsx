@@ -92,8 +92,8 @@ export function CreditRequestsTable() {
       header: "Müştəri",
       cell: ({ row }) => (
         <div className="flex flex-col">
-          <span className="font-bold text-white">{row.original.fullName}</span>
-          <span className="text-[10px] text-gray-500 flex items-center gap-1">
+          <span className="font-bold">{row.original.fullName}</span>
+          <span className="text-[10px] text-muted-foreground flex items-center gap-1">
             <Phone className="h-2 w-2" /> {row.original.phoneNumber}
           </span>
         </div>
@@ -102,7 +102,7 @@ export function CreditRequestsTable() {
     {
       accessorKey: "totalAmount",
       header: "Məbləğ",
-      cell: ({ row }) => <span className="font-bold text-white">₼{row.original.totalAmount.toFixed(2)}</span>,
+      cell: ({ row }) => <span className="font-bold">₼{row.original.totalAmount.toFixed(2)}</span>,
     },
     {
       accessorKey: "createdAt",
@@ -130,12 +130,12 @@ export function CreditRequestsTable() {
             }}
             defaultValue={currentEnum.value.toString()}
           >
-            <SelectTrigger className={`h-8 w-[130px] text-[10px] font-black uppercase tracking-widest bg-transparent border-white/10 ${currentEnum.color}`}>
+            <SelectTrigger className={`h-8 w-[130px] text-[10px] font-black uppercase tracking-widest bg-transparent border ${currentEnum.color}`}>
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
+            <SelectContent>
               {STATUS_ENUMS.map((s) => (
-                <SelectItem key={s.value} value={s.value.toString()} className="text-[10px] font-bold uppercase tracking-widest hover:bg-white/10">
+                <SelectItem key={s.value} value={s.value.toString()} className="text-[10px] font-bold uppercase tracking-widest">
                   {s.label}
                 </SelectItem>
               ))}
@@ -174,10 +174,10 @@ export function CreditRequestsTable() {
                         <MoreHorizontal className="h-4 w-4" />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[180px] bg-[#1a1a1a] border-white/10 text-white">
-                    <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-gray-500">Əməliyyatlar</DropdownMenuLabel>
+                <DropdownMenuContent align="end" className="w-[180px]">
+                    <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-muted-foreground">Əməliyyatlar</DropdownMenuLabel>
                     <DropdownMenuItem 
-                        className="text-xs flex items-center gap-2 cursor-pointer hover:bg-white/5"
+                        className="text-xs flex items-center gap-2 cursor-pointer"
                         onClick={() => {
                             setSelectedRequest(row.original);
                             setNoteValue(row.original.notes || "");
@@ -185,9 +185,9 @@ export function CreditRequestsTable() {
                     >
                         <MessageSquare className="h-3.5 w-3.5" /> Qeyd əlavə et
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator className="bg-white/5" />
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem 
-                        className="text-xs text-rose-500 focus:text-rose-500 flex items-center gap-2 cursor-pointer hover:bg-rose-500/10"
+                        className="text-xs text-rose-500 focus:text-rose-500 flex items-center gap-2 cursor-pointer"
                         onClick={() => handleStatusChange(row.original.id, 3, "Rədd edildi")}
                     >
                         <XCircle className="h-3.5 w-3.5" /> İmtina et
@@ -204,10 +204,10 @@ export function CreditRequestsTable() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Select onValueChange={(val) => setStatusFilter(val === "all" ? undefined : val)}>
-            <SelectTrigger className="w-[180px] bg-[#1a1a1a] border-white/5 text-white text-xs font-bold uppercase tracking-widest">
+            <SelectTrigger className="w-[180px] text-xs font-bold uppercase tracking-widest">
               <SelectValue placeholder="BÜTÜN STATUSLAR" />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
+            <SelectContent>
               <SelectItem value="all" className="text-xs font-bold uppercase tracking-widest">BÜTÜN STATUSLAR</SelectItem>
               {STATUS_ENUMS.map(s => (
                 <SelectItem key={s.value} value={s.label} className="text-xs font-bold uppercase tracking-widest">{s.label}</SelectItem>
@@ -241,10 +241,10 @@ export function CreditRequestsTable() {
             }
         }}
     >
-        <DialogContent className="max-w-2xl bg-[#0f0f0f] border-white/10 text-white rounded-[32px]">
+        <DialogContent className="max-w-2xl rounded-[32px]">
           <DialogHeader>
             <DialogTitle className="text-xl font-black tracking-tight">Müraciət Təfərrüatı</DialogTitle>
-            <DialogDescription className="text-gray-500 text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+            <DialogDescription className="text-muted-foreground text-xs font-bold uppercase tracking-widest flex items-center gap-2">
                 ID: {selectedRequest?.id}
                 {pendingStatus !== null && (
                     <span className="bg-blue-500/10 text-blue-500 px-2 py-0.5 rounded-full text-[9px] animate-pulse">
@@ -256,40 +256,40 @@ export function CreditRequestsTable() {
 
           {selectedRequest && (
             <div className="space-y-6 mt-4">
-              <div className="grid grid-cols-2 gap-6 bg-white/5 p-6 rounded-2xl border border-white/5">
+              <div className="grid grid-cols-2 gap-6 bg-muted/50 p-6 rounded-2xl border">
                 <div className="space-y-1">
-                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Müştəri</p>
-                    <p className="text-sm font-black text-white">{selectedRequest.fullName}</p>
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Müştəri</p>
+                    <p className="text-sm font-black">{selectedRequest.fullName}</p>
                     <p className="text-[11px] font-bold text-blue-500">{selectedRequest.phoneNumber}</p>
                 </div>
                 <div className="space-y-1 text-right">
-                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Yekun Məbləğ</p>
-                    <p className="text-2xl font-black text-white">₼{selectedRequest.totalAmount.toFixed(2)}</p>
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Yekun Məbləğ</p>
+                    <p className="text-2xl font-black">₼{selectedRequest.totalAmount.toFixed(2)}</p>
                 </div>
               </div>
 
               <div className="space-y-3">
-                <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Məhsullar</p>
+                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Məhsullar</p>
                 <div className="max-h-[200px] overflow-y-auto space-y-2 pr-2 custom-scrollbar">
                     {selectedRequest.items.map((item, idx) => (
-                        <div key={idx} className="flex justify-between items-center bg-white/5 p-3 rounded-xl border border-white/5">
+                        <div key={idx} className="flex justify-between items-center bg-muted/30 p-3 rounded-xl border">
                             <div className="flex flex-col">
-                                <span className="text-[11px] font-black text-gray-200">{item.productName}</span>
-                                <span className="text-[9px] font-bold text-gray-500 uppercase">{item.productSku} × {item.quantity}</span>
+                                <span className="text-[11px] font-black">{item.productName}</span>
+                                <span className="text-[9px] font-bold text-muted-foreground uppercase">{item.productSku} × {item.quantity}</span>
                             </div>
-                            <span className="text-xs font-black text-white">₼{item.totalPrice.toFixed(2)}</span>
+                            <span className="text-xs font-black">₼{item.totalPrice.toFixed(2)}</span>
                         </div>
                     ))}
                 </div>
               </div>
 
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Admin Qeydi</label>
+                <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Admin Qeydi</label>
                 <Textarea 
                     value={noteValue}
                     onChange={(e) => setNoteValue(e.target.value)}
                     placeholder="Bura qeydlərinizi yaza bilərsiniz..."
-                    className="bg-white/5 border-white/10 rounded-2xl text-xs font-medium placeholder:text-gray-600 focus:ring-blue-500/20"
+                    className="rounded-2xl text-xs font-medium focus:ring-blue-500/20"
                 />
               </div>
 

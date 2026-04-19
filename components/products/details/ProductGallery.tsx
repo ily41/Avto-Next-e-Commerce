@@ -36,7 +36,7 @@ export default function ProductGallery({ images, primaryUrl }: ProductGalleryPro
             onClick={() => setActiveImage(img.url || "")}
             className={`w-16 h-16 md:w-20 md:h-20 rounded-lg border-2 transition-all overflow-hidden bg-gray-50 flex-shrink-0 p-2 flex items-center justify-center ${activeImage === img.url ? "border-blue-600 shadow-md" : "border-transparent hover:border-blue-200"}`}
           >
-            <img src={fullUrl(img.url || "")} className="max-h-full max-w-full object-contain" alt="thumbnail" />
+            <img src={fullUrl(img.url || "")} className="max-h-full max-w-full object-contain" alt="kiçik şəkil" />
           </button>
         ))}
       </div>
@@ -52,7 +52,7 @@ export default function ProductGallery({ images, primaryUrl }: ProductGalleryPro
           <img
             src={fullUrl(activeImage)}
             className="max-h-full max-w-full object-contain p-8 md:p-12 transition-transform duration-500"
-            alt="product main"
+            alt="məhsulun əsas şəkli"
           />
 
           {/* Magnifier Lens UI */}

@@ -10,15 +10,15 @@ export default function CartPage() {
           <Breadcrumb className="justify-center mb-4 flex">
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                <BreadcrumbLink href="/" className="hover:text-blue-600 transition-colors">Ana Səhifə</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage className="text-balck">Cart</BreadcrumbPage>
+                <BreadcrumbPage className="text-black font-bold">Səbət</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <h1 className="text-3xl font-bold text-gray-900">Cart</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Səbət</h1>
         </div>
       </div>
 

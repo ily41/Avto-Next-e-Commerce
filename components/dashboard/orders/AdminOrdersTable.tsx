@@ -95,10 +95,10 @@ export function AdminOrdersTable() {
       accessorKey: "orderNumber",
       header: "Order #",
       cell: ({ row }) => (
-        <div className="font-bold flex items-center gap-2 text-white">
+        <div className="font-bold flex items-center gap-2">
           {row.getValue("orderNumber")}
           <Link href={`/dashboard/orders/${row.original.id}`}>
-            <ExternalLink className="h-3 w-3 text-gray-500 hover:text-blue-500 transition-colors" />
+            <ExternalLink className="h-3 w-3 text-muted-foreground hover:text-blue-500 transition-colors" />
           </Link>
         </div>
       ),
@@ -108,15 +108,15 @@ export function AdminOrdersTable() {
       header: "Customer",
       cell: ({ row }) => (
         <div className="flex flex-col">
-          <span className="font-medium text-gray-200">{row.original.customerName}</span>
-          <span className="text-[10px] text-gray-500">{row.original.customerEmail}</span>
+          <span className="font-medium">{row.original.customerName}</span>
+          <span className="text-[10px] text-muted-foreground">{row.original.customerEmail}</span>
         </div>
       ),
     },
     {
       accessorKey: "totalAmount",
       header: "Total",
-      cell: ({ row }) => <span className="font-bold text-white">${row.original.totalAmount.toFixed(2)}</span>,
+      cell: ({ row }) => <span className="font-bold">₼{row.original.totalAmount.toFixed(2)}</span>,
     },
     {
       accessorKey: "createdAt",
@@ -134,12 +134,12 @@ export function AdminOrdersTable() {
             onValueChange={(val) => handleStatusChange(row.original.id, parseInt(val))}
             defaultValue={currentStatus.value.toString()}
           >
-            <SelectTrigger className={`h-8 w-[140px] text-xs font-bold bg-transparent border-white/10 ${currentStatus.color}`}>
+            <SelectTrigger className={`h-8 w-[140px] text-xs font-bold bg-transparent border ${currentStatus.color}`}>
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
+            <SelectContent>
               {STATUS_ENUMS.map((s) => (
-                <SelectItem key={s.value} value={s.value.toString()} className="text-xs hover:bg-white/10">
+                <SelectItem key={s.value} value={s.value.toString()} className="text-xs">
                   {s.label}
                 </SelectItem>
               ))}
@@ -228,10 +228,10 @@ export function AdminOrdersTable() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Select onValueChange={(val) => setStatusFilter(val === "all" ? undefined : val)}>
-            <SelectTrigger className="w-[180px] bg-[#1a1a1a] border-white/5 text-white">
+            <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="All Statuses" />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
+            <SelectContent>
               <SelectItem value="all">All Statuses</SelectItem>
               {STATUS_ENUMS.map(s => (
                 <SelectItem key={s.value} value={s.label}>{s.label}</SelectItem>

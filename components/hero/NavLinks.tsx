@@ -6,14 +6,14 @@ import { ChevronDown } from "lucide-react";
 import ProductsMegaMenu from "./ProductsMegaMenu";
 import CategoriesMegaMenu from "./categoriesDropdown/CategoriesMegaMenu";
 import TopDealsMegaMenu from "./topDealsDropdown/TopDealsMegaMenu";
+import BrandsMegaMenu from "./brandsDropdown/BrandsMegaMenu";
 
 const NavLinks = () => {
     const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
     const links = [
-        { name: "Ana Səhifə", href: "/" },
-        { name: "Mağaza", href: "/shop" },
-        { name: "Kateqoriyalar", href: "/shop", label: "ENDİRİM", labelColor: "bg-green-100 text-green-600", hasDropdown: true },
+        { name: "Kateqoriyalar", href: "#", label: "ENDİRİM", labelColor: "bg-green-100 text-green-600", hasDropdown: true, nonClickable: true },
+        { name: "Brendlər", href: "#", hasDropdown: true, nonClickable: true },
         { name: "Məhsullar", href: "/shop", label: "QAYNAR", labelColor: "bg-red-100 text-red-600", hasDropdown: true },
         { name: "Top təkliflər", href: "/shop?isHotDeal=true", hasDropdown: true },
     ];
@@ -28,14 +28,23 @@ const NavLinks = () => {
                         onMouseEnter={() => setHoveredLink(link.name)}
                         onMouseLeave={() => setHoveredLink(null)}
                     >
-                        <div className="flex items-center gap-1.5 cursor-pointer py-4">
-                            <Link
-                                href={link.href}
-                                className={`text-[12px] min-[1150px]:text-[15px] font-medium transition-colors whitespace-nowrap ${hoveredLink === link.name ? "text-blue-600" : "text-gray-700"
-                                    }`}
-                            >
-                                {link.name}
-                            </Link>
+                        <div className={`flex items-center gap-1.5 py-4 ${link.nonClickable ? "cursor-default" : "cursor-pointer"}`}>
+                            {link.nonClickable ? (
+                                <span
+                                    className={`text-[12px] min-[1150px]:text-[15px] font-medium transition-colors whitespace-nowrap ${hoveredLink === link.name ? "text-blue-600" : "text-gray-700"
+                                        }`}
+                                >
+                                    {link.name}
+                                </span>
+                            ) : (
+                                <Link
+                                    href={link.href}
+                                    className={`text-[12px] min-[1150px]:text-[15px] font-medium transition-colors whitespace-nowrap ${hoveredLink === link.name ? "text-blue-600" : "text-gray-700"
+                                        }`}
+                                >
+                                    {link.name}
+                                </Link>
+                            )}
                             {link.label && (
                                 <span className={`text-[9px] font-bold px-1 py-0.5 rounded uppercase leading-none ${link.labelColor}`}>
                                     {link.label}
@@ -62,6 +71,14 @@ const NavLinks = () => {
                         {link.name === "Kateqoriyalar" && (
                             <CategoriesMegaMenu 
                                 isOpen={hoveredLink === "Kateqoriyalar"} 
+                                setHoveredLink={setHoveredLink} 
+                            />
+                        )}
+ 
+                        {/* Mega Menu Dropdown for Brands */}
+                        {link.name === "Brendlər" && (
+                            <BrandsMegaMenu 
+                                isOpen={hoveredLink === "Brendlər"} 
                                 setHoveredLink={setHoveredLink} 
                             />
                         )}
