@@ -100,6 +100,7 @@ export default function ProductsPage() {
         price: z.coerce.number(),
         discountedPrice: z.coerce.number().nullish(),
         stockQuantity: z.number(),
+        weightKg: z.coerce.number(),
         isHotDeal: z.boolean(),
         isActive: z.boolean(),
         imageFile: z.any().optional(),
@@ -130,6 +131,7 @@ export default function ProductsPage() {
         { name: "price", label: "Qiymət", type: "number" },
         { name: "discountedPrice", label: "Endirimli Qiymət", type: "number" },
         { name: "stockQuantity", label: "Stok Miqdarı", type: "number" },
+        { name: "weightKg", label: "Çəki (kq)", type: "number" },
         { name: "isHotDeal", label: "İsti Təklif", type: "switch" },
         { name: "isActive", label: "Aktivdir", type: "switch" },
         { name: "imageFile", label: "Əsas Şəkil", type: "file" },
@@ -236,6 +238,12 @@ export default function ProductsPage() {
             sortable: true
         },
         {
+            key: "weightKg",
+            label: "Çəki (kq)",
+            sortable: true,
+            render: (value) => `${value} kq`
+        },
+        {
             key: "id",
             label: "Təfərrüatlar",
             render: (value) => {
@@ -302,7 +310,7 @@ export default function ProductsPage() {
                     defaultValues={{
                         name: "", sku: "", shortDescription: "", description: "",
                         categoryId: "", brandId: "", price: 0, discountedPrice: 0,
-                        stockQuantity: 0, isHotDeal: false, isActive: true, imageFile: null, detailImageFiles: []
+                        stockQuantity: 0, weightKg: 0, isHotDeal: false, isActive: true, imageFile: null, detailImageFiles: []
                     }}
                     fields={productFields}
                     isLoading={isCreating}
@@ -373,6 +381,7 @@ export default function ProductsPage() {
                 schema={productSchema}
                 defaultValues={productDetails ? {
                     ...productDetails,
+                    weightKg: productDetails.weightKg ?? 0,
                     imageFile: undefined,
                     detailImageFiles: []
                 } : undefined}

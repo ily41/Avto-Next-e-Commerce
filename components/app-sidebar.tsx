@@ -28,6 +28,7 @@ import {
   IconTicket,
   IconUsers,
   IconPhoto,
+  IconFingerprint
 } from "@tabler/icons-react"
 
 import { NavDocuments } from "@/components/nav-documents"
@@ -98,8 +99,11 @@ const data = {
       url: "/dashboard/installments",
       icon: IconMoneybag,
     },
-
-
+    {
+      title: "Kredit Müraciətləri",
+      url: "/dashboard/credit-requests",
+      icon: IconFingerprint,
+    },
   ],
   navClouds: [
     {

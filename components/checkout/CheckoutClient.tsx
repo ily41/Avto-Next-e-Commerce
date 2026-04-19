@@ -27,6 +27,7 @@ interface CheckoutModalProps {
   isOpen: boolean;
   onClose: () => void;
   totalAmount: number;
+  packageWeight: number;
   walletBalance?: number;
 }
 
@@ -35,7 +36,7 @@ const AZ_POSTCODE_RE = /^AZ\d{4}$/i;
 const PASSPORT_RE = /^[A-Z]{2}\d{7}$/i;
 
 // ── Component ──────────────────────────────────────────────────────────────────
-export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 }: CheckoutModalProps) {
+export function CheckoutModal({ isOpen, onClose, totalAmount, packageWeight, walletBalance = 0 }: CheckoutModalProps) {
   const [initiatePayment, { isLoading }] = useInitiatePaymentMutation();
   const { data: minAmountData } = useGetCartMinimumAmountQuery();
   const [serverError, setServerError] = useState("");
@@ -45,6 +46,7 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 
     handleSubmit,
     watch,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<CheckoutFormValues>({
     defaultValues: {
@@ -55,12 +57,17 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 
       notes: "",
       deliveryPostCode: "",
       userPassport: "",
-      packageWeight: 0.5,
+      packageWeight: packageWeight || 0.5,
       fragile: false,
       deliveryType: "0",
       walletAmountToUse: 0,
     },
   });
+
+  // Update packageWeight field when the prop changes
+  useEffect(() => {
+    setValue("packageWeight", packageWeight || 0.5);
+  }, [packageWeight, setValue]);
 
   const walletToUse = Number(watch("walletAmountToUse") ?? 0);
   const remainingAfterWallet = Math.max(0, totalAmount - walletToUse);
@@ -291,18 +298,8 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, walletBalance = 0 
                   />
                 </Field>
 
-                <Field label="Paket çəkisi (kq)" error={errors.packageWeight?.message}>
-                  <input
-                    {...register("packageWeight", {
-                      min: { value: 0.1, message: "Minimum 0.1 kq" },
-                    })}
-                    type="number"
-                    step="0.1"
-                    min="0.1"
-                    placeholder="0.5"
-                    className={inputClass(!!errors.packageWeight)}
-                  />
-                </Field>
+                {/* Package weight is now handled internally from backend data */}
+                <input type="hidden" {...register("packageWeight")} />
 
                 <Field label="Kövrək paket?">
                   <label className="flex items-center gap-3 cursor-pointer mt-1">

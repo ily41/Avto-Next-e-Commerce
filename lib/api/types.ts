@@ -40,6 +40,7 @@ export type Product = {
   detailImageUrl?: string;
   price: number;
   discountedPrice: number;
+  weightKg: number;
   primaryImageUrl: string;
   productImages?: { id: string; primaryImageUrl: string }[];
   images?: ProductImage[];
@@ -214,5 +215,53 @@ export type CartMinimumAmountSetting = {
 
 export type LoyaltySettings = {
   bonusPercentage: number;
+};
+
+// ---------------------------------------------------------------------------
+// Credit Requests (ID Card Payment)
+// ---------------------------------------------------------------------------
+
+export enum CreditRequestStatus {
+  Pending = 0,
+  Contacted = 1,
+  Approved = 2,
+  Rejected = 3,
+}
+
+export type CreditRequestItem = {
+  productId: string;
+  productName: string;
+  productSku: string;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+};
+
+export type CreditRequest = {
+  id: string;
+  fullName: string;
+  phoneNumber: string;
+  totalAmount: number;
+  status: string; // Label from backend
+  statusValue?: CreditRequestStatus; // Enum value if needed
+  notes: string;
+  createdAt: string;
+  updatedAt: string;
+  items: CreditRequestItem[];
+};
+
+export type CreditRequestCreateRequest = {
+  fullName: string;
+  phoneNumber: string;
+};
+
+export type CreditRequestStatusUpdateRequest = {
+  status: CreditRequestStatus;
+  notes: string;
+};
+
+export type CreditRequestListResponse = {
+  items: CreditRequest[];
+  totalCount: number;
 };
 

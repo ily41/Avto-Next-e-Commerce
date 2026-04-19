@@ -33,6 +33,7 @@ export type Product = {
   detailImageUrl?: string;
   price: number;
   discountedPrice: number;
+  weightKg: number;
   primaryImageUrl: string;
   productImages?: { id: string; primaryImageUrl: string }[];
   images?: ProductImage[];
@@ -155,6 +156,7 @@ export const productApi = api.injectEndpoints({
       brandId: string;
       price: number;
       discountedPrice: number;
+      weightKg: number;
       primaryImageUrl: File;
       detailImageFiles?: File[];
     }>({
@@ -188,6 +190,7 @@ export const productApi = api.injectEndpoints({
       brandId: string;
       price: number;
       discountedPrice: number;
+      weightKg: number;
       isActive: boolean;
       primaryImageUrl?: File | null;
       detailImageFiles?: File[];

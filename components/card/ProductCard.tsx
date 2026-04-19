@@ -154,7 +154,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                 <div className="flex items-baseline gap-2">
                     {/* Discounted / main price */}
                     <span className="text-[17px] font-bold leading-none text-[#1a1a1a]">
-                        {product.discountedPrice ?? product.price}
+                        {(product.discountedPrice ?? product.price).toFixed(2)}
                         {" "}
                         <span className="text-[13px] font-semibold">₼</span>
                     </span>
@@ -162,7 +162,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                     {/* Original price — gray strikethrough */}
                     {discount > 0 && (
                         <span className="text-[12px] text-gray-400 line-through font-normal">
-                            {product.price} ₼
+                            {product.price.toFixed(2)} ₼
                         </span>
                     )}
                 </div>

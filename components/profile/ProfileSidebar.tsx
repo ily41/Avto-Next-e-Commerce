@@ -29,12 +29,13 @@ export function ProfileSidebar() {
   const handleLogout = async () => {
     try {
       await logout().unwrap();
-      Cookies.remove("token");
-      router.push("/");
-      router.refresh();
     } catch (err) {
-      // Direct cleanup as fallback
-      Cookies.remove("token");
+      console.error("Logout failed:", err);
+    } finally {
+      // Always cleanup locally
+      Cookies.remove("token", { path: '/' });
+      localStorage.removeItem("token");
+      window.dispatchEvent(new Event("auth-change"));
       router.push("/");
       router.refresh();
     }

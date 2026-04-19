@@ -13,6 +13,7 @@ export interface CartItem {
   quantity: number;
   unitPrice?: number;
   totalPrice?: number;
+  productWeightKg?: number;
   createdAt?: string;
 
   // Additional frontend-only metadata for guest cart mainly

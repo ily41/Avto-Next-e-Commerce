@@ -23,6 +23,7 @@ export function LoginPopup({ children }: { children?: React.ReactNode }) {
     try {
       const { token } = await login({ email, password }).unwrap();
       Cookies.set("token", token, { expires: 7, path: '/' });
+      localStorage.setItem("token", token);
       window.dispatchEvent(new Event("auth-change"));
       const role = getRoleFromToken(token);
       toast.success("Login successful!");

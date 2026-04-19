@@ -182,17 +182,20 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
                                         <span className="text-muted-foreground font-black text-lg">UNITS</span>
                                     </div>
                                 </div>
-                                <div className="mt-6">
+                                <div className="mt-6 flex flex-wrap gap-2">
+                                    <Badge className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-none hover:bg-blue-500/15 text-[10px] font-black rounded-full px-4 py-1 uppercase">
+                                        {product.weightKg || 0} kg
+                                    </Badge>
                                     {product.stockQuantity > 10 ? (
-                                        <Badge className="bg-green-500/10 text-green-600 dark:text-green-400 border-none hover:bg-green-500/15 text-[10px] font-black rounded-full px-4 py-1">
+                                        <Badge className="bg-green-500/10 text-green-600 dark:text-green-400 border-none hover:bg-green-500/15 text-[10px] font-black rounded-full px-4 py-1 uppercase">
                                             <ShieldCheck className="h-3 w-3 mr-2 inline" /> STOCK SECURE
                                         </Badge>
                                     ) : product.stockQuantity > 0 ? (
-                                        <Badge className="bg-orange-500/10 text-orange-600 dark:text-orange-400 border-none hover:bg-orange-500/15 text-[10px] font-black rounded-full px-4 py-1">
+                                        <Badge className="bg-orange-500/10 text-orange-600 dark:text-orange-400 border-none hover:bg-orange-500/15 text-[10px] font-black rounded-full px-4 py-1 uppercase">
                                             CRITICAL STOCK
                                         </Badge>
                                     ) : (
-                                        <Badge className="bg-destructive/10 text-destructive border-none hover:bg-destructive/15 text-[10px] font-black rounded-full px-4 py-1">
+                                        <Badge className="bg-destructive/10 text-destructive border-none hover:bg-destructive/15 text-[10px] font-black rounded-full px-4 py-1 uppercase">
                                             <XCircle className="h-3 w-3 mr-2 inline" /> REPLENISHMENT REQUIRED
                                         </Badge>
                                     )}

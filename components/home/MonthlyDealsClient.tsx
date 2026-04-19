@@ -37,11 +37,11 @@ const FeaturedItemCard = ({ product }: { product: Product }) => {
         {/* Price */}
         <div className="flex items-center gap-2 mb-2">
           <span className="text-[16px] font-bold text-[#e52e2e]">
-            ${product.discountedPrice || product.price}
+            ₼{(product.discountedPrice || product.price).toFixed(2)}
           </span>
           {product.discountedPrice && product.discountedPrice < product.price && (
             <span className="text-[12px] text-gray-400 line-through">
-              ${product.price}
+              ₼{product.price.toFixed(2)}
             </span>
           )}
         </div>

@@ -14,7 +14,7 @@ const NewArrivals = async () => {
       aria-labelledby="new-arrivals-heading"
       className="w-full bg-white py-10"
     >
-      <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
+      <div className="max-w-[1450px] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
         {/* Section header — static, rendered in initial HTML */}
         <div className="flex items-center justify-between mb-2 pb-4 border-b border-gray-100">
           <h2

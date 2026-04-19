@@ -6,11 +6,12 @@ import { PromoSection } from "./PromoSection";
 import { Cart, CartItem } from "@/lib/store/cart/cartApiSlice";
 import { CheckoutModal } from "@/components/checkout/CheckoutClient";
 import { InstallmentModal } from "@/components/checkout/InstallmentModal";
+import { CreditRequestModal } from "@/components/checkout/CreditRequestModal";
 import { useGetWalletQuery } from "@/lib/store/wallet/walletApiSlice";
 import { useGetCartMinimumAmountQuery } from "@/lib/store/settings/apislice";
 import { useGetInstallmentConfigurationQuery } from "@/lib/store/installment/installmentApiSlice";
 import { toast } from "sonner";
-import { ShoppingCart, Lock, AlertCircle } from "lucide-react";
+import { ShoppingCart, Lock, AlertCircle, Fingerprint } from "lucide-react";
 import { IconCreditCard } from "@tabler/icons-react";
 import { InstallmentCalculator } from "./InstallmentCalculator";
 
@@ -32,6 +33,7 @@ export function OrderSummary({
 }: OrderSummaryProps) {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isInstallmentOpen, setIsInstallmentOpen] = useState(false);
+  const [isCreditRequestOpen, setIsCreditRequestOpen] = useState(false);
 
   // Minimum order amount check
   const { data: minAmountData } = useGetCartMinimumAmountQuery();
@@ -47,6 +49,10 @@ export function OrderSummary({
   const totalDiscount = isAuth ? serverCart?.totalDiscount || 0 : 0;
   const finalAmount = isAuth ? serverCart?.finalAmount || 0 : subTotal;
   const appliedPromo = isAuth ? serverCart?.appliedPromoCode || null : null;
+
+  const totalWeight = isAuth
+    ? serverCart?.items.reduce((acc, item) => acc + (item.quantity * (item.productWeightKg || item.product?.weightKg || 0.5)), 0) || 0
+    : guestCart.reduce((acc, item) => acc + (item.quantity * (item.product?.weightKg || 0.5)), 0);
 
   return (
     <>
@@ -87,7 +93,7 @@ export function OrderSummary({
             <div className="mt-4 p-3 bg-red-50 border border-red-100 rounded-xl flex items-start gap-3">
               <AlertCircle className="h-4 w-4 text-red-600 mt-0.5 shrink-0" />
               <p className="text-[11px] font-bold text-red-600 leading-tight">
-                Minimum sifariş məbləği ${minAmount.toFixed(2)} AZN olmalıdır. Çatışmayan: ${(minAmount - finalAmount).toFixed(2)} AZN.
+                Minimum sifariş məbləği {minAmount.toFixed(2)} AZN olmalıdır. Çatışmayan: {(minAmount - finalAmount).toFixed(2)} AZN.
               </p>
             </div>
           )}
@@ -108,8 +114,8 @@ export function OrderSummary({
         <div className="flex flex-col gap-3 mt-6">
           <Button
             className={`w-full font-black py-6 rounded-xl transition-all flex items-center gap-2 justify-center ${finalAmount < minAmount
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed hover:bg-gray-200"
-                : "bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20"
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed hover:bg-gray-200"
+              : "bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20"
               }`}
             onClick={() => {
               if (finalAmount < minAmount) {
@@ -135,6 +141,19 @@ export function OrderSummary({
               <span>Hissəli ödənişlə al</span>
             </Button>
           )}
+
+          {finalAmount > 100 && (
+            <Button
+              variant="outline"
+              className="w-full font-black py-6 rounded-xl border-2 border-green-600 text-green-700 hover:bg-white hover:border-green-700 bg-white shadow-sm flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5"
+              onClick={() => {
+                setIsCreditRequestOpen(true);
+              }}
+            >
+              <Fingerprint className="h-5 w-5" />
+              <span>Tək şəxsiyyət vəsiqəsi ilə ödə</span>
+            </Button>
+          )}
         </div>
 
         <p className="text-[10px] text-gray-400 text-center mt-3 font-medium">
@@ -151,12 +170,19 @@ export function OrderSummary({
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
         totalAmount={finalAmount}
+        packageWeight={totalWeight}
         walletBalance={wallet?.balance ?? 0}
       />
 
       <InstallmentModal
         isOpen={isInstallmentOpen}
         onClose={() => setIsInstallmentOpen(false)}
+        totalAmount={finalAmount}
+      />
+
+      <CreditRequestModal
+        isOpen={isCreditRequestOpen}
+        onClose={() => setIsCreditRequestOpen(false)}
         totalAmount={finalAmount}
       />
     </>

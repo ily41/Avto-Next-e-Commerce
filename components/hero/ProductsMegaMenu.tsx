@@ -46,7 +46,7 @@ const ProductsMegaMenu = ({ isOpen, setHoveredLink }: ProductsMegaMenuProps) => 
 
     return (
         <div
-            className={`absolute top-[52px] left-0 max-w-[calc(100vw-48px)] w-full bg-white border border-gray-100 shadow-2xl z-40 transition-all duration-60 ease-inout p-4 pt-6 origin-bottom ${isOpen
+            className={`absolute top-[52px] left-0 max-w-[calc(100vw-48px)] w-full bg-white border border-gray-100 shadow-2xl z-40 transition-all duration-300 ease-in-out p-4 pt-6 origin-bottom ${isOpen
                 ? "opacity-100 translate-y-0 pointer-events-auto"
                 : "opacity-0 translate-y-8 pointer-events-none"
                 }`}

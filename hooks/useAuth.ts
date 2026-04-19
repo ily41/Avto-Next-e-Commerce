@@ -10,7 +10,7 @@ export function useAuth() {
   useEffect(() => {
     // Check for token on mount and when cookie might change
     const checkAuth = () => {
-      const token = Cookies.get("token");
+      const token = Cookies.get("token") || (typeof window !== "undefined" ? localStorage.getItem("token") : null);
       setIsAuth(!!token);
       setIsLoading(false);
     };

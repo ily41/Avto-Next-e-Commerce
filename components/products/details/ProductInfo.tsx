@@ -69,8 +69,8 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
       </div>
 
       <div className="flex items-center gap-4">
-        {discount > 0 && <span className="text-[18px] md:text-[22px] text-gray-400 line-through decoration-gray-300 font-medium">₼{product.price}</span>}
-        <span className="text-[28px] md:text-[36px] font-bold text-[#1a1a1a]">₼{product.discountedPrice || product.price}</span>
+        {discount > 0 && <span className="text-[18px] md:text-[22px] text-gray-400 line-through decoration-gray-300 font-medium">₼{product.price.toFixed(2)}</span>}
+        <span className="text-[28px] md:text-[36px] font-bold text-[#1a1a1a]">₼{(product.discountedPrice || product.price).toFixed(2)}</span>
         {discount > 0 && <span className="bg-red-50 text-red-600 text-[12px] font-bold px-2 py-1 rounded-md">-{discount}% ENDİRİM</span>}
       </div>
 

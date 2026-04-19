@@ -24,7 +24,7 @@ const TermsAndConditions = () => {
     {
       title: "4. Çatdırılma Şərtləri",
       icon: <IconTruck size={24} className="text-blue-600" />,
-      content: "Çatdırılma müddəti və qiyməti sifarişin növündən və çatdırılma ünvanından asılı olaraq dəyişə bilər. Avto027.com for-major hallarda çatdırılma müddətində yarana biləcək gecikmələrə görə məsuliyyət daşımır."
+      content: "Çatdırılma müddəti və qiyməti sifarişin növündən və çatdırılma ünvanından asılı olaraq dəyişə bilər. Avto027.com fors-major hallarda çatdırılma müddətində yarana biləcək gecikmələrə görə məsuliyyət daşımır."
     },
     {
       title: "5. Məhsulun Geri Qaytarılması",
