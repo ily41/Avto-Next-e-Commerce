@@ -1,13 +1,21 @@
 "use client";
 
 import { api } from "../api";
-export { 
+import { 
   type CreditRequest, 
   type CreditRequestCreateRequest, 
   type CreditRequestListResponse, 
   type CreditRequestStatusUpdateRequest,
   CreditRequestStatus
 } from "../../api/types";
+
+export { 
+  type CreditRequest, 
+  type CreditRequestCreateRequest, 
+  type CreditRequestListResponse, 
+  type CreditRequestStatusUpdateRequest,
+  CreditRequestStatus
+};
 
 export const creditRequestApiSlice = api.injectEndpoints({
   endpoints: (builder) => ({
