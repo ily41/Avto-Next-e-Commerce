@@ -25,9 +25,9 @@ export default function Page() {
     const [searchQuery, setSearchQuery] = React.useState("");
 
     const brandSchema = z.object({
-        name: z.string().min(2, "Name is required"),
-        sortOrder: z.number().min(1, "Sort order must be at least 1"),
-        imageFile: z.instanceof(File, { message: "Image is required" }).nullable().optional(),
+        name: z.string().min(2, "Ad tələb olunur"),
+        sortOrder: z.number().min(1, "Sıralama ən azı 1 olmalıdır"),
+        imageFile: z.instanceof(File, { message: "Şəkil tələb olunur" }).nullable().optional(),
         isActive: z.boolean().default(true),
     });
 
@@ -60,7 +60,7 @@ export default function Page() {
                             className="object-contain h-full w-full"
                         />
                     ) : (
-                        <span className="text-[10px] text-gray-400">No Img</span>
+                        <span className="text-[10px] text-gray-400">Şəkil yoxdur</span>
                     )}
                 </div>
             )

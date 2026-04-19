@@ -53,7 +53,7 @@ export default function Footer() {
               <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">BİZİMLƏ ƏLAQƏ</h4>
               <div className="space-y-6">
                 <div>
-                  <a href="tel:+994103165103" className="text-xl lg:text-2xl font-bold text-gray-900 hover:text-[#007aff] transition-colors leading-none">
+                  <a href="tel:+994103165103" className="text-xl lg:text-2xl whitespace-nowrap font-bold text-gray-900 hover:text-[#007aff] transition-colors leading-none">
                     (+994) 10 316 51 03
                   </a>
                   <p className="text-gray-500 mt-4 leading-relaxed font-medium">

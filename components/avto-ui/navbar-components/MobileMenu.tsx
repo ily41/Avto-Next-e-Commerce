@@ -55,6 +55,41 @@ export function MobileMenu({
                         <span>Ana Səhifə</span>
                     </Link>
                     <Link 
+                        href="/categories" 
+                        onClick={onClose} 
+                        className="hover:text-blue-600 py-3 px-2 rounded-xl hover:bg-blue-50 transition-all flex items-center justify-between group"
+                    >
+                        <span>Kateqoriyalar</span>
+                    </Link>
+                    <Link 
+                        href="/brands" 
+                        onClick={onClose} 
+                        className="hover:text-blue-600 py-3 px-2 rounded-xl hover:bg-blue-50 transition-all flex items-center justify-between group"
+                    >
+                        <span>Brendlər</span>
+                    </Link>
+                    <Link 
+                        href="/shop?isRecommended=true" 
+                        onClick={onClose} 
+                        className="hover:text-blue-600 py-3 px-2 rounded-xl hover:bg-blue-50 transition-all flex items-center justify-between group"
+                    >
+                        <span>Tövsiyə olunanlar</span>
+                    </Link>
+                    <Link 
+                        href="/shop?isNew=true" 
+                        onClick={onClose} 
+                        className="hover:text-blue-600 py-3 px-2 rounded-xl hover:bg-blue-50 transition-all flex items-center justify-between group"
+                    >
+                        <span>Yeni Gələnlər</span>
+                    </Link>
+                    <Link 
+                        href="/shop?isHotDeal=true" 
+                        onClick={onClose} 
+                        className="hover:text-blue-600 py-3 px-2 rounded-xl hover:bg-blue-50 transition-all flex items-center justify-between group"
+                    >
+                        <span>Endirimlər</span>
+                    </Link>
+                    <Link 
                         href="/wishlist" 
                         onClick={onClose} 
                         className="hover:text-blue-600 py-3 px-2 rounded-xl hover:bg-blue-50 transition-all flex items-center justify-between group"

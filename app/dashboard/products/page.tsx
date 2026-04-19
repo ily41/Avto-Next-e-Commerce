@@ -91,12 +91,12 @@ export default function ProductsPage() {
     const { data: productDetails, isLoading: isFetchingDetails } = useGetProductByIdQuery(editingProductId!, { skip: !editingProductId });
     console.log(productDetails)
     const productSchema = z.object({
-        name: z.string().min(2, "Name is required").refine((val) => !val.startsWith("#"), "Product name cannot start with '#'"),
+        name: z.string().min(2, "Ad tələb olunur").refine((val) => !val.startsWith("#"), "Məhsul adı '#' ilə başlaya bilməz"),
         sku: z.string(),
         shortDescription: z.string().nullish(),
         description: z.string(),
         categoryId: z.string(),
-        brandId: z.string().min(1, "Brand is required"),
+        brandId: z.string().min(1, "Brend tələb olunur"),
         price: z.coerce.number(),
         discountedPrice: z.coerce.number().nullish(),
         stockQuantity: z.number(),
@@ -205,7 +205,7 @@ export default function ProductsPage() {
 
         {
             key: "primaryImageUrl",
-            label: "Image",
+            label: "Şəkil",
             render: (value) => {
                 return (
                     <div className="h-10 w-10 flex items-center justify-center overflow-hidden rounded border bg-slate-50">
@@ -216,7 +216,7 @@ export default function ProductsPage() {
                                 className="object-contain h-full w-full"
                             />
                         ) : (
-                            <span className="text-[10px] text-gray-400">No Img</span>
+                            <span className="text-[10px] text-gray-400">Şəkil yoxdur</span>
                         )}
                     </div>
                 )
@@ -355,7 +355,7 @@ export default function ProductsPage() {
                 facetedFilters={[
                     {
                         column: "categoryName",
-                        title: "Category",
+                        title: "Kateqoriya",
                         options: flatCategories.map((cat) => ({
                             label: cat.name,
                             value: cat.id,
@@ -363,7 +363,7 @@ export default function ProductsPage() {
                     },
                     {
                         column: "brandName",
-                        title: "Brand",
+                        title: "Brend",
                         options: brandsData?.items?.map((brand) => ({
                             label: brand.name,
                             value: brand.slug,

@@ -10,8 +10,11 @@ const PopularBrands = async () => {
     <section className="w-full bg-white py-10">
       <div className="max-w-[1450px] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
         {/* Header */}
-        <div className="mb-8 pb-4 border-b border-gray-100">
-          <h2 className="text-xl font-bold text-[#1a1a1a]">Popular Brands</h2>
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100">
+          <h2 className="text-xl font-bold text-[#1a1a1a]">Məşhur Brendlər</h2>
+          <Link href="/brands" className="text-sm font-semibold text-gray-800 hover:text-blue-600 transition-colors">
+            Hamısına bax →
+          </Link>
         </div>
 
         {/* Brands Grid — CSS responsive: 2 cols on mobile, 3 on tablet, 4 on desktop */}

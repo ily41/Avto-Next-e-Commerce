@@ -23,10 +23,10 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
     const [toggleFavorite] = useToggleFavoriteMutation();
     const { addItem } = useCart();
     const [isAdded, setIsAdded] = useState(false);
-    
+
     // Local favorite state for instant UI update
     const [localIsFavorite, setLocalIsFavorite] = useState(product.isFavorite);
- 
+
     // Synchronize local state with prop if it changes from outside (e.g. page refresh)
     useEffect(() => {
         setLocalIsFavorite(product.isFavorite);
@@ -96,9 +96,8 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
 
     return (
         <div
-            className={`relative bg-white h-full ${
-                noBorder ? "rounded-xl" : "border border-[#f0f0f0] rounded-xl"
-            } flex flex-col cursor-pointer select-none shadow-sm hover:shadow-md transition-shadow duration-300`}
+            className={`relative bg-white h-full ${noBorder ? "rounded-xl" : "border border-[#f0f0f0] rounded-xl"
+                } flex flex-col cursor-pointer select-none shadow-sm hover:shadow-md transition-shadow duration-300`}
             onClick={handleCardClick}
             style={{ overflow: "hidden" }}
         >
@@ -161,22 +160,37 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                     )}
                 </div>
 
-                {/* Installment pill — yellow */}
+                {/* Installment Info */}
                 {monthlyPayment && maxPeriod > 0 && (
-                    <div className="inline-flex items-center self-start">
-                        <span
-                            className="text-[12px] font-bold px-2.5 py-1 rounded"
-                            style={{ background: "#f5d000", color: "#1a1a1a" }}
-                        >
-                            {monthlyPayment} ₼ x {maxPeriod} ay
-                        </span>
+                    <div className="flex flex-col gap-1.5">
+                        {/* Primary installment pill */}
+                        <div className="inline-flex items-center self-start">
+                            <span
+                                className="text-[12px] font-bold px-2.5 py-1 rounded"
+                                style={{ background: "#f5d000", color: "#1a1a1a" }}
+                            >
+                                {monthlyPayment} ₼ x {maxPeriod} ay
+                            </span>
+                        </div>
+                        
+                        {/* List of all available months */}
+                        <div className="flex flex-wrap gap-1">
+                            {instOptions?.filter(o => o.isActive).sort((a, b) => a.installmentPeriod - b.installmentPeriod).map((opt) => (
+                                <span 
+                                    key={opt.id}
+                                    className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 border border-gray-100 uppercase"
+                                >
+                                    {opt.installmentPeriod} ay
+                                </span>
+                            ))}
+                        </div>
                     </div>
                 )}
 
                 {/* Product name */}
                 <Link
                     href={`/product/${product.slug || product.id}`}
-                    className="text-[12px] text-[#1a1a1a] leading-snug line-clamp-2 hover:text-blue-600 transition-colors duration-200 mt-0.5"
+                    className="text-[14px] text-[#1a1a1a] leading-snug line-clamp-2 hover:text-blue-600 transition-colors duration-200 mt-0.5"
                     style={{ minHeight: "2.8em" }}
                 >
                     {product.name}
@@ -189,11 +203,10 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                 <button
                     onClick={handleAddToCart}
                     disabled={isAdded}
-                    className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 cursor-pointer mt-1 active:scale-95 ${
-                        isAdded
+                    className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 cursor-pointer mt-1 active:scale-95 ${isAdded
                             ? "bg-green-600 text-white"
                             : "bg-blue-600 hover:bg-black text-white"
-                    }`}
+                        }`}
                 >
                     <IconShoppingCart size={17} stroke={1.8} />
                     {isAdded ? "Əlavə edildi" : "Səbətə at"}

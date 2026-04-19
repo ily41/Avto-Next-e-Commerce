@@ -44,15 +44,15 @@ import {
 
 // ── Status Enums & Labels ──────────────────────────────────────────────────────
 const STATUS_ENUMS = [
-  { value: 0, label: "Pending",          color: "bg-zinc-500  text-white    border-transparent" },
-  { value: 1, label: "PaymentInitiated", color: "bg-blue-400    text-white    border-transparent" },
-  { value: 2, label: "Paid",             color: "bg-blue-600   text-white       border-transparent" },
-  { value: 3, label: "Processing",       color: "bg-indigo-500    text-white    border-transparent" },
-  { value: 4, label: "Shipped",          color: "bg-amber-500   text-white   border-transparent" },
-  { value: 5, label: "Delivered",        color: "bg-emerald-500 text-white border-transparent" },
-  { value: 6, label: "Cancelled",        color: "bg-rose-500    text-white    border-transparent" },
-  { value: 7, label: "Refunded",         color: "bg-zinc-400    text-white    border-transparent" },
-  { value: 8, label: "Failed",           color: "bg-red-600    text-white    border-transparent" },
+  { value: 0, label: "Gözləmədə",       color: "bg-zinc-500  text-white    border-transparent" },
+  { value: 1, label: "Ödəniş Başlayıb", color: "bg-blue-400    text-white    border-transparent" },
+  { value: 2, label: "Ödənilib",        color: "bg-blue-600   text-white       border-transparent" },
+  { value: 3, label: "Hazırlanır",      color: "bg-indigo-500    text-white    border-transparent" },
+  { value: 4, label: "Göndərilib",      color: "bg-amber-500   text-white   border-transparent" },
+  { value: 5, label: "Çatdırılıb",      color: "bg-emerald-500 text-white border-transparent" },
+  { value: 6, label: "Ləğv Edilib",     color: "bg-rose-500    text-white    border-transparent" },
+  { value: 7, label: "Geri Ödənilib",   color: "bg-zinc-400    text-white    border-transparent" },
+  { value: 8, label: "Uğursuz",         color: "bg-red-600    text-white    border-transparent" },
 ];
 
 const getStatusById = (id: number) => STATUS_ENUMS.find(s => s.value === id) || STATUS_ENUMS[0];
@@ -75,9 +75,9 @@ export function AdminOrdersTable() {
   const handleStatusChange = async (orderId: string, statusValue: number) => {
     try {
       await updateStatus({ id: orderId, status: statusValue }).unwrap();
-      toast.success("Order status updated successfully");
+      toast.success("Sifariş statusu uğurla yenilendi");
     } catch (err: any) {
-      toast.error(err?.data?.message || "Failed to update status");
+      toast.error(err?.data?.message || "Status yenilənə bilmədi");
     }
   };
 
@@ -86,14 +86,14 @@ export function AdminOrdersTable() {
       const result = await sendToAzerpost(orderId).unwrap();
       toast.success(result.message);
     } catch (err: any) {
-      toast.error(err?.data?.error || "Azerpost dispatch failed");
+      toast.error(err?.data?.error || "Azərpoçt göndərişi uğursuz oldu");
     }
   };
 
   const columns: ColumnDef<Order>[] = [
     {
       accessorKey: "orderNumber",
-      header: "Order #",
+      header: "Sifariş #",
       cell: ({ row }) => (
         <div className="font-bold flex items-center gap-2">
           {row.getValue("orderNumber")}
@@ -105,7 +105,7 @@ export function AdminOrdersTable() {
     },
     {
       accessorKey: "customerName",
-      header: "Customer",
+      header: "Müştəri",
       cell: ({ row }) => (
         <div className="flex flex-col">
           <span className="font-medium">{row.original.customerName}</span>
@@ -115,12 +115,12 @@ export function AdminOrdersTable() {
     },
     {
       accessorKey: "totalAmount",
-      header: "Total",
-      cell: ({ row }) => <span className="font-bold">₼{row.original.totalAmount.toFixed(2)}</span>,
+      header: "Cəmi",
+      cell: ({ row }) => <span className="font-bold">{row.original.totalAmount.toFixed(2)} AZN</span>,
     },
     {
       accessorKey: "createdAt",
-      header: "Date",
+      header: "Tarix",
       cell: ({ row }) => <span className="text-gray-500 text-xs">{formatDate(row.original.createdAt)}</span>,
     },
     {
@@ -150,7 +150,7 @@ export function AdminOrdersTable() {
     },
     {
       id: "azerpost",
-      header: "Azerpost Tracking",
+      header: "Azərpoçt İzləmə",
       cell: ({ row }) => {
         const order = row.original;
         
@@ -165,7 +165,7 @@ export function AdminOrdersTable() {
                 target="_blank" 
                 className="text-[10px] text-blue-600 hover:underline flex items-center gap-1"
               >
-                Track <ExternalLink className="h-2 w-2" />
+                İzlə <ExternalLink className="h-2 w-2" />
               </a>
             </div>
           );
@@ -182,7 +182,7 @@ export function AdminOrdersTable() {
               onClick={() => handleSendToAzerpost(order.id)}
               disabled={isSendingToAzerpost}
             >
-              <Send className="h-3 w-3" /> Send to Azerpost
+              <Send className="h-3 w-3" /> Azərpoçta göndər
             </Button>
           );
         }
@@ -203,10 +203,10 @@ export function AdminOrdersTable() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuLabel>Fəaliyyətlər</DropdownMenuLabel>
               <DropdownMenuItem asChild>
                 <Link href={`/dashboard/orders/${order.id}`} className="flex items-center gap-2 cursor-pointer">
-                  <Eye className="h-4 w-4" /> View Details
+                  <Eye className="h-4 w-4" /> Detallara bax
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -214,7 +214,7 @@ export function AdminOrdersTable() {
                 className="text-red-600 focus:text-red-600 cursor-pointer"
                 onClick={() => handleStatusChange(order.id, 6)} // Cancel
               >
-                <XCircle className="h-4 w-4 mr-2" /> Cancel Order
+                <XCircle className="h-4 w-4 mr-2" /> Sifarişi ləğv et
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -229,10 +229,10 @@ export function AdminOrdersTable() {
         <div className="flex items-center gap-4">
           <Select onValueChange={(val) => setStatusFilter(val === "all" ? undefined : val)}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="All Statuses" />
+              <SelectValue placeholder="Bütün Statuslar" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
+              <SelectItem value="all">Bütün Statuslar</SelectItem>
               {STATUS_ENUMS.map(s => (
                 <SelectItem key={s.value} value={s.label}>{s.label}</SelectItem>
               ))}

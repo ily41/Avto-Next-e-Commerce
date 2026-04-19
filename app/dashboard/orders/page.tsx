@@ -35,10 +35,10 @@ export default function AdminOrdersPage() {
       <div className="flex flex-col gap-1">
         <h1 className="text-3xl font-black tracking-tight flex items-center gap-3">
           <Package className="h-8 w-8 text-blue-500" />
-          Orders Management
+          Sifarişlərin İdarə Edilməsi
         </h1>
         <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest leading-none">
-          View and manage customer orders, statuses and delivery
+          Müştəri sifarişlərinə, statuslarına və çatdırılmaya baxın və idarə edin
         </p>
       </div>
 

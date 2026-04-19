@@ -129,7 +129,7 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center py-4">
         {filterColumn && (
           <Input
-            placeholder={`Filter ${filterColumn}...`}
+            placeholder="Axtar..."
             value={(table.getColumn(filterColumn)?.getFilterValue() as string) ?? ""}
             onChange={(event) => {
               table.getColumn(filterColumn)?.setFilterValue(event.target.value)
@@ -146,7 +146,7 @@ export function DataTable<TData, TValue>({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
-                Columns
+                Sütunlar
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -233,7 +233,7 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
+                  Nəticə tapılmadı.
                 </TableCell>
               </TableRow>
             )}
@@ -250,20 +250,21 @@ export function DataTable<TData, TValue>({
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            className="font-bold"
           >
-            Previous
+            Əvvəlki
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            className="font-bold"
           >
-            Next
+            Növbəti
           </Button>
         </div>
       }
     </>
   )
-}
 

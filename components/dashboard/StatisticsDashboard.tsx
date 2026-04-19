@@ -55,7 +55,7 @@ export function StatisticsDashboard() {
             <IconCurrencyDollar className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${stats.revenue.total.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{stats.revenue.total.toLocaleString()} AZN</div>
             <div className="flex items-center pt-1 text-xs text-muted-foreground">
               {stats.growth.revenuePercentage >= 0 ? (
                 <span className="flex items-center text-green-500 font-medium">
@@ -209,7 +209,7 @@ export function StatisticsDashboard() {
                 </div>
                 <div className="flex flex-col gap-1 p-3 rounded-lg bg-zinc-500/5 border border-zinc-500/10">
                    <span className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">Orta Dəyər</span>
-                   <span className="text-xl font-bold">${stats.revenue.averageOrderValue.toFixed(2)}</span>
+                   <span className="text-xl font-bold">{stats.revenue.averageOrderValue.toFixed(2)} AZN</span>
                 </div>
              </div>
           </CardContent>

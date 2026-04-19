@@ -18,11 +18,11 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { FilterOptionsDialog } from "./filter-options-dialog";
 
 const FILTER_TYPES = [
-    { label: "Checkbox", value: "0" },
+    { label: "Checkboks", value: "0" },
     { label: "Radio", value: "1" },
-    { label: "Color", value: "2" },
-    { label: "Range", value: "3" },
-    { label: "Button", value: "4" },
+    { label: "Rəng", value: "2" },
+    { label: "Aralıq", value: "3" },
+    { label: "Düymə", value: "4" },
 ];
 
 export default function FiltersPage() {
@@ -60,7 +60,7 @@ export default function FiltersPage() {
     const [managingOptionsFilter, setManagingOptionsFilter] = useState<Filter | null>(null);
 
     const filterSchema = z.object({
-        name: z.string().min(1, "Name is required"),
+        name: z.string().min(1, "Ad tələb olunur"),
         type: z.string().or(z.number()).transform(v => Number(v)),
         isActive: z.boolean().default(true),
         sortOrder: z.number().default(0),

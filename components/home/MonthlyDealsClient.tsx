@@ -6,6 +6,10 @@ import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import type { Product } from "@/lib/api/types";
 import { fullUrl } from "@/lib/api/url-utils";
 import ProductCard from "@/components/card/ProductCard";
+import { 
+  useGetInstallmentConfigurationQuery, 
+  useGetInstallmentOptionsQuery 
+} from "@/lib/store/installment/installmentApiSlice";
 
 const PLACEHOLDER_IMAGE = "/logos/logo3.svg";
 
@@ -13,13 +17,27 @@ const PLACEHOLDER_IMAGE = "/logos/logo3.svg";
 const FeaturedItemCard = ({ product }: { product: Product }) => {
   const fullPrimaryUrl = fullUrl(product.primaryImageUrl || product.imageUrl);
 
+  // Installment logic
+  const { data: instConfig } = useGetInstallmentConfigurationQuery();
+  const productPrice = product.discountedPrice || product.price;
+  const { data: instOptions } = useGetInstallmentOptionsQuery(
+    { amount: productPrice },
+    { skip: !instConfig?.isEnabled || productPrice < instConfig?.minimumAmount }
+  );
+
+  const maxPeriod = instOptions
+    ? Math.max(...instOptions.filter((o) => o.isActive).map((o) => o.installmentPeriod), 0)
+    : 0;
+
+  const monthlyPayment = maxPeriod > 0 ? (productPrice / maxPeriod).toFixed(2) : null;
+
   return (
     <Link 
       href={`/product/${product.slug || product.id}`}
-      className="bg-white border border-[#f2f2f2] rounded-xl p-4 flex items-stretch gap-4 h-full transition-all duration-300 cursor-pointer group max-h-[150px] hover:border-blue-100"
+      className="bg-white border border-[#f2f2f2] rounded-xl p-4 flex items-stretch gap-4 h-full transition-all duration-300 cursor-pointer group max-h-[160px] hover:border-blue-100"
     >
       {/* Image on Left */}
-      <div className="w-[110px] shrink-0 flex items-center justify-center rounded-lg overflow-hidden transition-colors group-hover:bg-white">
+      <div className="w-[110px] shrink-0 flex items-center justify-center rounded-lg overflow-hidden transition-colors group-hover:bg-white text-[10px]">
         <img
           src={fullPrimaryUrl}
           alt={product.name}
@@ -30,25 +48,50 @@ const FeaturedItemCard = ({ product }: { product: Product }) => {
 
       {/* Content on Right */}
       <div className="flex flex-col flex-1 min-w-0 justify-center">
-        <h4 className="text-[12px] font-bold text-[#1a1a1a] line-clamp-2 leading-tight mb-1.5 group-hover:text-blue-600 transition-colors">
+        <h4 className="text-[12px] font-bold text-[#1a1a1a] line-clamp-2 leading-tight mb-1 group-hover:text-blue-600 transition-colors">
           {product.name}
         </h4>
 
-        {/* Price */}
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-[16px] font-bold text-[#e52e2e]">
-            ₼{(product.discountedPrice || product.price).toFixed(2)}
-          </span>
-          {product.discountedPrice && product.discountedPrice < product.price && (
-            <span className="text-[12px] text-gray-400 line-through">
-              ₼{product.price.toFixed(2)}
+        {/* Price & Installment */}
+        <div className="flex flex-col gap-1 mb-1">
+          <div className="flex items-center gap-2">
+            <span className="text-[16px] font-bold text-[#e52e2e]">
+              ₼{(product.discountedPrice || product.price).toFixed(2)}
             </span>
+            {product.discountedPrice && product.discountedPrice < product.price && (
+              <span className="text-[12px] text-gray-400 line-through">
+                ₼{product.price.toFixed(2)}
+              </span>
+            )}
+          </div>
+          
+          {monthlyPayment && maxPeriod > 0 && (
+            <div className="flex flex-col gap-1">
+              <div className="inline-flex items-center">
+                <span 
+                  className="text-[10px] font-bold px-1.5 py-0.5 rounded"
+                  style={{ background: "#f5d000", color: "#1a1a1a" }}
+                >
+                  {monthlyPayment} ₼ x {maxPeriod} ay
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-1">
+                {instOptions?.filter(o => o.isActive).sort((a, b) => a.installmentPeriod - b.installmentPeriod).map((opt) => (
+                  <span 
+                    key={opt.id}
+                    className="text-[8px] font-black px-1 py-0.2 px-1.5 rounded bg-gray-50 text-gray-400 border border-gray-100 uppercase"
+                  >
+                    {opt.installmentPeriod} ay
+                  </span>
+                ))}
+              </div>
+            </div>
           )}
         </div>
 
         {/* Short Description */}
-        <div className="text-[11px] text-[#777] line-clamp-2 leading-normal">
-          {product.shortDescription || 'Functional Crown Fhd Footage 1.78"...'}
+        <div className="text-[11px] text-[#777] line-clamp-1 leading-normal">
+          {product.shortDescription || 'Avto Store-dan təklif...'}
         </div>
       </div>
     </Link>

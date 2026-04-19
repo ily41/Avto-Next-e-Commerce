@@ -35,9 +35,9 @@ export default function PromoCodesPage() {
     const [deletePromoCode] = useDeletePromoCodeMutation();
 
     const promoCodeSchema = z.object({
-        code: z.string().min(1, "Code is required"),
+        code: z.string().min(1, "Kod tələb olunur"),
         discountPercentage: z.coerce.number().min(0).max(100),
-        expirationDate: z.string().min(1, "Expiration date is required"),
+        expirationDate: z.string().min(1, "Bitmə tarixi tələb olunur"),
         isActive: z.boolean().default(true),
         usageLimit: z.coerce.number().min(0),
     });
@@ -62,7 +62,7 @@ export default function PromoCodesPage() {
         {
             id: "code",
             accessorKey: "code",
-            header: "Promo Code",
+            header: "Promokod",
             cell: ({ row }) => (
                 <span className="font-semibold tracking-wide uppercase">{row.original.code}</span>
             ),
@@ -86,7 +86,7 @@ export default function PromoCodesPage() {
                 const isExpired = date < new Date();
                 return (
                     <span className={isExpired ? "text-red-500 line-through" : ""}>
-                        {date.toLocaleDateString("en-US", {
+                        {date.toLocaleDateString("az-AZ", {
                             year: "numeric",
                             month: "short",
                             day: "numeric",

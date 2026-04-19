@@ -130,7 +130,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: user } = useGetMeQuery()
 
   const userData = {
-    name: user ? `${user.firstName} ${user.lastName}` : "Loading...",
+    name: user ? `${user.firstName} ${user.lastName}` : "Yüklənir...",
     email: user?.email || "...",
     avatar: "/avatars/shadcn.jpg", // Fallback or dynamic avatar if available
   }

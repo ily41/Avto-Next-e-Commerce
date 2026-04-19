@@ -30,7 +30,12 @@ const CategoriesMegaMenu = ({ isOpen, setHoveredLink }: CategoriesMegaMenuProps)
             onMouseLeave={() => setHoveredLink(null)}
         >
             {/* Left Side: Categories Grid */}
-            <div className="w-[50%] p-8 grid grid-cols-3 gap-y-10 gap-x-8">
+            <div className="w-[50%] p-8 flex flex-col">
+                <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-50">
+                    <h3 className="text-xl font-bold text-gray-900 font-outfit uppercase tracking-wider">Kateqoriyalar</h3>
+                    <Link href="/categories" className="text-sm font-semibold text-blue-600 hover:underline">Hamısını göstər</Link>
+                </div>
+                <div className="grid grid-cols-3 gap-y-10 gap-x-8">
                 {displayCategories.map((category) => (
                     <div key={category.id} className="flex flex-col gap-4">
                         <Link
@@ -60,6 +65,7 @@ const CategoriesMegaMenu = ({ isOpen, setHoveredLink }: CategoriesMegaMenuProps)
                         </div>
                     </div>
                 ))}
+                </div>
             </div>
 
             {/* Right Side: Hot Deals Grid (2 columns) */}

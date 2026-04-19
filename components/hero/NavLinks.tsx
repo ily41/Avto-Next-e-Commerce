@@ -12,8 +12,8 @@ const NavLinks = () => {
     const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
     const links = [
-        { name: "Kateqoriyalar", href: "#", label: "ENDİRİM", labelColor: "bg-green-100 text-green-600", hasDropdown: true, nonClickable: true },
-        { name: "Brendlər", href: "#", hasDropdown: true, nonClickable: true },
+        { name: "Kateqoriyalar", href: "/categories", label: "ENDİRİM", labelColor: "bg-green-100 text-green-600", hasDropdown: true },
+        { name: "Brendlər", href: "/brands", hasDropdown: true },
         { name: "Məhsullar", href: "/shop", label: "QAYNAR", labelColor: "bg-red-100 text-red-600", hasDropdown: true },
         { name: "Top təkliflər", href: "/shop?isHotDeal=true", hasDropdown: true },
     ];

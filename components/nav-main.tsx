@@ -44,7 +44,7 @@ export function NavMain({
             </Button>
           </SidebarMenuItem>
         </SidebarMenu> */}
-        <SidebarGroupLabel>Main</SidebarGroupLabel>
+        <SidebarGroupLabel>Əsas</SidebarGroupLabel>
 
         <SidebarMenu>
           {items.map((item) => (

@@ -25,7 +25,7 @@ const BrandsMegaMenu = ({ isOpen, setHoveredLink }: BrandsMegaMenuProps) => {
             <div className="p-10">
                 <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-50">
                     <h3 className="text-xl font-bold text-gray-900 font-outfit uppercase tracking-wider">Məşhur Brendlər</h3>
-                    <Link href="/shop" className="text-sm font-semibold text-blue-600 hover:underline">Hamısına bax</Link>
+                    <Link href="/brands" className="text-sm font-semibold text-blue-600 hover:underline">Hamısını göstər</Link>
                 </div>
 
                 {isLoading ? (

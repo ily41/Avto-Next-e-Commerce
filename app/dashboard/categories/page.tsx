@@ -22,11 +22,11 @@ export default function Page() {
     }, [categories]);
 
     const categorySchema = z.object({
-        name: z.string().min(2, "Name is required"),
+        name: z.string().min(2, "Ad tələb olunur"),
         description: z.string().optional(),
-        sortOrder: z.number().min(1, "Sort order must be at least 1"),
+        sortOrder: z.number().min(1, "Sıralama ən azı 1 olmalıdır"),
         parentCategoryId: z.string().nullable().optional(),
-        imageFile: z.instanceof(File, { message: "Image is required" }).nullable().optional(),
+        imageFile: z.instanceof(File, { message: "Şəkil tələb olunur" }).nullable().optional(),
         isActive: z.boolean().default(true)
     });
 
@@ -50,7 +50,7 @@ export default function Page() {
     const categoryColumns = useMemo(() => createColumns<Category>([
         {
             key: "imageUrl",
-            label: "Image",
+            label: "Şəkil",
             render: (value) => (
                 <div className="h-10 w-10 flex items-center justify-center overflow-hidden rounded border bg-slate-50">
                     {value ? (
@@ -60,7 +60,7 @@ export default function Page() {
                             className="object-contain h-full w-full"
                         />
                     ) : (
-                        <span className="text-[10px] text-gray-400">No Img</span>
+                        <span className="text-[10px] text-gray-400">Şəkil yoxdur</span>
                     )}
                 </div>
             )
@@ -98,7 +98,7 @@ export default function Page() {
     if (isLoading) {
         return (
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
-                <h1 className="text-base md:text-xl lg:text-2xl">Kateqoriyalar</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Kateqoriyalar</h1>
                 <div className="flex flex-1 items-center justify-center min-h-[400px]">
                     <div className="flex flex-col items-center gap-2">
                         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
@@ -112,7 +112,7 @@ export default function Page() {
     if (error) {
         return (
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
-                <h1 className="text-base md:text-xl lg:text-2xl">Kateqoriyalar</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Kateqoriyalar</h1>
                 <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-6 text-destructive">
                     <p className="font-semibold">Kateqoriyalar Yüklənilə Bilmədi</p>
                     <p className="text-sm opacity-90">Serverdən məlumat alınması mümkün olmadı. Birlaşmanızı yoxlayın və ya bir az sonra yenidən cəhd edin.</p>
@@ -124,7 +124,7 @@ export default function Page() {
     return (
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10">
             <div className="flex justify-between items-center">
-                <h1 className="text-base md:text-xl lg:text-2xl">Kateqoriyalar</h1>
+                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Kateqoriyalar</h1>
                 <DynamicAddPopup
                     title="Kateqoriya Əlavə Et"
                     triggerText="Kateqoriya Əlavə Et"
@@ -144,27 +144,29 @@ export default function Page() {
                 filterColumn="name"
                 getSubRows={(row) => row.subCategories}
             />
-            <DynamicEditPopup
-                open={!!editingCategory}
-                onOpenChange={(open) => !open && setEditingCategory(null)}
-                title={`Kateqoriyanı Düzəlt: ${editingCategory?.name}`}
-                schema={categorySchema}
-                defaultValues={{
-                    ...editingCategory,
-                    parentCategoryId: editingCategory?.parentCategoryId || null,
-                    imageFile: undefined
-                }}
-                initialPreviews={{
-                    imageFile: editingCategory?.imageUrl ? `https://avtoo027-001-site1.ntempurl.com${editingCategory.imageUrl}` : ""
-                }}
-                fields={categoryFields}
-                isLoading={isUpdating}
-                onSubmit={async (values) => {
-                    if (!editingCategory) return;
-                    await updateCategory({ ...values, id: editingCategory.id, description: "" }).unwrap();
-                    toast.success("Kateqoriya yenilendi!");
-                }}
-            />
+            {editingCategory && (
+                <DynamicEditPopup
+                    open={!!editingCategory}
+                    onOpenChange={(open) => !open && setEditingCategory(null)}
+                    title={`Kateqoriyanı Düzəlt: ${editingCategory?.name}`}
+                    schema={categorySchema}
+                    defaultValues={{
+                        ...editingCategory,
+                        parentCategoryId: editingCategory?.parentCategoryId || null,
+                        imageFile: undefined
+                    }}
+                    initialPreviews={{
+                        imageFile: editingCategory?.imageUrl ? `https://avtoo027-001-site1.ntempurl.com${editingCategory.imageUrl}` : ""
+                    }}
+                    fields={categoryFields}
+                    isLoading={isUpdating}
+                    onSubmit={async (values) => {
+                        if (!editingCategory) return;
+                        await updateCategory({ ...values, id: editingCategory.id, description: "" }).unwrap();
+                        toast.success("Kateqoriya yenilendi!");
+                    }}
+                />
+            )}
         </div>
     )
 }
