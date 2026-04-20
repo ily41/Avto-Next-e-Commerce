@@ -45,11 +45,16 @@ export function LoginPopup({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[450px] p-0 overflow-hidden border-none shadow-2xl rounded-xl">
+      <DialogContent showCloseButton={false} className="sm:max-w-[450px] p-0 overflow-hidden border-none shadow-2xl rounded-xl">
         <DialogTitle className="sr-only">Giriş</DialogTitle>
         <div className="bg-white p-8 md:p-12 flex flex-col items-center relative">
-          <button onClick={() => setOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-900 transition-colors">
-            <IconX size={20} />
+          <button 
+            type="button"
+            onClick={() => setOpen(false)} 
+            className="absolute top-4 right-4 text-gray-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-full transition-all z-50"
+            aria-label="Bağla"
+          >
+            <IconX size={22} stroke={2.5} />
           </button>
           
           <form onSubmit={handleLogin} className="w-full flex flex-col gap-6">

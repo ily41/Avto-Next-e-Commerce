@@ -16,6 +16,9 @@ import {
 import { Product } from "@/lib/api/types";
 import { useCart } from "@/hooks/useCart";
 import { toast } from "sonner";
+import { calculateBestInstallment } from "@/lib/installmentUtils";
+import { useAuth } from "@/hooks/useAuth";
+import { LoginPopup } from "@/components/ownUI/loginPopup";
 
 
 interface ProductInfoProps {
@@ -26,12 +29,14 @@ interface ProductInfoProps {
 export default function ProductInfo({ product, discount }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1);
   const [toggleFavorite] = useToggleFavoriteMutation();
+  const { isAuth } = useAuth();
   const { addItem } = useCart();
   const [isAdded, setIsAdded] = useState(false);
 
 
 
   const handleFavoriteClick = async () => {
+    if (!isAuth) return;
     try {
       await toggleFavorite(product.id).unwrap();
     } catch (err) {
@@ -68,14 +73,12 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
     }
   };
 
-  // Hardcoded credit options (consistent with ProductCard)
-  const ALL_MONTHS = [3, 6, 12, 18];
   const unitPrice = product.discountedPrice || product.price;
   const totalPrice = unitPrice * quantity;
   
-  // Capping based on monthly payment at 18 months for ONE item
-  const maxPeriod: number = (unitPrice / 18) >= 15 ? 18 : 12;
-  const monthlyPayment = unitPrice >= 15 ? (totalPrice / maxPeriod).toFixed(2) : null;
+  const installment = calculateBestInstallment(unitPrice);
+  const maxPeriod = installment?.month || 0;
+  const monthlyPayment = installment?.monthlyPayment ? (parseFloat(installment.monthlyPayment) * quantity).toFixed(2) : null;
 
   return (
     <div className="flex flex-col gap-6 font-sans">
@@ -140,14 +143,23 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
           </button>
         )}
 
-        {/* Wishlist & Share */}
         <div className="flex items-center gap-8 justify-center mt-2 border-t border-gray-50 pt-4">
-          <button
-            onClick={handleFavoriteClick}
-            className={`flex items-center gap-2 text-[13px] font-bold transition-all duration-300 uppercase tracking-tight cursor-pointer ${product.isFavorite ? "text-red-500 hover:text-red-600" : "text-gray-500 hover:text-blue-600"}`}
-          >
-            {product.isFavorite ? <IconHeartFilled size={18} /> : <IconHeart size={18} />} İstək siyahısı
-          </button>
+          {isAuth ? (
+            <button
+              onClick={handleFavoriteClick}
+              className={`flex items-center gap-2 text-[13px] font-bold transition-all duration-300 uppercase tracking-tight cursor-pointer ${product.isFavorite ? "text-red-500 hover:text-red-600" : "text-gray-500 hover:text-blue-600"}`}
+            >
+              {product.isFavorite ? <IconHeartFilled size={18} /> : <IconHeart size={18} />} İstək siyahısı
+            </button>
+          ) : (
+            <LoginPopup>
+              <button
+                className="flex items-center gap-2 text-[13px] font-bold text-gray-500 hover:text-blue-600 transition-all duration-300 uppercase tracking-tight cursor-pointer"
+              >
+                <IconHeart size={18} /> İstək siyahısı
+              </button>
+            </LoginPopup>
+          )}
           <button 
             onClick={handleShare}
             className="flex items-center gap-2 text-[13px] font-bold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-tight cursor-pointer"

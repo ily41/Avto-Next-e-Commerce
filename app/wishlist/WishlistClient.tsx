@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { IconChevronRight, IconShoppingCart, IconX } from "@tabler/icons-react";
+import { IconChevronRight, IconShoppingCart, IconX, IconHeart } from "@tabler/icons-react";
 import { useGetFavoritesQuery, useToggleFavoriteMutation } from "@/lib/store/favorites/apislice";
 import Image from "next/image";
 import { fullUrl } from "@/lib/api/url-utils";
@@ -50,20 +50,36 @@ export default function WishlistClient() {
   if (!isAuth) {
     return (
       <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-         <div className="bg-white p-10 rounded-2xl shadow-2xl max-w-[450px] w-full text-center flex flex-col items-center gap-6 animate-in zoom-in-95 duration-200">
+         <div className="bg-white p-10 rounded-2xl shadow-2xl max-w-[450px] w-full text-center flex flex-col items-center gap-6 animate-in zoom-in-95 duration-200 relative">
+            <button 
+              onClick={() => router.push("/")}
+              className="absolute top-4 right-4 text-gray-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-full transition-all cursor-pointer"
+              aria-label="Bağla"
+            >
+              <IconX size={20} stroke={2.5} />
+            </button>
+
             <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center">
-               <IconX size={32} className="text-blue-600" stroke={2.5} />
+               <IconHeart size={32} className="text-blue-600" stroke={2.5} />
             </div>
             <div className="flex flex-col gap-2">
                <h2 className="text-[22px] font-bold text-gray-900 uppercase">Giriş tələb olunur</h2>
                <p className="text-[14px] text-gray-500 leading-relaxed font-medium">İstək siyahısını görmək üçün hesabınıza daxil olmalısınız.</p>
             </div>
-            <Link 
-              href="/my-account" 
-              className="w-full py-4 bg-blue-600 hover:bg-black text-white font-bold rounded-xl transition-all shadow-lg active:scale-95 text-[14px]"
-            >
-               Hesabıma get
-            </Link>
+            <div className="flex flex-col gap-3 w-full">
+              <Link 
+                href="/my-account" 
+                className="w-full py-4 bg-blue-600 hover:bg-black text-white font-bold rounded-xl transition-all shadow-lg active:scale-95 text-[14px] flex items-center justify-center"
+              >
+                 Hesabıma get
+              </Link>
+              <button 
+                onClick={() => router.push("/")}
+                className="w-full py-3 bg-transparent text-gray-500 hover:text-blue-600 font-bold transition-colors text-[13px] uppercase tracking-wider"
+              >
+                Geri dön
+              </button>
+            </div>
          </div>
       </div>
     );

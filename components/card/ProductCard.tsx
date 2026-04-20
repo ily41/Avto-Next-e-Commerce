@@ -9,6 +9,9 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { fullUrl } from "@/lib/api/url-utils";
 import { useCart } from "@/hooks/useCart";
+import { calculateBestInstallment } from "@/lib/installmentUtils";
+import { useAuth } from "@/hooks/useAuth";
+import { LoginPopup } from "@/components/ownUI/loginPopup";
 
 
 interface ProductCardProps {
@@ -18,6 +21,7 @@ interface ProductCardProps {
 
 
 const ProductCard = ({ product, noBorder }: ProductCardProps) => {
+    const { isAuth } = useAuth();
     const router = useRouter();
 
     const [toggleFavorite] = useToggleFavoriteMutation();
@@ -32,21 +36,17 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
         setLocalIsFavorite(product.isFavorite);
     }, [product.isFavorite]);
 
-    // Hardcoded credit options
-    const ALL_MONTHS = [3, 6, 12, 18];
     const productPrice = product.discountedPrice || product.price;
-
-    // Capping based on monthly payment at 18 months:
-    // price / 18 < 15 AZN/month → cap at 12 months
-    // price / 18 >= 15 AZN/month → use 18 months
-    const maxPeriod: number = (productPrice / 18) >= 15 ? 18 : 12;
-
-    const availableMonths = ALL_MONTHS.filter(m => m <= maxPeriod);
-    const monthlyPayment = productPrice >= 15 ? (productPrice / maxPeriod).toFixed(2) : null;
+    const installment = calculateBestInstallment(productPrice);
+    
+    const maxPeriod = installment?.month || 0;
+    const availableMonths = installment?.availableMonths || [];
+    const monthlyPayment = installment?.monthlyPayment || null;
 
 
     const handleFavoriteClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
+        if (!isAuth) return; // LoginPopup will trigger
         try {
             // Optimistic update
             setLocalIsFavorite(!localIsFavorite);
@@ -109,16 +109,26 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                 )}
 
                 {/* Heart — top right, always visible */}
-                <button
-                    onClick={handleFavoriteClick}
-                    className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 transition-all duration-200 hover:scale-110 cursor-pointer"
-                >
-                    {localIsFavorite ? (
-                        <IconHeartFilled size={18} className="text-red-500" />
-                    ) : (
-                        <IconHeart size={18} stroke={1.5} className="text-gray-400" />
-                    )}
-                </button>
+                {isAuth ? (
+                    <button
+                        onClick={handleFavoriteClick}
+                        className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 transition-all duration-200 hover:scale-110 cursor-pointer"
+                    >
+                        {localIsFavorite ? (
+                            <IconHeartFilled size={18} className="text-red-500" />
+                        ) : (
+                            <IconHeart size={18} stroke={1.5} className="text-gray-400" />
+                        )}
+                    </button>
+                ) : (
+                    <LoginPopup>
+                        <button
+                            className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 transition-all duration-200 hover:scale-110 cursor-pointer"
+                        >
+                            <IconHeart size={18} stroke={1.5} className="text-gray-400" />
+                        </button>
+                    </LoginPopup>
+                )}
 
                 {/* Product image */}
                 <div className="absolute inset-0 flex items-center justify-center p-5">

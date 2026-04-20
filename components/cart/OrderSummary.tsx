@@ -14,6 +14,8 @@ import { toast } from "sonner";
 import { ShoppingCart, Lock, AlertCircle, Fingerprint } from "lucide-react";
 import { IconCreditCard } from "@tabler/icons-react";
 import { InstallmentCalculator } from "./InstallmentCalculator";
+import { LoginPopup } from "@/components/ownUI/loginPopup";
+import { useRouter } from "next/navigation";
 
 
 interface OrderSummaryProps {
@@ -106,9 +108,11 @@ export function OrderSummary({
             onRemove={onRemovePromo}
           />
         ) : (
-          <div className="mt-5 text-sm text-gray-500 bg-white p-3 rounded-xl border border-[#f2f2f2] text-center">
-            Promo kodu tətbiq etmək üçün <span className="font-bold text-blue-600">daxil olun</span>.
-          </div>
+          <LoginPopup>
+            <button className="mt-5 w-full text-sm text-gray-500 bg-white p-3 rounded-xl border border-[#f2f2f2] text-center hover:bg-gray-50 transition-colors cursor-pointer group">
+              Promo kodu tətbiq etmək üçün <span className="font-bold text-blue-600 group-hover:text-blue-700 transition-colors">daxil olun</span>.
+            </button>
+          </LoginPopup>
         )}
 
         <div className="flex flex-col gap-3 mt-6">

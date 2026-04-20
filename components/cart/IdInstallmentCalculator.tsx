@@ -19,9 +19,16 @@ const INSTALLMENT_OPTIONS = [
 ];
  
 export function IdInstallmentCalculator({ totalAmount }: IdInstallmentCalculatorProps) {
-  const [selectedMonths, setSelectedMonths] = useState<number>(INSTALLMENT_OPTIONS[0].months);
- 
-  const selectedOption = INSTALLMENT_OPTIONS.find((o) => o.months === selectedMonths) || INSTALLMENT_OPTIONS[0];
+  const filteredOptions = INSTALLMENT_OPTIONS.filter(option => {
+    const totalWithInterest = totalAmount * (1 + option.interest / 100);
+    return (totalWithInterest / option.months) > 15;
+  });
+
+  const [selectedMonths, setSelectedMonths] = useState<number>(
+    filteredOptions.length > 0 ? filteredOptions[0].months : INSTALLMENT_OPTIONS[0].months
+  );
+
+  const selectedOption = filteredOptions.find((o) => o.months === selectedMonths) || filteredOptions[0] || INSTALLMENT_OPTIONS[0];
   
   const totalWithInterest = totalAmount * (1 + selectedOption.interest / 100);
   const monthlyPayment = totalWithInterest / selectedOption.months;
@@ -40,7 +47,7 @@ export function IdInstallmentCalculator({ totalAmount }: IdInstallmentCalculator
       <div className="flex flex-col border border-gray-100 rounded-[20px] overflow-hidden">
         {/* Months selection */}
         <div className="flex-1 p-4 md:p-5 grid grid-cols-4 md:grid-cols-7 gap-2 border-b border-gray-50">
-          {INSTALLMENT_OPTIONS.map((option) => (
+          {filteredOptions.map((option) => (
             <button
               key={option.months}
               onClick={() => setSelectedMonths(option.months)}

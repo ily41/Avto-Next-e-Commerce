@@ -32,10 +32,12 @@ export function InstallmentModal({ isOpen, onClose, totalAmount }: InstallmentMo
   const [step, setStep] = useState<1 | 2>(1);
   const [serverError, setServerError] = useState("");
 
-  const { data: options, isLoading: isOptionsLoading } = useGetInstallmentOptionsQuery(
+  const { data: rawOptions, isLoading: isOptionsLoading } = useGetInstallmentOptionsQuery(
     { amount: totalAmount },
     { skip: !isOpen }
   );
+
+  const options = rawOptions?.filter(opt => (totalAmount / opt.installmentPeriod) > 15);
 
   const { data: calculation, isFetching: isCalculating } = useCalculateInstallmentQuery(
     { amount: totalAmount, optionId: selectedOptionId! },

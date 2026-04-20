@@ -15,8 +15,10 @@ interface NormalInstallmentCalculatorProps {
 export function NormalInstallmentCalculator({ totalAmount }: NormalInstallmentCalculatorProps) {
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
  
-  const { data: options, isLoading, isError } = useGetInstallmentOptionsQuery({ amount: totalAmount });
- 
+  const { data: rawOptions, isLoading, isError } = useGetInstallmentOptionsQuery({ amount: totalAmount });
+  
+  const options = rawOptions?.filter(option => (totalAmount / option.installmentPeriod) > 15);
+
   useEffect(() => {
     if (options && options.length > 0 && !selectedOptionId) {
       setSelectedOptionId(options[0].id);

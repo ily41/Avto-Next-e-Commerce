@@ -6,6 +6,7 @@ import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import type { Product } from "@/lib/api/types";
 import { fullUrl } from "@/lib/api/url-utils";
 import ProductCard from "@/components/card/ProductCard";
+import { calculateBestInstallment } from "@/lib/installmentUtils";
 
 
 const PLACEHOLDER_IMAGE = "/logos/logo3.svg";
@@ -14,17 +15,12 @@ const PLACEHOLDER_IMAGE = "/logos/logo3.svg";
 const FeaturedItemCard = ({ product }: { product: Product }) => {
   const fullPrimaryUrl = fullUrl(product.primaryImageUrl || product.imageUrl);
 
-  // Hardcoded credit options
-  const ALL_MONTHS = [3, 6, 12, 18];
   const productPrice = product.discountedPrice || product.price;
+  const installment = calculateBestInstallment(productPrice);
 
-  // Capping based on monthly payment at 18 months:
-  // price / 18 < 15 AZN/month → cap at 12 months
-  // price / 18 >= 15 AZN/month → use 18 months
-  const maxPeriod: number = (productPrice / 18) >= 15 ? 18 : 12;
-
-  const availableMonths = ALL_MONTHS.filter(m => m <= maxPeriod);
-  const monthlyPayment = productPrice >= 15 ? (productPrice / maxPeriod).toFixed(2) : null;
+  const maxPeriod = installment?.month || 0;
+  const availableMonths = installment?.availableMonths || [];
+  const monthlyPayment = installment?.monthlyPayment || null;
 
   return (
     <Link
