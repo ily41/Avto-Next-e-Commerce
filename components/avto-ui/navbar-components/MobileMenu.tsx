@@ -108,7 +108,7 @@ export function MobileMenu({
                     </Link>
 
                     <div className="mt-4">
-                        <LoginPopup>
+                        <LoginPopup onAction={onClose}>
                             <button className="w-full bg-blue-600 hover:bg-black text-white font-black py-4 rounded-2xl transition-all shadow-lg shadow-blue-600/20 active:scale-95">
                                 Daxil ol
                             </button>

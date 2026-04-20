@@ -70,7 +70,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
 
   return (
     <main className="w-full bg-[#f8f8f8] min-h-screen py-8">
-      <div className="max-w-[1450px] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
+      <div className="max-w-[1650px] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
         {/* Breadcrumb */}
         <nav className="flex text-[13px] text-gray-500 mb-6 bg-white py-2 px-4 rounded-md shadow-sm border border-gray-100 w-full justify-center lg:justify-start">
           <ol className="flex flex-col lg:flex-row lg:items-center w-full text-center lg:text-left space-y-1 lg:space-y-0 lg:space-x-2">

@@ -19,7 +19,7 @@ export default function BrandsPage() {
     }
 
     return (
-        <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-0 w-[calc(100%-2.5rem)] py-12">
+        <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-0 w-[calc(100%-2.5rem)] py-12">
             <div className="flex items-center gap-3 mb-10 pb-6 border-b border-gray-100">
                 <Award className="h-8 w-8 text-blue-600" />
                 <h1 className="text-3xl font-black text-gray-900 tracking-tight">Əməkdaşlıq etdiyimiz Brendlər</h1>
@@ -40,10 +40,10 @@ export default function BrandsPage() {
                             />
                         </div>
                         <div className="flex flex-col items-center gap-2">
-                             <span className="text-sm font-black text-gray-900 group-hover:text-blue-600 transition-colors uppercase tracking-widest">{brand.name}</span>
-                             <div className="flex items-center gap-2 text-[10px] font-black text-blue-500 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+                            <span className="text-sm font-black text-gray-900 group-hover:text-blue-600 transition-colors uppercase tracking-widest">{brand.name}</span>
+                            <div className="flex items-center gap-2 text-[10px] font-black text-blue-500 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
                                 MƏHSULLARA BAX <ArrowRight className="h-3 w-3" />
-                             </div>
+                            </div>
                         </div>
                     </Link>
                 ))}

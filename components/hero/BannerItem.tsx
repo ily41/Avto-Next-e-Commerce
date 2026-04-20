@@ -57,34 +57,34 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
     return (
         <div className="relative w-full h-full overflow-hidden rounded-lg bg-gray-50 group cursor-pointer">
             <div className="absolute inset-0 w-full h-full">
-            {/* Desktop image — hidden on small screens if a mobile version exists */}
-            <Image
-                src={src}
-                alt={title || "Banner"}
-                fill
-                priority={variant === "main"}
-                sizes={
-                    variant === "main"
-                        ? "(max-width: 1024px) 100vw, 1100px"
-                        : "(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 360px"
-                }
-                className={`${src === FALLBACK_IMAGE ? "object-contain bg-white p-6 opacity-80" : "object-cover"} ${mSrc !== src ? "hidden sm:block" : ""}`}
-                onError={() => setSrc(FALLBACK_IMAGE)}
-                {...(variant === "main" ? { fetchPriority: "high" } : {})}
-            />
-
-            {/* Mobile image — only rendered when a separate mobile URL exists */}
-            {mSrc !== src && (
+                {/* Desktop image — hidden on small screens if a mobile version exists */}
                 <Image
-                    src={mSrc}
+                    src={src}
                     alt={title || "Banner"}
                     fill
                     priority={variant === "main"}
-                    sizes="100vw"
-                    className={`${mSrc === FALLBACK_IMAGE ? "object-contain bg-white p-4 opacity-80" : "object-cover"} block sm:hidden`}
-                    onError={() => setMSrc(FALLBACK_IMAGE)}
+                    sizes={
+                        variant === "main"
+                            ? "(max-width: 1024px) 100vw, 1100px"
+                            : "(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 360px"
+                    }
+                    className={`${src === FALLBACK_IMAGE ? "object-contain bg-white p-6 opacity-80" : "object-cover"} ${mSrc !== src ? "hidden sm:block" : ""}`}
+                    onError={() => setSrc(FALLBACK_IMAGE)}
+                    {...(variant === "main" ? { fetchPriority: "high" } : {})}
                 />
-            )}
+
+                {/* Mobile image — only rendered when a separate mobile URL exists */}
+                {mSrc !== src && (
+                    <Image
+                        src={mSrc}
+                        alt={title || "Banner"}
+                        fill
+                        priority={variant === "main"}
+                        sizes="100vw"
+                        className={`${mSrc === FALLBACK_IMAGE ? "object-contain bg-white p-4 opacity-80" : "object-cover"} block sm:hidden`}
+                        onError={() => setMSrc(FALLBACK_IMAGE)}
+                    />
+                )}
             </div>
 
             {/* Content Overlay */}
@@ -129,7 +129,7 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
                             backgroundColor: buttonColor || "#3b82f6",
                             color: buttonTextColor || "#fff",
                             borderRadius: `${buttonBorderRadius}px`,
-                            padding: finalFontSize > 0 
+                            padding: finalFontSize > 0
                                 ? `${finalPaddingY / finalFontSize}em ${finalPaddingX / finalFontSize}em`
                                 : `${finalPaddingY}px ${finalPaddingX}px`,
                             fontSize: getResponsiveStyle(finalFontSize),

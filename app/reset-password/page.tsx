@@ -18,15 +18,15 @@ function ResetPasswordForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!token) return toast.error("Invalid or missing reset token");
-    if (newPassword !== confirmPassword) return toast.error("Passwords do not match");
+    if (!token) return toast.error("Sıfırlama tokeni yanlışdır və ya yoxdur");
+    if (newPassword !== confirmPassword) return toast.error("Şifrələr uyğun gəlmir");
 
     try {
       await resetPassword({ token, newPassword, confirmNewPassword: confirmPassword }).unwrap();
-      toast.success("Password reset successful!");
+      toast.success("Şifrə sıfırlanması uğurludur!");
       setTimeout(() => router.push("/my-account"), 3000);
     } catch (err: any) {
-      toast.error(err.data?.message || "Failed to reset password");
+      toast.error(err.data?.message || "Şifrəni sıfırlamaq mümkün olmadı");
     }
   };
 
@@ -38,22 +38,22 @@ function ResetPasswordForm() {
             <IconCheck size={40} className="text-green-500" stroke={3} />
           </div>
           <div>
-            <h2 className="text-[24px] font-bold text-gray-900 mb-2">Success!</h2>
+            <h2 className="text-[24px] font-bold text-gray-900 mb-2">Uğurlu!</h2>
             <p className="text-[14px] text-gray-500 leading-relaxed">
-              Your password has been updated. Redirecting to login in a few seconds...
+              Şifrəniz yeniləndi. Bir neçə saniyədən sonra giriş səhifəsinə yönləndiriləcəksiniz...
             </p>
           </div>
         </div>
       ) : (
         <div className="flex flex-col gap-8">
           <div className="text-center">
-            <h1 className="text-[28px] font-bold text-gray-900 tracking-tight">New Password</h1>
-            <p className="text-[14px] text-gray-500 mt-2">Enter your new secure password below.</p>
+            <h1 className="text-[28px] font-bold text-gray-900 tracking-tight">Yeni şifrə</h1>
+            <p className="text-[14px] text-gray-500 mt-2">Aşağıda yeni təhlükəsiz şifrənizi daxil edin.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="flex flex-col gap-2 relative">
-              <label className="text-[13px] font-bold text-gray-700 uppercase tracking-wider">New Password <span className="text-red-500">*</span></label>
+              <label className="text-[13px] font-bold text-gray-700 uppercase tracking-wider">Yeni şifrə <span className="text-red-500">*</span></label>
               <div className="relative">
                 <input
                   type={showPass ? "text" : "password"} required value={newPassword} onChange={e => setNewPassword(e.target.value)}
@@ -66,7 +66,7 @@ function ResetPasswordForm() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-[13px] font-bold text-gray-700 uppercase tracking-wider">Confirm Password <span className="text-red-500">*</span></label>
+              <label className="text-[13px] font-bold text-gray-700 uppercase tracking-wider">Şifrəni təsdiqləyin <span className="text-red-500">*</span></label>
               <input
                 type="password" required value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}
                 className="w-full h-12 border border-gray-200 outline-none focus:border-blue-500 px-4 rounded-sm transition-all"
@@ -77,7 +77,7 @@ function ResetPasswordForm() {
               type="submit" disabled={isLoading || !token}
               className="w-full h-12 bg-blue-600 hover:bg-black text-white font-bold rounded-md transition-all active:scale-95 disabled:bg-gray-300 shadow-lg shadow-blue-100"
             >
-              {isLoading ? "Updating..." : "Update Password"}
+              {isLoading ? "Yenilənir..." : "Şifrəni yenilə"}
             </button>
           </form>
         </div>
@@ -89,7 +89,7 @@ function ResetPasswordForm() {
 export default function ResetPasswordPage() {
   return (
     <div className="bg-[#f8f8f8] min-h-screen flex items-center justify-center p-4 font-sans">
-      <Suspense fallback={<div className="text-gray-400">Loading...</div>}>
+      <Suspense fallback={<div className="text-gray-400">Yüklənir...</div>}>
          <ResetPasswordForm />
       </Suspense>
 

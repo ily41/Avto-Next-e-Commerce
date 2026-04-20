@@ -16,7 +16,7 @@ export default function Footer() {
     <footer className="w-full">
       {/* Newsletter Section */}
       {/* <div className="bg-[#007aff] py-8 lg:py-12">
-        <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-4 text-white">
             <div className="bg-[#0066d6] p-4 rounded-xl">
               <IconMail size={32} stroke={1.5} />
@@ -46,7 +46,7 @@ export default function Footer() {
 
       {/* Links Section */}
       <div className="bg-white py-16 lg:py-20 border-b border-gray-100">
-        <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
             {/* Contact Info */}
             <div className="lg:pr-8">
@@ -58,7 +58,6 @@ export default function Footer() {
                   </a>
                   <p className="text-gray-500 mt-4 leading-relaxed font-medium">
                     Bakı şəhəri, Azərbaycan. <br />
-                    Bütün avto ehtiyat hissələrinin online satışı.
                   </p>
                 </div>
                 <div>
@@ -81,7 +80,6 @@ export default function Footer() {
             <div>
               <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">BİZİ TANIYIN</h4>
               <ul className="space-y-4">
-                <li><Link href="/about" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Haqqımızda</Link></li>
                 <li><Link href="/privacy-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Məxfilik Siyasəti</Link></li>
                 <li><Link href="/terms-and-conditions" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">İstifadə Şərtləri</Link></li>
                 <li><Link href="/refund-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Geri Qaytarılma</Link></li>
@@ -115,7 +113,7 @@ export default function Footer() {
 
       {/* Copyright Section */}
       <div className="bg-[#f8f8f8] py-8">
-        <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-[13px] text-gray-500 font-medium text-center w-full">
             © 2026 Avto027.com. Bütün hüquqlar qorunur.
           </p>

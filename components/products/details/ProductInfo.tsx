@@ -16,7 +16,7 @@ import {
 import { Product } from "@/lib/api/types";
 import { useCart } from "@/hooks/useCart";
 import { toast } from "sonner";
-import { useGetInstallmentConfigurationQuery, useGetInstallmentOptionsQuery } from "@/lib/store/installment/installmentApiSlice";
+
 
 interface ProductInfoProps {
   product: Product;
@@ -29,19 +29,7 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
   const { addItem } = useCart();
   const [isAdded, setIsAdded] = useState(false);
 
-  // Installment logic
-  const { data: instConfig } = useGetInstallmentConfigurationQuery();
-  const totalPrice = (product.discountedPrice || product.price) * quantity;
-  const { data: instOptions } = useGetInstallmentOptionsQuery(
-    { amount: totalPrice },
-    { skip: !instConfig?.isEnabled || totalPrice < instConfig?.minimumAmount }
-  );
 
-  const maxPeriod = instOptions 
-    ? Math.max(...instOptions.filter(o => o.isActive).map(o => o.installmentPeriod), 0) 
-    : 0;
-
-  const monthlyPayment = maxPeriod > 0 ? (totalPrice / maxPeriod).toFixed(2) : null;
 
   const handleFavoriteClick = async () => {
     try {
@@ -60,6 +48,34 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
       // Error is handled by the useCart hook
     }
   };
+
+  const handleShare = async () => {
+    const shareData = {
+      title: product.name,
+      text: product.shortDescription || product.description,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success("Link kopyalandı!");
+      }
+    } catch (err) {
+      console.error("Paylaşım zamanı xəta:", err);
+    }
+  };
+
+  // Hardcoded credit options (consistent with ProductCard)
+  const ALL_MONTHS = [3, 6, 12, 18];
+  const unitPrice = product.discountedPrice || product.price;
+  const totalPrice = unitPrice * quantity;
+  
+  // Capping based on monthly payment at 18 months for ONE item
+  const maxPeriod: number = (unitPrice / 18) >= 15 ? 18 : 12;
+  const monthlyPayment = unitPrice >= 15 ? (totalPrice / maxPeriod).toFixed(2) : null;
 
   return (
     <div className="flex flex-col gap-6 font-sans">
@@ -120,7 +136,7 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
             }}
           >
             <IconCreditCard size={20} className="transition-transform group-hover:scale-110" />
-            <span>Hissəli ödəniş ({maxPeriod} aya qədər)</span>
+            <span>Hissəli ödəniş ({monthlyPayment} ₼ x {maxPeriod} ay)</span>
           </button>
         )}
 
@@ -132,7 +148,10 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
           >
             {product.isFavorite ? <IconHeartFilled size={18} /> : <IconHeart size={18} />} İstək siyahısı
           </button>
-          <button className="flex items-center gap-2 text-[13px] font-bold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-tight cursor-pointer">
+          <button 
+            onClick={handleShare}
+            className="flex items-center gap-2 text-[13px] font-bold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-tight cursor-pointer"
+          >
             <IconShare size={18} /> Paylaş
           </button>
         </div>

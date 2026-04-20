@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useGetFavoritesQuery } from "@/lib/store/favorites/apislice";
 import { Menu } from "lucide-react";
 
@@ -45,6 +45,12 @@ export function Navbar() {
         const term = searchParams.get("searchTerm");
         if (term) setSearchTerm(term);
     }, [searchParams]);
+
+    // Close menu on pathname change
+    const pathname = usePathname();
+    useEffect(() => {
+        setIsMenuOpen(false);
+    }, [pathname]);
 
     // Handlers
     const handleSearchSubmit = useCallback((e: React.FormEvent) => {

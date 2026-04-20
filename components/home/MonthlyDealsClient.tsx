@@ -6,10 +6,7 @@ import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import type { Product } from "@/lib/api/types";
 import { fullUrl } from "@/lib/api/url-utils";
 import ProductCard from "@/components/card/ProductCard";
-import { 
-  useGetInstallmentConfigurationQuery, 
-  useGetInstallmentOptionsQuery 
-} from "@/lib/store/installment/installmentApiSlice";
+
 
 const PLACEHOLDER_IMAGE = "/logos/logo3.svg";
 
@@ -17,22 +14,20 @@ const PLACEHOLDER_IMAGE = "/logos/logo3.svg";
 const FeaturedItemCard = ({ product }: { product: Product }) => {
   const fullPrimaryUrl = fullUrl(product.primaryImageUrl || product.imageUrl);
 
-  // Installment logic
-  const { data: instConfig } = useGetInstallmentConfigurationQuery();
+  // Hardcoded credit options
+  const ALL_MONTHS = [3, 6, 12, 18];
   const productPrice = product.discountedPrice || product.price;
-  const { data: instOptions } = useGetInstallmentOptionsQuery(
-    { amount: productPrice },
-    { skip: !instConfig?.isEnabled || productPrice < instConfig?.minimumAmount }
-  );
 
-  const maxPeriod = instOptions
-    ? Math.max(...instOptions.filter((o) => o.isActive).map((o) => o.installmentPeriod), 0)
-    : 0;
+  // Capping based on monthly payment at 18 months:
+  // price / 18 < 15 AZN/month → cap at 12 months
+  // price / 18 >= 15 AZN/month → use 18 months
+  const maxPeriod: number = (productPrice / 18) >= 15 ? 18 : 12;
 
-  const monthlyPayment = maxPeriod > 0 ? (productPrice / maxPeriod).toFixed(2) : null;
+  const availableMonths = ALL_MONTHS.filter(m => m <= maxPeriod);
+  const monthlyPayment = productPrice >= 15 ? (productPrice / maxPeriod).toFixed(2) : null;
 
   return (
-    <Link 
+    <Link
       href={`/product/${product.slug || product.id}`}
       className="bg-white border border-[#f2f2f2] rounded-xl p-4 flex items-stretch gap-4 h-full transition-all duration-300 cursor-pointer group max-h-[160px] hover:border-blue-100"
     >
@@ -64,11 +59,11 @@ const FeaturedItemCard = ({ product }: { product: Product }) => {
               </span>
             )}
           </div>
-          
+
           {monthlyPayment && maxPeriod > 0 && (
             <div className="flex flex-col gap-1">
               <div className="inline-flex items-center">
-                <span 
+                <span
                   className="text-[10px] font-bold px-1.5 py-0.5 rounded"
                   style={{ background: "#f5d000", color: "#1a1a1a" }}
                 >
@@ -76,12 +71,12 @@ const FeaturedItemCard = ({ product }: { product: Product }) => {
                 </span>
               </div>
               <div className="flex flex-wrap gap-1">
-                {instOptions?.filter(o => o.isActive).sort((a, b) => a.installmentPeriod - b.installmentPeriod).map((opt) => (
-                  <span 
-                    key={opt.id}
-                    className="text-[8px] font-black px-1 py-0.2 px-1.5 rounded bg-gray-50 text-gray-400 border border-gray-100 uppercase"
+                {availableMonths.map((m) => (
+                  <span
+                    key={m}
+                    className="text-[8px] font-black px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 border border-gray-100 uppercase"
                   >
-                    {opt.installmentPeriod} ay
+                    {m} ay
                   </span>
                 ))}
               </div>

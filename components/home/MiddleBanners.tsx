@@ -16,7 +16,7 @@ const MiddleBanners = async () => {
 
   return (
     <section className="w-full py-6">
-      <div className="max-w-[1450px] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
+      <div className="max-w-[1650px] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
         {/* Desktop and Tablet: Side by side (2 columns) */}
         <div className="hidden sm:grid grid-cols-2 gap-4 lg:gap-6">
           {activeBanners.slice(0, 2).map((banner) => (

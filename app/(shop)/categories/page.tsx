@@ -16,7 +16,7 @@ export default function CategoriesPage() {
     }
 
     return (
-        <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-0 w-[calc(100%-2.5rem)] py-12">
+        <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-0 w-[calc(100%-2.5rem)] py-12">
             <div className="flex items-center gap-3 mb-10 pb-6 border-b border-gray-100">
                 <LayoutGrid className="h-8 w-8 text-blue-600" />
                 <h1 className="text-3xl font-black text-gray-900 tracking-tight">Bütün Kateqoriyalar</h1>
@@ -29,11 +29,11 @@ export default function CategoriesPage() {
                             <h2 className="text-xl font-black">{category.name}</h2>
                             <ChevronRight className="h-5 w-5 text-gray-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
                         </Link>
-                        
+
                         <div className="space-y-3">
                             {category.subCategories?.map((sub) => (
-                                <Link 
-                                    key={sub.id} 
+                                <Link
+                                    key={sub.id}
                                     href={`/shop?category=${sub.slug}`}
                                     className="flex items-center justify-between text-gray-500 hover:text-blue-600 text-[14px] font-medium transition-colors"
                                 >

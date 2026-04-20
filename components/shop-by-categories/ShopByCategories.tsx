@@ -15,7 +15,7 @@ const ShopByCategories = async () => {
       aria-labelledby="shop-by-categories-heading"
       className="w-full bg-white py-10"
     >
-      <div className="max-w-[1450px] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
+      <div className="max-w-[1650px] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
         {/* Section header */}
         <div className="flex items-center justify-between mb-2 pb-4 border-b border-gray-100">
           <h2

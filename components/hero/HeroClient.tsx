@@ -24,7 +24,7 @@ const HeroClient = ({ banners }: HeroClientProps) => {
 
   return (
     <section className="w-full bg-white pb-10">
-      <div className="max-w-[1450px] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
+      <div className="max-w-[1450px] mx-auto ">
         <div className="flex flex-col relative lg:grid lg:grid-cols-[256px_1fr] gap-6">
           {/* Column 1: Vertical Sidebar (Desktop only) */}
           <div className="hidden lg:block">
@@ -39,7 +39,7 @@ const HeroClient = ({ banners }: HeroClientProps) => {
             </div>
 
             {/* Main Hero */}
-            <div className="h-[320px] md:h-[442px] lg:flex-1 lg:h-full relative">
+            <div className="h-full lg:flex-1 lg:h-full relative">
               {mainBanner && <BannerItem banner={mainBanner} />}
             </div>
           </div>

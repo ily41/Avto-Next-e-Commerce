@@ -16,7 +16,7 @@ const MonthlyDealsSection = async () => {
 
   return (
     <section className="w-full bg-white py-14">
-      <div className="max-w-[1450px] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
+      <div className="max-w-[1650px] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
         <MonthlyDealsClient hotDeals={hotDeals} featuredItems={featuredItems} />
       </div>
     </section>

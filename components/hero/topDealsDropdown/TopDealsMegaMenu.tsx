@@ -32,14 +32,14 @@ const TopDealsMegaMenu = ({ isOpen, setHoveredLink }: TopDealsMegaMenuProps) => 
             {/* Left Side: Shop By Categories Circles */}
             <div className="w-[50%] p-8">
                 <h3 className="text-center text-[16px] font-semibold text-gray-900 mb-8">Kateqoriyalar</h3>
-                <div className="grid grid-cols-4 gap-y-5">
+                <div className="grid grid-cols-4 gap-y-5 ">
                     {displayCategories.map((category) => (
                         <Link
                             key={category.id}
                             href={`shop?category=${category.slug}`}
                             className="group flex flex-col items-center gap-3"
                         >
-                            <div className="w-24 h-24 rounded-full border-2 border-gray-100 flex items-center justify-center p-4 transition-all duration-300 group-hover:border-blue-600 group-hover:shadow-md bg-white overflow-hidden">
+                            <div className="w-16 h-16 lg:w-24 lg:h-24 rounded-full border-2 border-gray-100 flex items-center justify-center p-4 transition-all duration-300 group-hover:border-blue-600 group-hover:shadow-md bg-white overflow-hidden">
                                 {category.imageUrl ? (
                                     <img
                                         src={fullUrl(category.imageUrl)}
@@ -50,7 +50,7 @@ const TopDealsMegaMenu = ({ isOpen, setHoveredLink }: TopDealsMegaMenuProps) => 
                                     <div className="w-10 h-10 bg-gray-100 rounded-full" />
                                 )}
                             </div>
-                            <span className="text-[13px] font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
+                            <span className="text-[11px] text-center font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
                                 {category.name}
                             </span>
                         </Link>

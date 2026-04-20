@@ -41,7 +41,7 @@ const PrivacyPolicy = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#f8f9fa] py-8 md:py-12 px-4 sm:px-6 lg:px-8">
       {/* Breadcrumb */}
       <nav className="max-w-4xl mx-auto mb-8 flex items-center text-sm text-gray-500 font-medium">
         <Link href="/" className="hover:text-blue-600 transition-colors">Ana Səhifə</Link>
@@ -52,7 +52,7 @@ const PrivacyPolicy = () => {
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           {/* Header */}
-          <div className="bg-[#007aff] px-8 py-10 text-white relative overflow-hidden">
+          <div className="bg-[#007aff] px-6 md:px-8 py-8 md:py-10 text-white relative overflow-hidden">
             <div className="relative z-10">
               <div className="bg-white/20 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-md">
                 <IconShieldCheck size={32} />
@@ -66,7 +66,7 @@ const PrivacyPolicy = () => {
           </div>
 
           {/* Content */}
-          <div className="p-8 lg:p-12">
+          <div className="p-6 md:p-12">
             <div className="prose prose-blue max-w-none">
               <p className="text-gray-600 leading-relaxed text-lg mb-10">
                 Sizin məxfiliyiniz bizim üçün çox vacibdir. Aşağıda şəxsi məlumatlarınızın toplanması, istifadəsi və qorunması haqqında ətraflı məlumat ilə tanış ola bilərsiniz.
@@ -115,7 +115,7 @@ const PrivacyPolicy = () => {
         </div>
 
         {/* Support Section */}
-        <div className="mt-12 bg-white rounded-2xl p-8 border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+        <div className="mt-8 md:mt-12 bg-white rounded-2xl p-6 md:p-8 border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
           <div>
             <h3 className="text-xl font-bold text-gray-900 mb-1">Suallarınız var?</h3>
             <p className="text-gray-500 font-medium">Dəstək komandamız sizə kömək etməyə hazırdır.</p>

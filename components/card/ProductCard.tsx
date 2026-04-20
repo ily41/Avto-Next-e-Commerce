@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { fullUrl } from "@/lib/api/url-utils";
 import { useCart } from "@/hooks/useCart";
-import { useGetInstallmentConfigurationQuery, useGetInstallmentOptionsQuery } from "@/lib/store/installment/installmentApiSlice";
+
 
 interface ProductCardProps {
     product: Product;
@@ -32,19 +32,17 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
         setLocalIsFavorite(product.isFavorite);
     }, [product.isFavorite]);
 
-    // Installment logic
-    const { data: instConfig } = useGetInstallmentConfigurationQuery();
+    // Hardcoded credit options
+    const ALL_MONTHS = [3, 6, 12, 18];
     const productPrice = product.discountedPrice || product.price;
-    const { data: instOptions } = useGetInstallmentOptionsQuery(
-        { amount: productPrice },
-        { skip: !instConfig?.isEnabled || productPrice < instConfig?.minimumAmount }
-    );
 
-    const maxPeriod = instOptions
-        ? Math.max(...instOptions.filter((o) => o.isActive).map((o) => o.installmentPeriod), 0)
-        : 0;
+    // Capping based on monthly payment at 18 months:
+    // price / 18 < 15 AZN/month → cap at 12 months
+    // price / 18 >= 15 AZN/month → use 18 months
+    const maxPeriod: number = (productPrice / 18) >= 15 ? 18 : 12;
 
-    const monthlyPayment = maxPeriod > 0 ? (productPrice / maxPeriod).toFixed(2) : null;
+    const availableMonths = ALL_MONTHS.filter(m => m <= maxPeriod);
+    const monthlyPayment = productPrice >= 15 ? (productPrice / maxPeriod).toFixed(2) : null;
 
 
     const handleFavoriteClick = async (e: React.MouseEvent) => {
@@ -161,7 +159,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                 </div>
 
                 {/* Installment Info */}
-                {monthlyPayment && maxPeriod > 0 && (
+                {monthlyPayment && productPrice >= 15 && (
                     <div className="flex flex-col gap-1.5">
                         {/* Primary installment pill */}
                         <div className="inline-flex items-center self-start">
@@ -175,12 +173,12 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                         
                         {/* List of all available months */}
                         <div className="flex flex-wrap gap-1">
-                            {instOptions?.filter(o => o.isActive).sort((a, b) => a.installmentPeriod - b.installmentPeriod).map((opt) => (
+                            {availableMonths.map((m) => (
                                 <span 
-                                    key={opt.id}
+                                    key={m}
                                     className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 border border-gray-100 uppercase"
                                 >
-                                    {opt.installmentPeriod} ay
+                                    {m} ay
                                 </span>
                             ))}
                         </div>

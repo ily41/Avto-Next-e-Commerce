@@ -10,18 +10,18 @@ import { toast } from "sonner";
 import { getRoleFromToken } from "@/lib/utils";
 
 const LOCAL = {
-  home: "Home",
-  account: "My account",
-  login: "Login",
-  register: "Register",
-  usernameEmail: "Username or email address",
-  password: "Password",
-  rememberMe: "Remember me",
-  logIn: "Log In",
-  lostPassword: "Lost your password?",
-  username: "Username",
-  email: "Email address",
-  disclosure: "Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our Privacy policy.",
+  home: "Ana səhifə",
+  account: "Hesabım",
+  login: "Giriş",
+  register: "Qeydiyyat",
+  usernameEmail: "İstifadəçi adı və ya e-poçt ünvanı",
+  password: "Şifrə",
+  rememberMe: "Məni xatırla",
+  logIn: "Daxil ol",
+  lostPassword: "Şifrənizi unutmusunuz?",
+  username: "İstifadəçi adı",
+  email: "E-poçt ünvanı",
+  disclosure: "Şəxsi məlumatlarınız bu veb-saytdakı təcrübənizi dəstəkləmək, hesabınıza girişi idarə etmək və Məxfilik siyasətimizdə təsvir olunan digər məqsədlər üçün istifadə ediləcəkdir.",
 };
 
 export default function AccountClient() {
@@ -50,12 +50,12 @@ export default function AccountClient() {
       Cookies.set("token", token, { expires: 7, path: '/' });
       window.dispatchEvent(new Event("auth-change"));
       const role = getRoleFromToken(token);
-      toast.success("Login successful!");
+      toast.success("Giriş uğurludur!");
       router.refresh();
       if (role === "Admin" || role === "0") router.push("/dashboard");
       else router.push("/");
     } catch (err: any) {
-      toast.error(err.data?.message || "Invalid credentials");
+      toast.error(err.data?.message || "Məlumatlar yanlışdır");
     }
   };
 
@@ -70,11 +70,11 @@ export default function AccountClient() {
         password: regPass,
         confirmPassword: regConfirmPass || regPass, // API requirement
       }).unwrap();
-      toast.success("Account created! Please log in.");
+      toast.success("Hesab yaradıldı! Zəhmət olmasa daxil olun.");
       // Clear reg fields
       setRegEmail(""); setRegPass("");
     } catch (err: any) {
-      toast.error(err.data?.message || "Registration failed");
+      toast.error(err.data?.message || "Qeydiyyat alınmadı");
     }
   };
 
@@ -132,7 +132,7 @@ export default function AccountClient() {
                      disabled={isLoginLoading}
                      className="bg-blue-600 hover:bg-black text-white font-bold py-3 px-10 rounded-md transition-all active:scale-95 disabled:bg-gray-400"
                    >
-                     {isLoginLoading ? "Logging in..." : LOCAL.logIn}
+                     {isLoginLoading ? "Daxil olur..." : LOCAL.logIn}
                    </button>
                    <label className="flex items-center gap-2 cursor-pointer select-none">
                       <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-blue-600" />
@@ -149,24 +149,24 @@ export default function AccountClient() {
           <div className="flex flex-col">
              <h2 className="text-[24px] md:text-[28px] font-bold mb-8">{LOCAL.register}</h2>
              <form onSubmit={handleRegister} className="border border-gray-200 rounded-lg p-6 md:p-10 flex flex-col gap-6 shadow-sm">
-                <div className="grid grid-cols-2 gap-4">
-                   <div className="flex flex-col gap-2">
-                      <label className="text-[13px] font-bold text-gray-700">First Name <span className="text-red-500">*</span></label>
-                      <input type="text" required value={regFirstName} onChange={e => setRegFirstName(e.target.value)} className="w-full h-11 px-4 border border-gray-200 rounded-sm focus:border-blue-500 outline-none" />
-                   </div>
-                   <div className="flex flex-col gap-2">
-                      <label className="text-[13px] font-bold text-gray-700">Last Name <span className="text-red-500">*</span></label>
-                      <input type="text" required value={regLastName} onChange={e => setRegLastName(e.target.value)} className="w-full h-11 px-4 border border-gray-200 rounded-sm focus:border-blue-500 outline-none" />
-                   </div>
-                </div>
+                 <div className="grid grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-2">
+                       <label className="text-[13px] font-bold text-gray-700">Ad <span className="text-red-500">*</span></label>
+                       <input type="text" required value={regFirstName} onChange={e => setRegFirstName(e.target.value)} className="w-full h-11 px-4 border border-gray-200 rounded-sm focus:border-blue-500 outline-none" />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                       <label className="text-[13px] font-bold text-gray-700">Soyad <span className="text-red-500">*</span></label>
+                       <input type="text" required value={regLastName} onChange={e => setRegLastName(e.target.value)} className="w-full h-11 px-4 border border-gray-200 rounded-sm focus:border-blue-500 outline-none" />
+                    </div>
+                 </div>
                 <div className="flex flex-col gap-2">
                    <label className="text-[13px] font-bold text-gray-700">{LOCAL.email} <span className="text-red-500">*</span></label>
                    <input type="email" required value={regEmail} onChange={e => setRegEmail(e.target.value)} className="w-full h-11 px-4 border border-gray-200 rounded-sm focus:border-blue-500 outline-none" />
                 </div>
-                <div className="flex flex-col gap-2">
-                   <label className="text-[13px] font-bold text-gray-700">Phone <span className="text-red-500">*</span></label>
-                   <input type="tel" required value={regPhone} onChange={e => setRegPhone(e.target.value)} className="w-full h-11 px-4 border border-gray-200 rounded-sm focus:border-blue-500 outline-none" />
-                </div>
+                 <div className="flex flex-col gap-2">
+                    <label className="text-[13px] font-bold text-gray-700">Telefon <span className="text-red-500">*</span></label>
+                    <input type="tel" required value={regPhone} onChange={e => setRegPhone(e.target.value)} className="w-full h-11 px-4 border border-gray-200 rounded-sm focus:border-blue-500 outline-none" />
+                 </div>
                 <div className="flex flex-col gap-2 relative">
                    <label className="text-[13px] font-bold text-gray-700">{LOCAL.password} <span className="text-red-500">*</span></label>
                    <div className="relative">
@@ -176,18 +176,17 @@ export default function AccountClient() {
                       </button>
                    </div>
                 </div>
-                
-                <p className="text-[12px] md:text-[13px] leading-relaxed text-gray-500 mt-2">
-                   {LOCAL.disclosure} <Link href="/privacy" className="text-blue-600 hover:text-black">Privacy policy</Link>.
-                </p>
+                                <p className="text-[12px] md:text-[13px] leading-relaxed text-gray-500 mt-2">
+                    {LOCAL.disclosure} <Link href="/privacy-policy" className="text-blue-600 hover:text-black">Məxfilik siyasəti</Link>.
+                 </p>
 
-                <button 
-                  type="submit" 
-                  disabled={isRegLoading}
-                  className="bg-blue-600 hover:bg-black text-white font-bold py-3 px-10 rounded-md transition-all active:scale-95 disabled:bg-gray-400 w-fit"
-                >
-                   {isRegLoading ? "Registering..." : LOCAL.register}
-                </button>
+                 <button 
+                   type="submit" 
+                   disabled={isRegLoading}
+                   className="bg-blue-600 hover:bg-black text-white font-bold py-3 px-10 rounded-md transition-all active:scale-95 disabled:bg-gray-400 w-fit"
+                 >
+                    {isRegLoading ? "Qeydiyyatdan keçir..." : LOCAL.register}
+                 </button>
              </form>
           </div>
 

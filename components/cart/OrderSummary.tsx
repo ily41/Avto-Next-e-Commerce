@@ -131,7 +131,7 @@ export function OrderSummary({
 
           {instConfig?.isEnabled && finalAmount >= instConfig.minimumAmount && (
             <Button
-              className="w-full font-black py-6 rounded-xl border-2 border-blue-600 text-blue-700 bg-white hover:bg-blue-600 hover:text-white active:scale-[0.98] transition-all duration-300 shadow-sm flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
+              className="w-full font-black cursor-pointer  py-6 rounded-xl border-2 border-blue-600 text-blue-700 bg-white hover:bg-blue-600 hover:text-white active:scale-[0.98] transition-all duration-300 shadow-sm flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
               onClick={() => {
                 setIsInstallmentOpen(true);
               }}
@@ -143,13 +143,13 @@ export function OrderSummary({
 
           {finalAmount > 100 && (
             <Button
-              className="w-full font-black py-6 rounded-xl border-2 border-green-600 text-green-700 bg-white hover:bg-green-600 hover:text-white active:scale-[0.98] transition-all duration-300 shadow-sm flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
+              className="w-full cursor-pointer font-black py-6 rounded-xl border-2 border-green-600 text-green-700 bg-white hover:bg-green-600 hover:text-white active:scale-[0.98] transition-all duration-300 shadow-sm flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
               onClick={() => {
                 setIsCreditRequestOpen(true);
               }}
             >
               <Fingerprint className="h-5 w-5" />
-              <span>Tək şəxsiyyət vəsiqəsi ilə ödə</span>
+              <span>Kreditlə ödə</span>
             </Button>
           )}
         </div>
