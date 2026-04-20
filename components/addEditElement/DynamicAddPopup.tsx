@@ -159,7 +159,7 @@ export function DynamicAddPopup({
                                                         <SelectTrigger>
                                                             <SelectValue placeholder={fieldConfig.placeholder || "Seçin"} />
                                                         </SelectTrigger>
-                                                        <SelectContent>
+                                                        <SelectContent className="z-[200]">
                                                             {fieldConfig.options?.map(opt => (
                                                                 <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
                                                             ))}
@@ -170,7 +170,7 @@ export function DynamicAddPopup({
                                             case "combobox":
                                                 const selectedOpt = fieldConfig.options?.find(o => o.value === field.value);
                                                 content = (
-                                                    <Popover>
+                                                    <Popover modal={false}>
                                                         <PopoverTrigger asChild>
                                                             <FormControl>
                                                                 <Button variant="outline" role="combobox" className={cn("w-full justify-between font-normal", !field.value && "text-muted-foreground")}>
@@ -179,7 +179,7 @@ export function DynamicAddPopup({
                                                                 </Button>
                                                             </FormControl>
                                                         </PopoverTrigger>
-                                                        <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                                                        <PopoverContent className="w-[--radix-popover-trigger-width] p-0 z-[200]" align="start">
                                                             <Command>
                                                                 <CommandInput placeholder="Axtar..." />
                                                                 <CommandList>
@@ -235,7 +235,7 @@ export function DynamicAddPopup({
                                                                             const newFiles = [...currentFiles];
                                                                             newFiles.splice(i, 1);
                                                                             field.onChange(newFiles);
-                                                                            
+
                                                                             const newPreviews = [...multiPreview];
                                                                             URL.revokeObjectURL(newPreviews[i]);
                                                                             newPreviews.splice(i, 1);
@@ -249,25 +249,25 @@ export function DynamicAddPopup({
                                                             ))}
                                                         </div>
                                                         <FormControl>
-                                                            <Input 
-                                                                type="file" 
-                                                                accept="image/*" 
-                                                                multiple 
+                                                            <Input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                multiple
                                                                 onChange={(e) => {
                                                                     const files = Array.from(e.target.files || []);
                                                                     if (files.length > 0) {
                                                                         const combinedFiles = [...currentFiles, ...files];
                                                                         field.onChange(combinedFiles);
-                                                                        
+
                                                                         const newPreviews = files.map(f => URL.createObjectURL(f));
-                                                                        setImagePreviews(p => ({ 
-                                                                            ...p, 
-                                                                            [fieldConfig.name]: [...multiPreview, ...newPreviews] 
+                                                                        setImagePreviews(p => ({
+                                                                            ...p,
+                                                                            [fieldConfig.name]: [...multiPreview, ...newPreviews]
                                                                         }));
                                                                     }
                                                                     // Reset input value so it can trigger onChange again for the same file if needed
                                                                     e.target.value = "";
-                                                                }} 
+                                                                }}
                                                             />
                                                         </FormControl>
                                                     </div>
