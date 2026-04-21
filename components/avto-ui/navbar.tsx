@@ -84,7 +84,7 @@ export function Navbar() {
 
             {/* 3. Mobile Header Sub-info */}
             <div className="w-full bg-white py-2 px-4 text-center lg:hidden text-[13px] font-medium text-gray-700 border-b border-gray-100">
-                100 AZN-dan yuxarı sifarişlərdə Pulsuz Çatdırılma!
+                Bakı və Sumqayıtda quraşdırılma xidməti — cəmi 150 AZN 
             </div>
 
             {/* 4. Main Navbar Row */}
