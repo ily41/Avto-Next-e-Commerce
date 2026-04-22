@@ -26,13 +26,13 @@ export function Navbar() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { isAuth } = useAuth();
-    
+
     // State
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileSearchActive, setIsMobileSearchActive] = useState(false);
     const [isSearchFocused, setIsSearchFocused] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    
+
     // Data
     const { data: favorites } = useGetFavoritesQuery(
         { page: 1, pageSize: 1 },
@@ -71,7 +71,7 @@ export function Navbar() {
     return (
         <header className="sticky top-0 z-40 w-full bg-white flex flex-col items-center shadow-sm">
             {/* 1. Mobile Search Overlay (Fullscreen when header icon is clicked) */}
-            <MobileSearchOverlay 
+            <MobileSearchOverlay
                 isActive={isMobileSearchActive}
                 searchTerm={searchTerm}
                 onClose={() => setIsMobileSearchActive(false)}
@@ -84,7 +84,7 @@ export function Navbar() {
 
             {/* 3. Mobile Header Sub-info */}
             <div className="w-full bg-white py-2 px-4 text-center lg:hidden text-[13px] font-medium text-gray-700 border-b border-gray-100">
-                Bakı və Sumqayıtda quraşdırılma xidməti — cəmi 150 AZN 
+                200 manatdan yuxarı alış-verişə çatdırılma pulsuz
             </div>
 
             {/* 4. Main Navbar Row */}
@@ -105,28 +105,28 @@ export function Navbar() {
                         {/* Logo */}
                         <div className="flex items-center">
                             <Link href="/" className="flex items-center select-none active:scale-95 transition-transform">
-                                <img 
-                                  src="/logos/logo3.svg" 
-                                  alt="Avto027 Logo" 
-                                  className="h-[40px] lg:h-[50px] w-[100px] lg:w-[150px] object-cover mix-blend-multiply" 
+                                <img
+                                    src="/logos/logo3.svg"
+                                    alt="Avto027 Logo"
+                                    className="h-[40px] lg:h-[50px] w-[100px] lg:w-[150px] object-cover mix-blend-multiply"
                                 />
                             </Link>
                         </div>
                     </div>
 
                     {/* Desktop Integrated Search */}
-                    <DesktopSearch 
-                       searchTerm={searchTerm}
-                       onSearchChange={setSearchTerm}
-                       onSearchSubmit={handleSearchSubmit}
-                       isFocused={isSearchFocused}
-                       onFocus={handleSearchFocus}
-                       onBlur={handleSearchBlur}
-                       onDropdownClose={handleDropdownClose}
+                    <DesktopSearch
+                        searchTerm={searchTerm}
+                        onSearchChange={setSearchTerm}
+                        onSearchSubmit={handleSearchSubmit}
+                        isFocused={isSearchFocused}
+                        onFocus={handleSearchFocus}
+                        onBlur={handleSearchBlur}
+                        onDropdownClose={handleDropdownClose}
                     />
 
                     {/* Nav Actions (Search Mob, Account, Favs, Cart) */}
-                    <NavActions 
+                    <NavActions
                         favoritesCount={favoritesCount}
                         onMobileSearchOpen={() => setIsMobileSearchActive(true)}
                     />
@@ -134,7 +134,7 @@ export function Navbar() {
             </div>
 
             {/* 5. Mobile Side Menu */}
-            <MobileMenu 
+            <MobileMenu
                 isOpen={isMenuOpen}
                 onClose={() => setIsMenuOpen(false)}
                 searchTerm={searchTerm}

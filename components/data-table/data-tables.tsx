@@ -114,12 +114,13 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     onPaginationChange: onPaginationChange,
+    paginateExpandedRows: false,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
-      ...(pagination && { pagination }),
+      pagination: pagination ?? { pageIndex: 0, pageSize: 100 },
     },
   })
 

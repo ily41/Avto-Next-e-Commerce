@@ -370,20 +370,20 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, packageWeight, wal
         </div>
 
         {/* ── Footer ── */}
-        <div className="px-8 py-6 border-t border-gray-100 bg-gray-50/60">
-          <div className="flex items-center justify-between mb-4">
-            <div>
+        <div className="px-5 sm:px-8 py-6 border-t border-gray-100 bg-gray-50/60">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-4">
+            <div className="flex flex-row sm:flex-col justify-between items-center sm:items-start border-b sm:border-0 pb-4 sm:pb-0 border-gray-100">
               <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Ödəniləcək məbləğ</p>
               <p className="text-2xl font-black text-gray-900 tracking-tighter">
                 ₼{walletToUse > 0 ? remainingAfterWallet.toFixed(2) : totalAmount.toFixed(2)}
               </p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-col xs:flex-row gap-3 w-full sm:w-auto">
               <Button
                 type="button"
                 variant="outline"
                 onClick={onClose}
-                className="rounded-xl px-6"
+                className="rounded-xl px-6 h-12 sm:h-10 order-2 xs:order-1"
               >
                 Ləğv et
               </Button>
@@ -391,14 +391,14 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, packageWeight, wal
                 type="submit"
                 form="checkout-form"
                 disabled={isLoading}
-                className="rounded-xl px-8 bg-blue-600 hover:bg-blue-700 text-white font-black"
+                className="rounded-xl px-8 h-12 sm:h-10 bg-blue-600 hover:bg-blue-700 text-white font-black order-1 xs:order-2 flex-1 sm:flex-none"
               >
                 {isLoading ? (
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center justify-center gap-2">
                     <Loader2 className="h-4 w-4 animate-spin" /> Emal edilir...
                   </span>
                 ) : (
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center justify-center gap-2">
                     <CreditCard className="h-4 w-4" /> Ödənişə keç
                   </span>
                 )}

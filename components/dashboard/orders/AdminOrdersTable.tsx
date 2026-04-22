@@ -44,19 +44,26 @@ import {
 
 // ── Status Enums & Labels ──────────────────────────────────────────────────────
 const STATUS_ENUMS = [
-  { value: 0, label: "Gözləmədə",       color: "bg-zinc-500  text-white    border-transparent" },
-  { value: 1, label: "Ödəniş Başlayıb", color: "bg-blue-400    text-white    border-transparent" },
-  { value: 2, label: "Ödənilib",        color: "bg-blue-600   text-white       border-transparent" },
-  { value: 3, label: "Hazırlanır",      color: "bg-indigo-500    text-white    border-transparent" },
-  { value: 4, label: "Göndərilib",      color: "bg-amber-500   text-white   border-transparent" },
-  { value: 5, label: "Çatdırılıb",      color: "bg-emerald-500 text-white border-transparent" },
-  { value: 6, label: "Ləğv Edilib",     color: "bg-rose-500    text-white    border-transparent" },
-  { value: 7, label: "Geri Ödənilib",   color: "bg-zinc-400    text-white    border-transparent" },
-  { value: 8, label: "Uğursuz",         color: "bg-red-600    text-white    border-transparent" },
+  { value: 0, label: "Gözləmədə",       aliases: ["pending", "waiting"], color: "bg-zinc-500  text-white    border-transparent" },
+  { value: 1, label: "Ödəniş Başlayıb", aliases: ["paymentstarted", "initiated"], color: "bg-blue-400    text-white    border-transparent" },
+  { value: 2, label: "Ödənilib",        aliases: ["paid", "completed"], color: "bg-blue-600   text-white       border-transparent" },
+  { value: 3, label: "Hazırlanır",      aliases: ["processing", "preparing"], color: "bg-indigo-500    text-white    border-transparent" },
+  { value: 4, label: "Göndərilib",      aliases: ["shipped", "sent"], color: "bg-amber-500   text-white   border-transparent" },
+  { value: 5, label: "Çatdırılıb",      aliases: ["delivered"], color: "bg-emerald-500 text-white border-transparent" },
+  { value: 6, label: "Ləğv Edilib",     aliases: ["canceled", "cancelled"], color: "bg-rose-500    text-white    border-transparent" },
+  { value: 7, label: "Geri Ödənilib",   aliases: ["refunded"], color: "bg-zinc-400    text-white    border-transparent" },
+  { value: 8, label: "Uğursuz",         aliases: ["failed"], color: "bg-red-600    text-white    border-transparent" },
 ];
 
 const getStatusById = (id: number) => STATUS_ENUMS.find(s => s.value === id) || STATUS_ENUMS[0];
-const getStatusByName = (name: string) => STATUS_ENUMS.find(s => s.label.toLowerCase() === name.toLowerCase()) || STATUS_ENUMS[0];
+const getStatusByName = (name: string) => {
+  if (!name) return STATUS_ENUMS[0];
+  const normalized = name.toLowerCase().trim();
+  return STATUS_ENUMS.find(s => 
+    s.label.toLowerCase() === normalized || 
+    s.aliases.includes(normalized)
+  ) || STATUS_ENUMS[0];
+};
 
 // ── Component ──────────────────────────────────────────────────────────────────
 export function AdminOrdersTable() {

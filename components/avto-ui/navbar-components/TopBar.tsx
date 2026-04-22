@@ -27,7 +27,7 @@ export function TopBar() {
                     ))}
                 </div>
                 <div className="font-medium text-gray-700">
-                    Bakı və Sumqayıtda quraşdırılma xidməti — cəmi 150 AZN 
+                    200 manatdan yuxarı alış-verişə çatdırılma pulsuz
                 </div>
             </div>
         </div>
