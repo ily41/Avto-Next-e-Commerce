@@ -31,11 +31,11 @@ const MiniProductCard = ({ product }: MiniProductCardProps) => {
                 </h4>
                 <div className="mt-auto flex items-center gap-2">
                     <span className="text-[16px] font-bold text-gray-900">
-                        ${product.discountedPrice || product.price}
+                        {product.discountedPrice || product.price} AZN
                     </span>
                     {discount > 0 && (
                         <span className="text-[13px] text-gray-400 line-through">
-                            ${product.price}
+                            {product.price} AZN
                         </span>
                     )}
                 </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useGetCategoriesQuery } from "@/lib/store/categories/apislice";
-import { useSearchBrandsAdminQuery } from "@/lib/store/brands/apislice";
+import { useGetBrandsQuery } from "@/lib/store/brands/apislice";
 import { useGetFiltersQuery } from "@/lib/store/filters/apislice";
 import { IconCheck, IconChevronDown, IconChevronRight } from "@tabler/icons-react";
 
@@ -20,7 +20,7 @@ export default function FilterSidebar({
    onFilterChange
 }: FilterSidebarProps) {
    const { data: categories } = useGetCategoriesQuery();
-   const { data: brandsData } = useSearchBrandsAdminQuery({ page: 1, pageSize: 50 });
+   const { data: brandsData } = useGetBrandsQuery({ page: 1, pageSize: 100 });
    const { data: customFilters } = useGetFiltersQuery();
 
    const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});

@@ -9,7 +9,7 @@ import { InstallmentModal } from "@/components/checkout/InstallmentModal";
 import { CreditRequestModal } from "@/components/checkout/CreditRequestModal";
 import { useGetWalletQuery } from "@/lib/store/wallet/walletApiSlice";
 import { useGetCartMinimumAmountQuery } from "@/lib/store/settings/apislice";
-import { useGetInstallmentConfigurationQuery } from "@/lib/store/installment/installmentApiSlice";
+import { calculateBestInstallment } from "@/lib/installmentUtils";
 import { toast } from "sonner";
 import { ShoppingCart, Lock, AlertCircle, Fingerprint } from "lucide-react";
 import { IconCreditCard } from "@tabler/icons-react";
@@ -40,9 +40,6 @@ export function OrderSummary({
   // Minimum order amount check
   const { data: minAmountData } = useGetCartMinimumAmountQuery();
   const minAmount = minAmountData?.minimumAmount ?? 0;
-
-  // Installment configuration check
-  const { data: instConfig } = useGetInstallmentConfigurationQuery();
 
   // Pull wallet balance for authenticated users so the modal can offer wallet usage
   const { data: wallet } = useGetWalletQuery(undefined, { skip: !isAuth });
@@ -133,7 +130,7 @@ export function OrderSummary({
             Sifarişi tamamlayın
           </Button>
 
-          {instConfig?.isEnabled && finalAmount >= instConfig.minimumAmount && (
+          {!!calculateBestInstallment(finalAmount) && (
             <Button
               className="w-full font-black cursor-pointer  py-6 rounded-xl border-2 border-blue-600 text-blue-700 bg-white hover:bg-blue-600 hover:text-white active:scale-[0.98] transition-all duration-300 shadow-sm flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
               onClick={() => {
@@ -162,7 +159,7 @@ export function OrderSummary({
           SSL ilə qorunan ödəniş
         </p>
 
-        {instConfig?.isEnabled && finalAmount >= instConfig.minimumAmount && (
+        {!!calculateBestInstallment(finalAmount) && (
           <InstallmentCalculator totalAmount={finalAmount} />
         )}
       </div>

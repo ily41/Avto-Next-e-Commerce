@@ -124,11 +124,11 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
             )}
           </button>
         </div>
-
+{/* 
         <button className="w-full h-12 bg-black hover:bg-blue-600 text-white font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_12px_24px_rgba(0,0,0,0.12)] group cursor-pointer">
           <IconCreditCard size={20} className="transition-transform group-hover:scale-110" />
           <span>İndi al</span>
-        </button>
+        </button> */}
 
         {maxPeriod > 0 && (
           <button 
