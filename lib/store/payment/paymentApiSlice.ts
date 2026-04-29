@@ -3,18 +3,19 @@
 import { api } from "../api";
 
 export interface PaymentInitiateRequest {
+  shippingMethod: "Azerpost" | "Expargo" | "FreeDelivery";
   customerName: string;
-  customerEmail: string;
+  customerEmail?: string;
   customerPhone: string;
   shippingAddress: string;
-  notes?: string;
-  deliveryPostCode: string;
-  userPassport: string;
+  notes?: string | null;
+  deliveryPostCode?: string;
+  userPassport?: string;
   packageWeight?: number;
   fragile?: boolean;
   /** 0 = post_office_lcl, 1 = home_delivery_lcl */
-  deliveryType: 0 | 1;
-  walletAmountToUse?: number;
+  deliveryType?: 0 | 1;
+  walletAmountToUse?: number | null;
   installmentOptionId?: string | null;
 }
 

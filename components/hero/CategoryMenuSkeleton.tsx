@@ -9,7 +9,7 @@ const widths = ["w-28", "w-24", "w-32", "w-20", "w-28", "w-24", "w-20", "w-32", 
 
 const CategoryMenuSkeleton = () => {
     return (
-        <div className="w-full bg-white border border-blue-100 rounded-lg mt-2 overflow-hidden">
+        <div className="w-full h-full bg-white border border-blue-100 rounded-lg mt-2 overflow-hidden">
             {/* Header — mirrors real blue-600 header bar */}
             <div className="bg-blue-600/10 px-5 py-[13.5px] flex items-center rounded-t-lg">
                 <SkeletonBox className="h-[18px] w-[18px] mr-3 bg-blue-200" />

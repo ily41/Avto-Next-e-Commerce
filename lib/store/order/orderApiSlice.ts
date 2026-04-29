@@ -46,6 +46,8 @@ export interface Order {
   originalAmount: number;
   walletAmountUsed: number;
   // Delivery fields
+  shippingMethod: string;
+  deliveryFee: number;
   deliveryPostCode?: string;
   userPassport?: string;
   packageWeight?: number;

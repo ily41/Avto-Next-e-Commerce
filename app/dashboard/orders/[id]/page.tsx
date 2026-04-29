@@ -219,6 +219,12 @@ export default function AdminOrderDetailPage() {
                     <span className="font-black">−₼{order.discountAmount.toFixed(2)}</span>
                   </div>
                 )}
+                <div className="flex justify-between w-full max-w-[240px] text-muted-foreground font-bold">
+                  <span>Shipping ({order.shippingMethod === "Azerpost" ? "Azərpoçt" : order.shippingMethod})</span>
+                  <span className="font-black">
+                    {order.shippingMethod === "Azerpost" && order.deliveryFee === 0 ? "Hesablanır" : `+₼${order.deliveryFee.toFixed(2)}`}
+                  </span>
+                </div>
                 <div className="flex justify-between w-full max-w-[240px] text-xl font-black pt-6 border-t mt-3">
                   <span>Total</span>
                   <span className="tracking-tighter">₼{order.totalAmount.toFixed(2)}</span>
@@ -243,10 +249,17 @@ export default function AdminOrderDetailPage() {
                 </div>
                 <div className="space-y-6">
                   <DetailItem 
-                    label="Delivery Type" 
-                    value={order.deliveryType === 0 ? "Post Office" : "Home Delivery"} 
+                    label="Shipping Method" 
+                    value={order.shippingMethod === "Azerpost" ? "Azərpoçt" : order.shippingMethod} 
                     icon={<Truck className="text-gray-400" />} 
                   />
+                  {order.shippingMethod === "Azerpost" && (
+                    <DetailItem 
+                      label="Delivery Type" 
+                      value={order.deliveryType === 0 ? "Post Office" : "Home Delivery"} 
+                      icon={<Truck className="text-gray-400" />} 
+                    />
+                  )}
                   <DetailItem label="Package Weight" value={`${order.packageWeight} kg`} icon={<Weight className="text-gray-400" />} />
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-gray-500">

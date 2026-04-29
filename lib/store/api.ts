@@ -28,7 +28,7 @@ export const api = createApi({
     baseQuery: baseQueryWithLoggedOut,
 
 
-    tagTypes: ["Product", "Brand", "Category", "ProductSpecification", "Banner", "User", "Filter", "PromoCode", "Favorite", "Cart", "Payment", "Wallet", "Order", "Statistics", "Settings", "InstallmentOptions", "CreditRequests"],
+    tagTypes: ["Product", "Brand", "Category", "ProductSpecification", "Banner", "User", "Filter", "PromoCode", "Favorite", "Cart", "Payment", "Wallet", "Order", "Statistics", "Settings", "InstallmentOptions", "CreditRequests", "ExpargoRules"],
     // We leave endpoints empty here and inject them from other files
     endpoints: () => ({}),
 })

@@ -65,13 +65,13 @@ export default function ProductGallery({ images, primaryUrl }: ProductGalleryPro
       </div>
 
       {/* Main Image Slider Area */}
-      <div className="flex-1 order-1 md:order-2 relative group">
+      <div className="flex-1 order-1 md:order-2 relative group min-w-0">
         {/* Navigation Arrows (Visible on Hover/Touch) */}
         <button 
           onClick={scrollPrev}
           disabled={activeIndex === 0}
-          className={`absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md shadow-lg flex items-center justify-center transition-all duration-300 ${
-            activeIndex === 0 ? "opacity-0 scale-90 pointer-events-none" : "hover:bg-blue-600 hover:text-white group-hover:opacity-100 lg:opacity-0"
+          className={`absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-blue-600 text-white shadow-lg flex items-center justify-center transition-all duration-300 ${
+            activeIndex === 0 ? "opacity-0 scale-90 pointer-events-none" : "hover:bg-black group-hover:opacity-100 lg:opacity-0"
           }`}
         >
           <IconChevronLeft size={20} />
@@ -80,8 +80,8 @@ export default function ProductGallery({ images, primaryUrl }: ProductGalleryPro
         <button 
           onClick={scrollNext}
           disabled={activeIndex === images.length - 1}
-          className={`absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md shadow-lg flex items-center justify-center transition-all duration-300 ${
-            activeIndex === images.length - 1 ? "opacity-0 scale-90 pointer-events-none" : "hover:bg-blue-600 hover:text-white group-hover:opacity-100 lg:opacity-0"
+          className={`absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-blue-600 text-white shadow-lg flex items-center justify-center transition-all duration-300 ${
+            activeIndex === images.length - 1 ? "opacity-0 scale-90 pointer-events-none" : "hover:bg-black group-hover:opacity-100 lg:opacity-0"
           }`}
         >
           <IconChevronRight size={20} />
@@ -91,7 +91,7 @@ export default function ProductGallery({ images, primaryUrl }: ProductGalleryPro
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar aspect-square bg-[#fcfcfc] rounded-2xl border border-gray-100 shadow-inner"
+          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar aspect-square bg-[#fcfcfc] rounded-2xl border border-gray-100 shadow-inner overflow-hidden"
         >
           {images.map((img, idx) => (
             <div 
@@ -100,7 +100,7 @@ export default function ProductGallery({ images, primaryUrl }: ProductGalleryPro
             >
               <img
                 src={fullUrl(img.url || "")}
-                className="max-h-full max-w-full object-contain select-none"
+                className="w-full h-full object-contain select-none"
                 alt={`məhsul şəkli ${idx + 1}`}
                 draggable={false}
               />

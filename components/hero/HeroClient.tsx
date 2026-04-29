@@ -23,23 +23,25 @@ const HeroClient = ({ banners }: HeroClientProps) => {
   }, [banners]);
 
   return (
-    <section className="w-full bg-white pb-10">
-      <div className="max-w-[1450px] mx-auto ">
-        <div className="flex flex-col relative lg:grid lg:grid-cols-[256px_1fr] gap-6">
-          {/* Column 1: Vertical Sidebar (Desktop only) */}
-          <div className="hidden lg:block">
+    <section className="w-full bg-white pb-10 mt-5">
+      {/* Spacing-first responsiveness: padding reduces at smaller breakpoints, mx-auto only at 2xl */}
+      <div className="w-full   2xl:px-0 2xl:max-w-[1450px] 2xl:mx-auto">
+        {/* Height uses clamp so it shrinks proportionally with viewport width */}
+        <div className="flex flex-col relative lg:grid lg:grid-cols-[256px_auto] mb-20 lg:justify-center gap-4 xl:gap-6 lg:[height:clamp(100px,40vw,580px)]">
+          {/* Column 1: Vertical Sidebar (Desktop only) — matches banner height */}
+          <div className="hidden lg:flex lg:flex-col h-full min-h-0 relative z-30">
             <CategoryMenu />
           </div>
 
           {/* Column 2: Header Row + Main Banner */}
-          <div className="flex flex-col lg:h-full">
+          <div className="flex flex-col h-full">
             {/* Desktop Row 1: Nav Links Header */}
             <div className="hidden lg:flex shrink-0 items-center justify-between h-[52px]">
               <NavLinks />
             </div>
 
-            {/* Main Hero */}
-            <div className="h-full lg:flex-1 lg:h-full relative">
+            {/* Main Hero — takes remaining height and follows aspect ratio to avoid empty space */}
+            <div className="flex-1 min-h-0 relative h-full aspect-[1.45/1]">
               {mainBanner && <BannerItem banner={mainBanner} />}
             </div>
           </div>
@@ -48,12 +50,12 @@ const HeroClient = ({ banners }: HeroClientProps) => {
         {/* Bottom Block: Secondary Banners */}
         <div className="w-full mt-6 lg:mt-8">
           {/* Desktop: Grid of 3 */}
-          <div className="hidden lg:grid h-[180px] grid-cols-3 gap-6">
+          <div className="hidden lg:grid grid-cols-3 gap-4 xl:gap-6 [height:clamp(120px,13vw,180px)]">
             {secondaryBanners.slice(0, 3).map((banner) => (
-              <div key={banner.id} className="h-full relative">
-                <BannerItem banner={banner} variant="secondary" />
-              </div>
-            ))}
+                <div key={banner.id} className="h-full relative">
+                  <BannerItem banner={banner} variant="secondary" />
+                </div>
+              ))}
           </div>
 
           {/* Tablet: Horizontal scroll */}

@@ -4,12 +4,23 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useInitiatePaymentMutation } from "@/lib/store/payment/paymentApiSlice";
+import { useCalculateExpargoFeeQuery } from "@/lib/store/payment/expargoApiSlice";
 import { useGetCartMinimumAmountQuery } from "@/lib/store/settings/apislice";
 import { toast } from "sonner";
-import { X, User, Mail, Phone, MapPin, FileText, Package2, Truck, CreditCard, AlertCircle, ChevronDown, Loader2 } from "lucide-react";
+import { X, User, Mail, Phone, MapPin, FileText, Package2, Truck, CreditCard, AlertCircle, ChevronDown, Loader2, Check } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 interface CheckoutFormValues {
+  shippingMethod: "Azerpost" | "Expargo" | "FreeDelivery";
   customerName: string;
   customerEmail: string;
   customerPhone: string;
@@ -35,6 +46,39 @@ interface CheckoutModalProps {
 const AZ_POSTCODE_RE = /^AZ\d{4}$/i;
 const PASSPORT_RE = /^[A-Z]{2}\d{7}$/i;
 
+const EXPARGO_LOCATIONS = {
+  filiallar: [
+    "28 May Filialı", "Gənclik Filialı", "İçərişəhər Filialı", "Həzi Aslanov filialı", "Xətai filialı",
+    "Nərimanov Filialı", "Əcəmi filialı", "Əhmədli Filialı", "Elmlər - Statistika Filialı", "Bakıxanov Filialı",
+    "İnşaatçılar Filialı", "Sumqayıt Filialı", "Xırdalan Filialı", "20 Yanvar Filialı", "Sədərək Filialı",
+    "Azadlıq Filialı", "Neftçilər Filialı", "Gəncə Filialı", "Q.Qarayev Filialı", "Zaqatala Filialı",
+    "Naxçıvan Filialı", "Lənkəran Filialı"
+  ],
+  servicePoints: [
+    "Metro 8 Noyabr T/M", "Albalılıq T/M", "Mərdəkan T/M", "Masazır T/M", "Şüvəlan T/M", "Bayıl T/M",
+    "Hövsan T/M", "Yeni Günəşli T/M", "Badamdar T/M", "Zabrat T/M", "Əmircan T/M", "Buzovna T/M",
+    "H. Zeynalabdin T/M", "Yeni Ramana T/M", "Xirdalan - AAAF Park T/M", "9-cu Mikrorayon T/M",
+    "Binə Qəsəbəsi T/M", "Qaraçuxur T/M", "Məmmədli T/M", "Lökbatan T/M", "Mehdiabad T/M", "NZS T/M",
+    "Köhnə Günəşli T/M", "Pirallahi T/M", "Biləcəri T/M", "Binəqədi T/M", "Sabunçu T/M",
+    "Xalqlar Dostluğu T/M", "Gülüstan T/M (Gəncə)", "Müşfiqabad T/M", "Keşlə T/M", "Yeni Suraxanı T/M",
+    "Yeni Yasamal T/M", "Sumqayıt 18 mkr T/M", "Gəncə prospekti T/M", "Maştağa T/M", "Zığ T/M",
+    "Qəbələ T/M", "Yeni Gəncə T/M", "Şəki T/M", "Xaçmaz T/M", "Qazax T/M", "Ağstafa T/M", "Quba T/M",
+    "Balakən T/M", "Mingəçevir T/M", "Ağdaş T/M", "Astara T/M", "Salyan T/M", "Masallı T/M",
+    "İsmayıllı T/M", "Tovuz T/M", "Şəmkir T/M", "Füzuli T/M", "Bərdə T/M", "Şirvan T/M",
+    "Cəlilabad T/M", "Goranboy T/M", "Gədəbəy T/M", "Göyçay T/M", "Ağsu T/M", "Qax T/M",
+    "Ordubad T/M", "Beyləqan T/M", "Şərur T/M", "Şabran T/M", "Ağdam T/M", "Ağcabədi T/M",
+    "Biləsuvar T/M", "Hacıqabul T/M", "Göygöl (Xanlar) T/M", "İmişli T/M", "Kürdəmir T/M",
+    "Qobustan T/M", "Qusar T/M", "Naftalan T/M", "Neftçala T/M", "Oğuz T/M", "Saatlı T/M",
+    "Samux T/M", "Siyəzən T/M", "Sabirabad T/M", "Tərtər T/M", "Ucar T/M", "Yardımlı T/M",
+    "Yevlax T/M", "Şamaxı T/M", "Zərdab T/M", "Qax (Yarmarka) T/M", "Quba-Nügədi T/M",
+    "Binə - Atçılıq T/M", "Sahil Qəsəbəsi T/M", "Metro Nizami T/M", "Montin T/M", "Bakıxanov Stansiya T/M",
+    "Dəliməmmədli T/M", "Hökməli T/M", "Mingəçevir QRES T/M", "Xudat T/M",
+    "Sumqayıt 21-ci məhəllə (Dejurni)", "Xaldan Yevlax T/M", "Gəncə-2 T/M", "Ceyranbatan T/M",
+    "Nargilə T/M", "Binəqədi Şosesi T/M", "Qobu Park 2 T/M", "Şüvəlan QRES T/M", "Metro Nəsimi T/M",
+    "8km bazarı T/M", "Zığ 2"
+  ]
+};
+
 // ── Component ──────────────────────────────────────────────────────────────────
 export function CheckoutModal({ isOpen, onClose, totalAmount, packageWeight, walletBalance = 0 }: CheckoutModalProps) {
   const [initiatePayment, { isLoading }] = useInitiatePaymentMutation();
@@ -50,6 +94,7 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, packageWeight, wal
     formState: { errors },
   } = useForm<CheckoutFormValues>({
     defaultValues: {
+      shippingMethod: "FreeDelivery",
       customerName: "",
       customerEmail: "",
       customerPhone: "",
@@ -64,13 +109,24 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, packageWeight, wal
     },
   });
 
+  const selectedMethod = watch("shippingMethod");
+  const currentWeight = watch("packageWeight");
+
+  // Expargo fee calculation
+  const { data: expargoData } = useCalculateExpargoFeeQuery(currentWeight, {
+    skip: selectedMethod !== "Expargo" || !currentWeight,
+  });
+
+  const deliveryFee = selectedMethod === "Expargo" ? (expargoData?.deliveryFee ?? 0) : 0;
+  const displayTotal = totalAmount + deliveryFee;
+
   // Update packageWeight field when the prop changes
   useEffect(() => {
     setValue("packageWeight", packageWeight || 0.5);
   }, [packageWeight, setValue]);
 
   const walletToUse = Number(watch("walletAmountToUse") ?? 0);
-  const remainingAfterWallet = Math.max(0, totalAmount - walletToUse);
+  const remainingAfterWallet = Math.max(0, displayTotal - walletToUse);
 
   // Close on Escape
   useEffect(() => {
@@ -100,16 +156,17 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, packageWeight, wal
     setServerError("");
     try {
       const result = await initiatePayment({
+        shippingMethod: values.shippingMethod,
         customerName: values.customerName,
-        customerEmail: values.customerEmail,
+        customerEmail: values.customerEmail || undefined,
         customerPhone: values.customerPhone,
         shippingAddress: values.shippingAddress,
-        notes: values.notes,
-        deliveryPostCode: values.deliveryPostCode.toUpperCase(),
-        userPassport: values.userPassport.toUpperCase(),
+        notes: values.notes || null,
+        deliveryPostCode: values.shippingMethod === "Azerpost" ? values.deliveryPostCode.toUpperCase() : undefined,
+        userPassport: values.shippingMethod === "Azerpost" ? values.userPassport.toUpperCase() : undefined,
         packageWeight: Number(values.packageWeight),
-        fragile: values.fragile,
-        deliveryType: Number(values.deliveryType) as 0 | 1,
+        fragile: values.shippingMethod === "Azerpost" ? values.fragile : undefined,
+        deliveryType: values.shippingMethod === "Azerpost" ? (Number(values.deliveryType) as 0 | 1) : undefined,
         walletAmountToUse: Number(values.walletAmountToUse) || 0,
         installmentOptionId: null,
       }).unwrap();
@@ -131,6 +188,13 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, packageWeight, wal
       const msg = err?.data?.message || err?.data?.title || err?.message || "Ödəniş başladıla bilmədi. Xəta baş verdi.";
       setServerError(msg);
       toast.error(msg);
+    }
+  };
+
+  const onInvalid = (errors: any) => {
+    const firstError = Object.values(errors)[0] as any;
+    if (firstError?.message) {
+      toast.error(firstError.message);
     }
   };
 
@@ -162,7 +226,7 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, packageWeight, wal
 
         {/* ── Scrollable Body ── */}
         <div className="overflow-y-auto flex-1 px-8 py-6">
-          <form id="checkout-form" onSubmit={handleSubmit(onSubmit)} className="space-y-8" noValidate>
+          <form id="checkout-form" onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-8" noValidate>
 
             {/* Server error */}
             {serverError && (
@@ -222,99 +286,174 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, packageWeight, wal
               </div>
             </section>
 
-            {/* ── Section: Delivery ── */}
+            {/* ── Section: Delivery Method Selector ── */}
             <section>
-              <SectionTitle icon={<Truck className="h-4 w-4" />} label="Çatdırılma məlumatları" />
+              <SectionTitle icon={<Truck className="h-4 w-4" />} label="Çatdırılma növü" />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+                {[
+                  { id: "Azerpost", label: "Azərpoçt", sub: "Mövcud inteqrasiya", disabled: true },
+                  { id: "Expargo", label: "Expargo", sub: "Ödənişli, bölgələr üçün" },
+                  { id: "FreeDelivery", label: "Pulsuz", sub: "Bakı, Sumqayıt, Abşeron" },
+                ].map((method) => (
+                  <label
+                    key={method.id}
+                    className={`
+                      relative flex flex-col p-4 rounded-2xl border-2 transition-all
+                      ${method.disabled ? "opacity-50 cursor-not-allowed bg-gray-50 border-gray-100" : "cursor-pointer"}
+                      ${!method.disabled && selectedMethod === method.id
+                        ? "border-blue-600 bg-blue-50/50 ring-4 ring-blue-50"
+                        : !method.disabled ? "border-gray-100 hover:border-gray-200 bg-white" : ""}
+                    `}
+                  >
+                    <input
+                      type="radio"
+                      {...register("shippingMethod")}
+                      value={method.id}
+                      disabled={method.disabled}
+                      className="sr-only"
+                    />
+                    <div className="flex justify-between items-start mb-1">
+                      <span className={`text-sm font-black ${selectedMethod === method.id ? "text-blue-700" : "text-gray-900"}`}>
+                        {method.label} {method.disabled && <span className="text-[9px] font-bold text-amber-600 ml-1">(Tezliklə)</span>}
+                      </span>
+                      {selectedMethod === method.id && (
+                        <div className="bg-blue-600 rounded-full p-0.5">
+                          <Check className="h-3 w-3 text-white" />
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-[10px] text-gray-500 font-bold leading-tight uppercase tracking-wider">
+                      {method.sub}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </section>
+
+            {/* ── Section: Delivery Details ── */}
+            <section>
+              <SectionTitle icon={<MapPin className="h-4 w-4" />} label="Çatdırılma məlumatları" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
 
                 <Field
-                  label="Çatdırılma növü *"
-                  error={errors.deliveryType?.message}
-                  className="sm:col-span-2"
-                >
-                  <div className="relative">
-                    <select
-                      {...register("deliveryType", { required: "Çatdırılma növü seçin" })}
-                      className={`${inputClass(!!errors.deliveryType)} appearance-none pr-10 cursor-pointer`}
-                    >
-                      <option value="0">Poçt şöbəsinə çatdırılma </option>
-                      <option value="1">Evə çatdırılma</option>
-                    </select>
-                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  </div>
-                </Field>
-
-                <Field
-                  label="Çatdırılma ünvanı *"
+                  label={selectedMethod === "Expargo" ? "Təhvil məntəqəsi *" : "Çatdırılma ünvanı *"}
                   error={errors.shippingAddress?.message}
                   className="sm:col-span-2"
                 >
-                  <input
-                    {...register("shippingAddress", {
-                      required: "Ünvan mütləqdir",
-                      minLength: { value: 10, message: "Ən az 10 simvol" },
-                    })}
-                    placeholder="Bakı, Nəsimi r., Rəşid Behbudov küç. 15"
-                    className={inputClass(!!errors.shippingAddress)}
-                  />
+                  {selectedMethod === "Expargo" ? (
+                    <Select
+                      onValueChange={(val) => setValue("shippingAddress", val, { shouldValidate: true })}
+                      value={watch("shippingAddress")}
+                    >
+                      <SelectTrigger className="w-full h-11 rounded-xl font-bold bg-white border-gray-300 text-black">
+                        <SelectValue placeholder="Məntəqə seçin" className="text-black" />
+                      </SelectTrigger>
+                      <SelectContent className="z-[600]">
+                        <SelectGroup>
+                          <SelectLabel>Filiallar</SelectLabel>
+                          {EXPARGO_LOCATIONS.filiallar.map(loc => (
+                            <SelectItem key={loc} value={loc}>{loc}</SelectItem>
+                          ))}
+                        </SelectGroup>
+                        <SelectGroup>
+                          <SelectLabel>T/M (Service Points)</SelectLabel>
+                          {EXPARGO_LOCATIONS.servicePoints.map(loc => (
+                            <SelectItem key={loc} value={loc}>{loc}</SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <input
+                      {...register("shippingAddress", {
+                        required: "Ünvan mütləqdir",
+                        minLength: { value: 10, message: "Ən az 10 simvol" },
+                      })}
+                      placeholder="Bakı, Nəsimi r., Rəşid Behbudov küç. 15"
+                      className={inputClass(!!errors.shippingAddress)}
+                    />
+                  )}
                 </Field>
 
-                <Field
-                  label="Poçt kodu *"
-                  error={errors.deliveryPostCode?.message}
-                  hint="Format: AZ1000"
-                >
-                  <input
-                    {...register("deliveryPostCode", {
-                      required: "Poçt kodu mütləqdir",
-                      validate: (v) =>
-                        AZ_POSTCODE_RE.test(v) || "Format: AZ + 4 rəqəm (məs. AZ1000)",
-                    })}
-                    placeholder="AZ1000"
-                    className={inputClass(!!errors.deliveryPostCode)}
-                    onChange={(e) => {
-                      e.target.value = e.target.value.toUpperCase();
-                    }}
-                  />
-                </Field>
+                {selectedMethod === "Azerpost" && (
+                  <>
+                    <Field
+                      label="Çatdırılma növü *"
+                      error={errors.deliveryType?.message}
+                      className="sm:col-span-2"
+                    >
+                      <Select
+                        onValueChange={(val) => setValue("deliveryType", val as "0" | "1", { shouldValidate: true })}
+                        defaultValue={watch("deliveryType")}
+                      >
+                        <SelectTrigger className="w-full h-11 rounded-xl font-bold bg-white border-gray-300 text-black">
+                          <SelectValue placeholder="Çatdırılma növü seçin" className="text-black" />
+                        </SelectTrigger>
+                        <SelectContent className="z-[600]">
+                          <SelectItem value="0">Poçt şöbəsinə çatdırılma</SelectItem>
+                          <SelectItem value="1">Evə çatdırılma</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </Field>
 
-                <Field
-                  label="Pasport seriyası *"
-                  error={errors.userPassport?.message}
-                  hint="Format: AA1234567"
-                >
-                  <input
-                    {...register("userPassport", {
-                      required: "Pasport məlumatı mütləqdir",
-                      validate: (v) =>
-                        PASSPORT_RE.test(v) || "Format: 2 hərf + 7 rəqəm (məs. AA1234567)",
-                    })}
-                    placeholder="AA1234567"
-                    maxLength={9}
-                    className={inputClass(!!errors.userPassport)}
-                    onChange={(e) => {
-                      e.target.value = e.target.value.toUpperCase();
-                    }}
-                  />
-                </Field>
+                    <Field
+                      label="Poçt kodu *"
+                      error={errors.deliveryPostCode?.message}
+                      hint="Format: AZ1000"
+                    >
+                      <input
+                        {...register("deliveryPostCode", {
+                          required: selectedMethod === "Azerpost" ? "Poçt kodu mütləqdir" : false,
+                          validate: (v) =>
+                            selectedMethod !== "Azerpost" || AZ_POSTCODE_RE.test(v) || "Format: AZ + 4 rəqəm (məs. AZ1000)",
+                        })}
+                        placeholder="AZ1000"
+                        className={inputClass(!!errors.deliveryPostCode)}
+                        onChange={(e) => {
+                          e.target.value = e.target.value.toUpperCase();
+                        }}
+                      />
+                    </Field>
+
+                    <Field
+                      label="Pasport seriyası *"
+                      error={errors.userPassport?.message}
+                      hint="Format: AA1234567"
+                    >
+                      <input
+                        {...register("userPassport", {
+                          required: selectedMethod === "Azerpost" ? "Pasport məlumatı mütləqdir" : false,
+                          validate: (v) =>
+                            selectedMethod !== "Azerpost" || PASSPORT_RE.test(v) || "Format: 2 hərf + 7 rəqəm (məs. AA1234567)",
+                        })}
+                        placeholder="AA1234567"
+                        maxLength={9}
+                        className={inputClass(!!errors.userPassport)}
+                        onChange={(e) => {
+                          e.target.value = e.target.value.toUpperCase();
+                        }}
+                      />
+                    </Field>
+
+                    <Field label="Kövrək paket?">
+                      <label className="flex items-center gap-3 cursor-pointer mt-1">
+                        <div className="relative">
+                          <input
+                            {...register("fragile")}
+                            type="checkbox"
+                            className="peer sr-only"
+                          />
+                          <div className="w-10 h-6 bg-gray-200 peer-checked:bg-blue-600 rounded-full transition-colors" />
+                          <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-4" />
+                        </div>
+                        <span className="text-sm font-medium text-gray-700">Bəli, kövrək məhsul</span>
+                      </label>
+                    </Field>
+                  </>
+                )}
 
                 {/* Package weight is now handled internally from backend data */}
                 <input type="hidden" {...register("packageWeight")} />
-
-                <Field label="Kövrək paket?">
-                  <label className="flex items-center gap-3 cursor-pointer mt-1">
-                    <div className="relative">
-                      <input
-                        {...register("fragile")}
-                        type="checkbox"
-                        className="peer sr-only"
-                      />
-                      <div className="w-10 h-6 bg-gray-200 peer-checked:bg-blue-600 rounded-full transition-colors" />
-                      <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-4" />
-                    </div>
-                    <span className="text-sm font-medium text-gray-700">Bəli, kövrək məhsul</span>
-                  </label>
-                </Field>
               </div>
             </section>
 
@@ -372,11 +511,29 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, packageWeight, wal
         {/* ── Footer ── */}
         <div className="px-5 sm:px-8 py-6 border-t border-gray-100 bg-gray-50/60">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-4">
-            <div className="flex flex-row sm:flex-col justify-between items-center sm:items-start border-b sm:border-0 pb-4 sm:pb-0 border-gray-100">
-              <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Ödəniləcək məbləğ</p>
-              <p className="text-2xl font-black text-gray-900 tracking-tighter">
-                ₼{walletToUse > 0 ? remainingAfterWallet.toFixed(2) : totalAmount.toFixed(2)}
-              </p>
+            <div className="space-y-1 flex-1">
+              <div className="flex justify-between text-sm font-medium text-gray-500">
+                <span>Məhsulların cəmi:</span>
+                <span className="font-bold text-gray-900">₼{totalAmount.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-sm font-medium text-gray-500">
+                <span>Çatdırılma ({selectedMethod === "Azerpost" ? "Azərpoçt" : selectedMethod}):</span>
+                <span className="font-bold text-gray-900">
+                  {selectedMethod === "Azerpost" ? "Hesablanır..." : `₼${deliveryFee.toFixed(2)}`}
+                </span>
+              </div>
+              {walletToUse > 0 && (
+                <div className="flex justify-between text-sm font-medium text-blue-600">
+                  <span>Balansdan istifadə:</span>
+                  <span className="font-bold">-₼{walletToUse.toFixed(2)}</span>
+                </div>
+              )}
+              <div className="pt-2 border-t border-gray-100 flex justify-between items-center">
+                <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Ödəniləcək məbləğ</p>
+                <p className="text-2xl font-black text-gray-900 tracking-tighter">
+                  ₼{remainingAfterWallet.toFixed(2)}
+                </p>
+              </div>
             </div>
             <div className="flex flex-col xs:flex-row gap-3 w-full sm:w-auto">
               <Button

@@ -180,8 +180,15 @@ export default function OrderDetailsPage() {
             </CardHeader>
             <CardContent className="p-8 space-y-8">
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                  {/* Delivery type */}
-                  {delivType && (
+                  {/* Shipping Method */}
+                  <InfoRow
+                    icon={<Truck className="h-4 w-4" />}
+                    label="Çatdırılma üsulu"
+                    value={order.shippingMethod === "Azerpost" ? "Azərpoçt" : order.shippingMethod}
+                  />
+
+                  {/* Delivery type (Azerpost only) */}
+                  {order.shippingMethod === "Azerpost" && delivType && (
                     <InfoRow
                       icon={<delivType.icon className="h-4 w-4" />}
                       label="Çatdırılma növü"
@@ -324,6 +331,11 @@ export default function OrderDetailsPage() {
                 {order.installmentInterestAmount > 0 && (
                   <PriceLine label="Taksit faizi" value={`+₼${order.installmentInterestAmount.toFixed(2)}`} />
                 )}
+
+                <PriceLine 
+                  label={`Çatdırılma (${order.shippingMethod === "Azerpost" ? "Azərpoçt" : order.shippingMethod})`} 
+                  value={order.shippingMethod === "Azerpost" && order.deliveryFee === 0 ? "Hesablanır" : `+₼${order.deliveryFee.toFixed(2)}`} 
+                />
               </div>
 
               <div className="pt-6 border-t border-white/10">

@@ -54,8 +54,10 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
     const finalPaddingY = banner.buttonPaddingY ?? 10;
     const finalFontSize = banner.buttonFontSize ?? 14;
 
+    const objectFitClass = banner.type === 2 ? "object-cover" : "object-contain";
+
     return (
-        <div className="relative w-full h-full overflow-hidden rounded-lg bg-gray-50 group cursor-pointer">
+        <div className="relative w-full h-full overflow-hidden rounded-lg  group cursor-pointer">
             <div className="absolute inset-0 w-full h-full">
                 {/* Desktop image — hidden on small screens if a mobile version exists */}
                 <Image
@@ -68,7 +70,7 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
                             ? "(max-width: 1024px) 100vw, 1100px"
                             : "(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 360px"
                     }
-                    className={`${src === FALLBACK_IMAGE ? "object-contain bg-white p-6 opacity-80" : "object-cover"} ${mSrc !== src ? "hidden sm:block" : ""}`}
+                    className={`${src === FALLBACK_IMAGE ? "object-contain bg-white p-6 opacity-80" : `${objectFitClass} object-center`} ${mSrc !== src ? "hidden sm:block" : ""}`}
                     onError={() => setSrc(FALLBACK_IMAGE)}
                     {...(variant === "main" ? { fetchPriority: "high" } : {})}
                 />
@@ -81,7 +83,7 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
                         fill
                         priority={variant === "main"}
                         sizes="100vw"
-                        className={`${mSrc === FALLBACK_IMAGE ? "object-contain bg-white p-4 opacity-80" : "object-cover"} block sm:hidden`}
+                        className={`${mSrc === FALLBACK_IMAGE ? "object-contain bg-white p-4 opacity-80" : `${objectFitClass} object-center`} block sm:hidden`}
                         onError={() => setMSrc(FALLBACK_IMAGE)}
                     />
                 )}

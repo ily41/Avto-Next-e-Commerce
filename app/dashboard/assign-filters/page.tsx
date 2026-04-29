@@ -2,13 +2,13 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { useGetPaginatedProductsQuery, useBulkAssignProductFiltersMutation, type Product } from "@/lib/store/products/apislice";
-import { useGetFiltersQuery } from "@/lib/store/filters/apislice";
+import { useGetFiltersPaginatedQuery } from "@/lib/store/filters/apislice";
 import { DataTable } from "@/components/data-table/data-tables";
 import { createColumns } from "@/components/data-table/data-table-factory";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -34,14 +34,28 @@ export default function AssignFiltersPage() {
         SearchTerm: debouncedSearch || undefined,
     });
 
-    const { data: filters, isLoading: isLoadingFilters } = useGetFiltersQuery();
-
+    const { data: filtersData, isLoading: isLoadingFilters } = useGetFiltersPaginatedQuery({
+        page: 1,
+        pageSize: 1000,
+    });
     const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
     const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
-
-    const [selectedFilterId, setSelectedFilterId] = useState("");
     const [selectedOptionId, setSelectedOptionId] = useState("");
     const [customValue, setCustomValue] = useState("");
+
+    const flattenedOptions = useMemo(() => {
+        return filtersData?.filters?.flatMap(f => 
+            f.options.map(opt => ({
+                ...opt,
+                parentFilterName: f.name,
+                parentFilterId: f.id
+            }))
+        ) || [];
+    }, [filtersData]);
+
+    const selectedOption = useMemo(() => {
+        return flattenedOptions.find(opt => opt.id === selectedOptionId);
+    }, [flattenedOptions, selectedOptionId]);
 
     const [bulkAssign, { isLoading: isAssigning }] = useBulkAssignProductFiltersMutation();
 
@@ -68,27 +82,26 @@ export default function AssignFiltersPage() {
     }, [rowSelection, productsData]);
 
     const activeFilter = useMemo(() => {
-        return filters?.find(f => f.id === selectedFilterId);
-    }, [filters, selectedFilterId]);
+        return filtersData?.filters?.find(f => f.id === selectedOption?.parentFilterId);
+    }, [filtersData, selectedOption]);
 
     const handleAssign = async () => {
-        if (!selectedFilterId) {
-            toast.error("Zəhmət olmasa filter seçin.");
+        if (!selectedOptionId) {
+            toast.error("Zəhmət olmasa bir filter seçimi edin.");
             return;
         }
 
         try {
             await bulkAssign({
                 productIds: selectedProductIds,
-                filterId: selectedFilterId,
-                filterOptionId: selectedOptionId && selectedOptionId !== "none" ? selectedOptionId : undefined,
+                filterId: selectedOption?.parentFilterId || "",
+                filterOptionId: selectedOptionId,
                 customValue: customValue || undefined,
             }).unwrap();
 
             toast.success(`${selectedProductIds.length} məhsula filter uğurla təyin edildi!`);
             setIsAssignModalOpen(false);
             setRowSelection({});
-            setSelectedFilterId("");
             setSelectedOptionId("");
             setCustomValue("");
         } catch (error) {
@@ -137,42 +150,30 @@ export default function AssignFiltersPage() {
                     <DialogHeader>
                         <DialogTitle>{selectedProductIds.length} Məhsula Filter Təyin Et</DialogTitle>
                     </DialogHeader>
-
                     <div className="space-y-4 py-4">
                         <div className="space-y-2">
-                            <Label>Filter</Label>
-                            <Select value={selectedFilterId} onValueChange={(val) => {
-                                setSelectedFilterId(val);
-                                setSelectedOptionId("");
+                            <Label>Filter Seçimi (Alt Filter)</Label>
+                            <Select value={selectedOptionId} onValueChange={(val) => {
+                                setSelectedOptionId(val);
                                 setCustomValue("");
                             }}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Filter seçin" />
+                                    <SelectValue placeholder="Bir seçim edin..." />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {filters?.map(f => (
-                                        <SelectItem key={f.id} value={f.id}>{f.name}</SelectItem>
+                                    {filtersData?.filters?.map(f => (
+                                        <SelectGroup key={f.id}>
+                                            <SelectLabel className="text-xs text-muted-foreground px-2 py-1.5">{f.name}</SelectLabel>
+                                            {f.options.map(opt => (
+                                                <SelectItem key={opt.id} value={opt.id}>
+                                                    {opt.displayName}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
                                     ))}
                                 </SelectContent>
                             </Select>
                         </div>
-
-                        {activeFilter && activeFilter.options && activeFilter.options.length > 0 && (
-                            <div className="space-y-2">
-                                <Label>Filter Seçimi (İxtiyari)</Label>
-                                <Select value={selectedOptionId} onValueChange={setSelectedOptionId}>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Seçim seçin" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="none">Heçbiri</SelectItem>
-                                        {activeFilter.options.map(opt => (
-                                            <SelectItem key={opt.id} value={opt.id}>{opt.displayName}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        )}
 
                         {activeFilter && (
                             <div className="space-y-2">
@@ -188,7 +189,7 @@ export default function AssignFiltersPage() {
 
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setIsAssignModalOpen(false)}>Ləğv Et</Button>
-                        <Button onClick={handleAssign} disabled={isAssigning || !selectedFilterId}>
+                        <Button onClick={handleAssign} disabled={isAssigning || !selectedOptionId}>
                             {isAssigning && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                             Təyinatı Tətbiq Et
                         </Button>

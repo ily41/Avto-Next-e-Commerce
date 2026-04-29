@@ -14,7 +14,7 @@ const MiniProductCard = ({ product }: MiniProductCardProps) => {
         : 0;
 
     return (
-        <Link 
+        <Link
             href={`/product/${product.slug || product.id}`}
             className="group flex items-center gap-4 p-4 border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:bg-gray-50/50 h-full"
         >

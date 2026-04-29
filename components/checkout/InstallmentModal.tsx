@@ -74,6 +74,7 @@ export function InstallmentModal({ isOpen, onClose, totalAmount }: InstallmentMo
     try {
       const result = await initiatePayment({
         ...values,
+        shippingMethod: "Azerpost",
         installmentOptionId: selectedOptionId,
         deliveryType: 0, // Default to post office
         packageWeight: 0.5,

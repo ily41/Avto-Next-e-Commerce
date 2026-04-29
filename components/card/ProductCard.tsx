@@ -38,7 +38,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
 
     const productPrice = product.discountedPrice || product.price;
     const installment = calculateBestInstallment(productPrice);
-    
+
     const maxPeriod = installment?.month || 0;
     const availableMonths = installment?.availableMonths || [];
     const monthlyPayment = installment?.monthlyPayment || null;
@@ -180,11 +180,11 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                                 {monthlyPayment} ₼ x {maxPeriod} ay
                             </span>
                         </div>
-                        
+
                         {/* List of all available months */}
                         <div className="flex flex-wrap gap-1">
                             {availableMonths.map((m) => (
-                                <span 
+                                <span
                                     key={m}
                                     className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 border border-gray-100 uppercase"
                                 >
@@ -212,8 +212,8 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                     onClick={handleAddToCart}
                     disabled={isAdded}
                     className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 cursor-pointer mt-1 active:scale-95 ${isAdded
-                            ? "bg-green-600 text-white"
-                            : "bg-blue-600 hover:bg-black text-white"
+                        ? "bg-green-600 text-white"
+                        : "bg-blue-600 hover:bg-black text-white"
                         }`}
                 >
                     <IconShoppingCart size={17} stroke={1.8} />

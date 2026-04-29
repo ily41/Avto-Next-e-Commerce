@@ -26,7 +26,7 @@ export function SearchDropdown({ searchTerm, onClose, className }: SearchDropdow
 
   const filteredCategories = useMemo(() => {
     if (!searchTerm || !categories) return [];
-    
+
     const results: any[] = [];
     const searchLower = searchTerm.toLowerCase();
 
@@ -55,7 +55,7 @@ export function SearchDropdown({ searchTerm, onClose, className }: SearchDropdow
       className
     )}>
       <div className="max-h-[500px] overflow-y-auto">
-        
+
         {/* Categories Section */}
         {filteredCategories.length > 0 && (
           <div className="p-5 border-b border-gray-100 bg-[#f9f9f9]/50">
@@ -78,68 +78,68 @@ export function SearchDropdown({ searchTerm, onClose, className }: SearchDropdow
 
         {/* Products Section */}
         <div className="p-5">
-            <div className="flex justify-between items-center mb-4">
-                <h3 className="text-[11px] font-extrabold text-[#767676] uppercase tracking-wider">Məhsullar</h3>
-                {isFetchingProducts && (
-                    <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
-                )}
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-[11px] font-extrabold text-[#767676] uppercase tracking-wider">Məhsullar</h3>
+            {isFetchingProducts && (
+              <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+            )}
+          </div>
+
+          {productData?.products && productData.products.length > 0 ? (
+            <div className="grid grid-cols-1 gap-1">
+              {productData.products.map((product) => (
+                <Link
+                  key={product.id}
+                  href={`/product/${product.slug || product.id}`}
+                  onClick={onClose}
+                  className="flex items-center gap-4 p-3 rounded-lg hover:bg-blue-50/50 transition-all group"
+                >
+                  <div className="w-14 h-14 bg-white border border-gray-100 rounded-lg p-1.5 shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                    <img
+                      src={fullUrl(product.primaryImageUrl || product.imageUrl)}
+                      alt={product.name}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <div className="flex flex-col flex-1 overflow-hidden">
+                    <span className="text-[14px] font-bold text-gray-800 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2">
+                      {product.name}
+                    </span>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-[14px] font-extrabold text-blue-600">
+                        {product.discountedPrice && product.price > product.discountedPrice
+                          ? `₼${product.discountedPrice.toFixed(2)}`
+                          : `₼${product.price.toFixed(2)}`
+                        }
+                      </span>
+                      {product.discountedPrice && product.price > product.discountedPrice && (
+                        <span className="text-[12px] text-gray-400 line-through font-medium">₼{product.price.toFixed(2)}</span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
-            
-            {productData?.products && productData.products.length > 0 ? (
-                <div className="grid grid-cols-1 gap-1">
-                {productData.products.map((product) => (
-                    <Link
-                    key={product.id}
-                    href={`/product/${product.slug || product.id}`}
-                    onClick={onClose}
-                    className="flex items-center gap-4 p-3 rounded-lg hover:bg-blue-50/50 transition-all group"
-                    >
-                    <div className="w-14 h-14 bg-white border border-gray-100 rounded-lg p-1.5 shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                        <img 
-                        src={fullUrl(product.primaryImageUrl || product.imageUrl)} 
-                        alt={product.name}
-                        className="w-full h-full object-contain"
-                        />
-                    </div>
-                    <div className="flex flex-col flex-1 overflow-hidden">
-                        <span className="text-[14px] font-bold text-gray-800 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2">
-                        {product.name}
-                        </span>
-                        <div className="flex items-center gap-2 mt-1">
-                            <span className="text-[14px] font-extrabold text-blue-600">
-                                {product.discountedPrice && product.price > product.discountedPrice 
-                                ? `₼${product.discountedPrice.toFixed(2)}`
-                                : `₼${product.price.toFixed(2)}`
-                                }
-                            </span>
-                            {product.discountedPrice && product.price > product.discountedPrice && (
-                                <span className="text-[12px] text-gray-400 line-through font-medium">₼{product.price.toFixed(2)}</span>
-                            )}
-                        </div>
-                    </div>
-                    </Link>
-                ))}
-                </div>
-            ) : !isFetchingProducts ? (
-                <div className="py-10 text-center flex flex-col items-center gap-3">
-                    <div className="w-14 h-14 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
-                    <IconSearch size={28} />
-                    </div>
-                    <p className="text-[14px] text-gray-500 font-medium tracking-tight whitespace-pre-wrap px-10">"{searchTerm}" üçün nəticə tapılmadı</p>
-                </div>
-            ) : null}
+          ) : !isFetchingProducts ? (
+            <div className="py-10 text-center flex flex-col items-center gap-3">
+              <div className="w-14 h-14 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
+                <IconSearch size={28} />
+              </div>
+              <p className="text-[14px] text-gray-500 font-medium tracking-tight whitespace-pre-wrap px-10">"{searchTerm}" üçün nəticə tapılmadı</p>
+            </div>
+          ) : null}
         </div>
       </div>
 
       {/* Footer / See more */}
       {hasResults && !isFetchingProducts && (
-         <Link 
-           href={`/shop?searchTerm=${encodeURIComponent(searchTerm)}`}
-           onClick={onClose}
-           className="block w-full py-4 bg-blue-600 text-[13px] font-bold text-white text-center hover:bg-black transition-all uppercase tracking-widest shadow-lg"
-         >
-            Bütün nəticələrə bax
-         </Link>
+        <Link
+          href={`/shop?searchTerm=${encodeURIComponent(searchTerm)}`}
+          onClick={onClose}
+          className="block w-full py-4 bg-blue-600 text-[13px] font-bold text-white text-center hover:bg-black transition-all uppercase tracking-widest shadow-lg"
+        >
+          Bütün nəticələrə bax
+        </Link>
       )}
     </div>
   );
