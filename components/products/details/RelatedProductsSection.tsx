@@ -39,7 +39,7 @@ export default function RelatedProductsSection({ products }: RelatedProductsSect
         className="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar scroll-smooth pb-4 px-1"
       >
         {products.map((item: any) => (
-          <div key={item.id} className="min-w-[170px] md:min-w-[280px] w-[50%] md:w-auto">
+          <div key={item.id} className="min-w-[170px] md:min-w-[280px] w-[50%] md:w-auto h-full">
              <ProductCard product={item} />
           </div>
         ))}

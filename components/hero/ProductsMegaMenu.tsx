@@ -78,10 +78,8 @@ const ProductsMegaMenu = ({ isOpen, setHoveredLink }: ProductsMegaMenuProps) => 
                 >
                     {products.length > 0 ? (
                         products.map((product) => (
-                            <div key={product.id} className="w-1/4 min-w-[250px] max-w-[300px] border-r border-gray-100 flex-shrink-0 flex flex-col h-full">
-                                <div className="flex flex-col h-full">
-                                    <ProductCard product={product} />
-                                </div>
+                            <div key={product.id} className="w-1/4 min-w-[250px] max-w-[300px] border-r border-gray-100 flex-shrink-0 h-full">
+                                <ProductCard product={product} />
                             </div>
                         ))
                     ) : (

@@ -47,6 +47,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useGetMeQuery } from "@/lib/store/auth/apislice"
+import { useAdminNotifications } from "@/hooks/useAdminNotifications"
 
 const data = {
   navMain: [
@@ -134,12 +135,31 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: user } = useGetMeQuery()
+  const { counts, markSeen } = useAdminNotifications()
 
   const userData = {
     name: user ? `${user.firstName} ${user.lastName}` : "Yüklənir...",
     email: user?.email || "...",
     avatar: "/avatars/shadcn.jpg", // Fallback or dynamic avatar if available
   }
+
+  const navMainWithNotifications = data.navMain.map(item => {
+    if (item.title === "Sifarişlər") {
+      return {
+        ...item,
+        badge: counts.newOrdersCount,
+        onItemClick: () => markSeen("orders")
+      }
+    }
+    if (item.title === "Kredit Müraciətləri") {
+      return {
+        ...item,
+        badge: counts.newCreditRequestsCount,
+        onItemClick: () => markSeen("creditRequests")
+      }
+    }
+    return item
+  })
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -161,7 +181,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMainWithNotifications} />
         <NavDocuments items={data.marketing} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>

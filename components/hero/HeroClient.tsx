@@ -27,7 +27,7 @@ const HeroClient = ({ banners }: HeroClientProps) => {
       {/* Spacing-first responsiveness: padding reduces at smaller breakpoints, mx-auto only at 2xl */}
       <div className="w-full   2xl:px-0 2xl:max-w-[90%] 2xl:mx-auto">
         {/* Height uses clamp so it shrinks proportionally with viewport width */}
-        <div className="flex flex-col relative lg:grid lg:grid-cols-[306px_auto] mb-20 lg:justify-center gap-4 xl:gap-6 lg:[height:clamp(100px,40vw,700px)]">
+        <div className="flex flex-col relative lg:grid lg:grid-cols-[306px_auto] mb-3 lg:mb-20 lg:justify-center gap-4 xl:gap-6 lg:[height:clamp(100px,40vw,700px)]">
           {/* Column 1: Vertical Sidebar (Desktop only) — matches banner height */}
           <div className="hidden lg:flex lg:flex-col h-full min-h-0 relative z-30">
             <CategoryMenu />
@@ -58,19 +58,8 @@ const HeroClient = ({ banners }: HeroClientProps) => {
               ))}
           </div>
 
-          {/* Tablet: Horizontal scroll */}
-          <div className="hidden md:flex lg:hidden w-full overflow-x-auto no-scrollbar pb-2">
-            <div className="flex flex-nowrap gap-4 h-[220px]">
-              {secondaryBanners.map((banner) => (
-                <div key={banner.id} className="w-[350px] shrink-0 h-full relative">
-                  <BannerItem banner={banner} variant="secondary" />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile: Only the first one */}
-          <div className="flex md:hidden flex-col">
+          {/* Tablet & Mobile: Only the first one (when sidebar disappears) */}
+          <div className="flex lg:hidden flex-col">
             {secondaryBanners.length > 0 && (
               <div className="h-[220px]">
                 <BannerItem banner={secondaryBanners[0]} variant="secondary" />

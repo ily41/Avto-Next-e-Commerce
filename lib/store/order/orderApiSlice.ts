@@ -80,6 +80,7 @@ export interface AdminOrdersParams {
   page?: number;
   pageSize?: number;
   status?: string;
+  shippingMethod?: string;
 }
 
 export interface AzerpostStatusResponse {

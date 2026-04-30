@@ -6,6 +6,7 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { fetchRecommendations, fetchBanners } from "@/lib/api/server-fetchers";
 import ProductCard from "../card/ProductCard";
 import BannerItem from "../hero/BannerItem";
+import { cn } from "@/lib/utils";
 
 const TechGadgets = async () => {
   const [recommendations, banners] = await Promise.all([
@@ -61,7 +62,7 @@ const TechGadgets = async () => {
                 else if (i === 3) displayClass = "hidden lg:block";
 
                 return (
-                  <div key={product.id} className={displayClass}>
+                  <div key={product.id} className={cn(displayClass, "h-full")}>
                     <ProductCard product={product} />
                   </div>
                 );

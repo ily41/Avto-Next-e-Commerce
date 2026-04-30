@@ -68,12 +68,12 @@ const getStatusByName = (name: string) => {
 // ── Component ──────────────────────────────────────────────────────────────────
 export function AdminOrdersTable() {
   const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 10 });
-  const [statusFilter, setStatusFilter] = React.useState<string | undefined>(undefined);
+  const [shippingMethodFilter, setShippingMethodFilter] = React.useState<string | undefined>(undefined);
 
   const { data, isLoading, isFetching } = useGetAdminOrdersQuery({
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize,
-    status: statusFilter,
+    shippingMethod: shippingMethodFilter,
   });
   console.log(data)
 
@@ -120,6 +120,27 @@ export function AdminOrdersTable() {
           <span className="text-[10px] text-muted-foreground">{row.original.customerEmail}</span>
         </div>
       ),
+    },
+    {
+      accessorKey: "shippingMethod",
+      header: "Çatdırılma",
+      cell: ({ row }) => {
+        const method = row.original.shippingMethod;
+        const fee = row.original.deliveryFee;
+        let label = method || "—";
+        if (method?.toLowerCase() === "azerpost") label = "Azərpoçt";
+        if (method?.toLowerCase() === "expargo") label = "Expargo";
+        if (method?.toLowerCase() === "freedelivery") label = "Pulsuz Çatdırılma";
+
+        return (
+          <div className="flex flex-col">
+            <span className="text-xs font-bold">{label}</span>
+            <span className="text-[10px] text-muted-foreground font-medium">
+              {fee === 0 ? "Pulsuz" : `${fee?.toFixed(2)} AZN`}
+            </span>
+          </div>
+        );
+      },
     },
     {
       accessorKey: "totalAmount",
@@ -235,17 +256,21 @@ export function AdminOrdersTable() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Select onValueChange={(val) => setStatusFilter(val === "all" ? undefined : val)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Bütün Statuslar" />
+          <Select onValueChange={(val) => {
+            setShippingMethodFilter(val === "all" ? undefined : val);
+            setPagination(p => ({ ...p, pageIndex: 0 }));
+          }}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Çatdırılma Üsulu" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Bütün Statuslar</SelectItem>
-              {STATUS_ENUMS.map(s => (
-                <SelectItem key={s.value} value={s.label}>{s.label}</SelectItem>
-              ))}
+              <SelectItem value="all">Hamısı</SelectItem>
+              <SelectItem value="Azerpost">Azərpoçt</SelectItem>
+              <SelectItem value="Expargo">Expargo</SelectItem>
+              <SelectItem value="FreeDelivery">Pulsuz Çatdırılma</SelectItem>
             </SelectContent>
           </Select>
+
           {isFetching && <RefreshCcw className="h-4 w-4 animate-spin text-gray-500" />}
         </div>
       </div>

@@ -168,32 +168,34 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                     )}
                 </div>
 
-                {/* Installment Info */}
-                {monthlyPayment && productPrice >= 15 && (
-                    <div className="flex flex-col gap-1.5">
-                        {/* Primary installment pill */}
-                        <div className="inline-flex items-center self-start">
-                            <span
-                                className="text-[12px] font-bold px-2.5 py-1 rounded"
-                                style={{ background: "#f5d000", color: "#1a1a1a" }}
-                            >
-                                {monthlyPayment} ₼ x {maxPeriod} ay
-                            </span>
-                        </div>
-
-                        {/* List of all available months */}
-                        <div className="flex flex-wrap gap-1">
-                            {availableMonths.map((m) => (
+                {/* Installment Info - preserved space to maintain uniform card height */}
+                <div className="min-h-[52px] flex flex-col justify-center">
+                    {monthlyPayment && productPrice >= 15 ? (
+                        <div className="flex flex-col gap-1.5">
+                            {/* Primary installment pill */}
+                            <div className="inline-flex items-center self-start">
                                 <span
-                                    key={m}
-                                    className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 border border-gray-100 uppercase"
+                                    className="text-[12px] font-bold px-2.5 py-1 rounded"
+                                    style={{ background: "#f5d000", color: "#1a1a1a" }}
                                 >
-                                    {m} ay
+                                    {monthlyPayment} ₼ x {maxPeriod} ay
                                 </span>
-                            ))}
+                            </div>
+
+                            {/* List of all available months */}
+                            <div className="flex flex-wrap gap-1">
+                                {availableMonths.map((m) => (
+                                    <span
+                                        key={m}
+                                        className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 border border-gray-100 uppercase"
+                                    >
+                                        {m} ay
+                                    </span>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                )}
+                    ) : null}
+                </div>
 
                 {/* Product name */}
                 <Link

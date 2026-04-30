@@ -1,8 +1,6 @@
 "use client"
 
-import { IconCirclePlusFilled, IconMail, type Icon } from "@tabler/icons-react"
-
-import { Button } from "@/components/ui/button"
+import { type Icon } from "@tabler/icons-react"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -12,6 +10,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
+import { NotificationBadge } from "./notification-badge"
 
 export function NavMain({
   items,
@@ -20,6 +19,8 @@ export function NavMain({
     title: string
     url: string
     icon?: Icon
+    badge?: number
+    onItemClick?: () => void
   }[]
 }) {
   return (
@@ -50,9 +51,10 @@ export function NavMain({
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton tooltip={item.title} asChild>
-                <Link href={item.url}>
+                <Link href={item.url} onClick={item.onItemClick}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
+                  <NotificationBadge count={item.badge} className="ml-auto" />
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
