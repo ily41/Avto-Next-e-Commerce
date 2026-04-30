@@ -9,7 +9,7 @@ import RecentlyLaunched from "@/components/home/RecentlyLaunched";
 export default function Home() {
   return (
     <main className="w-full flex-1 bg-white flex flex-col items-center">
-      <div className="w-full lg:w-[80.3%] relative">
+      <div className="w-full  relative">
         <HeroSection />
         <ShopByCategories />
         <MiddleBanners />

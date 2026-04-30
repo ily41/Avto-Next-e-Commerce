@@ -19,7 +19,7 @@ export default function BrandsPage() {
     }
 
     return (
-        <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-0 w-[calc(100%-2.5rem)] py-12">
+        <div className="max-w-[90%] mx-auto px-4 sm:px-6 lg:px-0 w-[calc(100%-2.5rem)] py-12">
             <div className="flex items-center gap-3 mb-10 pb-6 border-b border-gray-100">
                 <Award className="h-8 w-8 text-blue-600" />
                 <h1 className="text-3xl font-black text-gray-900 tracking-tight">Əməkdaşlıq etdiyimiz Brendlər</h1>

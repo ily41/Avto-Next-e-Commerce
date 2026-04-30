@@ -2,14 +2,14 @@
 
 import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { 
-  MoreHorizontal, 
-  Eye, 
-  Truck, 
-  Send, 
-  Clock, 
-  CheckCircle2, 
-  XCircle, 
+import {
+  MoreHorizontal,
+  Eye,
+  Truck,
+  Send,
+  Clock,
+  CheckCircle2,
+  XCircle,
   AlertTriangle,
   RefreshCcw,
   ExternalLink
@@ -25,11 +25,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { DataTable } from "@/components/data-table/data-tables";
-import { 
-  Order, 
-  useGetAdminOrdersQuery, 
-  useUpdateOrderStatusMutation, 
-  useSendToAzerpostMutation 
+import {
+  Order,
+  useGetAdminOrdersQuery,
+  useUpdateOrderStatusMutation,
+  useSendToAzerpostMutation
 } from "@/lib/store/order/orderApiSlice";
 import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
@@ -44,23 +44,23 @@ import {
 
 // ── Status Enums & Labels ──────────────────────────────────────────────────────
 const STATUS_ENUMS = [
-  { value: 0, label: "Gözləmədə",       aliases: ["pending", "waiting"], color: "bg-zinc-500  text-white    border-transparent" },
+  { value: 0, label: "Gözləmədə", aliases: ["pending", "waiting"], color: "bg-zinc-500  text-white    border-transparent" },
   { value: 1, label: "Ödəniş Başlayıb", aliases: ["paymentstarted", "initiated"], color: "bg-blue-400    text-white    border-transparent" },
-  { value: 2, label: "Ödənilib",        aliases: ["paid", "completed"], color: "bg-blue-600   text-white       border-transparent" },
-  { value: 3, label: "Hazırlanır",      aliases: ["processing", "preparing"], color: "bg-indigo-500    text-white    border-transparent" },
-  { value: 4, label: "Göndərilib",      aliases: ["shipped", "sent"], color: "bg-amber-500   text-white   border-transparent" },
-  { value: 5, label: "Çatdırılıb",      aliases: ["delivered"], color: "bg-emerald-500 text-white border-transparent" },
-  { value: 6, label: "Ləğv Edilib",     aliases: ["canceled", "cancelled"], color: "bg-rose-500    text-white    border-transparent" },
-  { value: 7, label: "Geri Ödənilib",   aliases: ["refunded"], color: "bg-zinc-400    text-white    border-transparent" },
-  { value: 8, label: "Uğursuz",         aliases: ["failed"], color: "bg-red-600    text-white    border-transparent" },
+  { value: 2, label: "Ödənilib", aliases: ["paid", "completed"], color: "bg-blue-600   text-white       border-transparent" },
+  { value: 3, label: "Hazırlanır", aliases: ["processing", "preparing"], color: "bg-indigo-500    text-white    border-transparent" },
+  { value: 4, label: "Göndərilib", aliases: ["shipped", "sent"], color: "bg-amber-500   text-white   border-transparent" },
+  { value: 5, label: "Çatdırılıb", aliases: ["delivered"], color: "bg-emerald-500 text-white border-transparent" },
+  { value: 6, label: "Ləğv Edilib", aliases: ["canceled", "cancelled"], color: "bg-rose-500    text-white    border-transparent" },
+  { value: 7, label: "Geri Ödənilib", aliases: ["refunded"], color: "bg-zinc-400    text-white    border-transparent" },
+  { value: 8, label: "Uğursuz", aliases: ["failed"], color: "bg-red-600    text-white    border-transparent" },
 ];
 
 const getStatusById = (id: number) => STATUS_ENUMS.find(s => s.value === id) || STATUS_ENUMS[0];
 const getStatusByName = (name: string) => {
   if (!name) return STATUS_ENUMS[0];
   const normalized = name.toLowerCase().trim();
-  return STATUS_ENUMS.find(s => 
-    s.label.toLowerCase() === normalized || 
+  return STATUS_ENUMS.find(s =>
+    s.label.toLowerCase() === normalized ||
     s.aliases.includes(normalized)
   ) || STATUS_ENUMS[0];
 };
@@ -161,16 +161,16 @@ export function AdminOrdersTable() {
       header: "Azərpoçt İzləmə",
       cell: ({ row }) => {
         const order = row.original;
-        
+
         if (order.azerpostOrderId) {
           return (
             <div className="flex flex-col gap-1">
               <Badge variant="outline" className="text-[10px] font-mono bg-blue-600 text-white border-transparent shadow-sm">
                 {order.azerpostOrderId}
               </Badge>
-              <a 
-                href={`https://azerpost.az/tracking?id=${order.azerpostOrderId}`} 
-                target="_blank" 
+              <a
+                href={`https://azerpost.az/tracking?id=${order.azerpostOrderId}`}
+                target="_blank"
                 className="text-[10px] text-blue-600 hover:underline flex items-center gap-1"
               >
                 İzlə <ExternalLink className="h-2 w-2" />
@@ -180,7 +180,7 @@ export function AdminOrdersTable() {
         }
 
         const isPaidOrProcessing = ["paid", "processing", "shipped"].includes(order.status.toLowerCase());
-        
+
         if (isPaidOrProcessing) {
           return (
             <Button
@@ -218,7 +218,7 @@ export function AdminOrdersTable() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 className="text-red-600 focus:text-red-600 cursor-pointer"
                 onClick={() => handleStatusChange(order.id, 6)} // Cancel
               >
