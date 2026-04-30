@@ -35,7 +35,6 @@ export default function UsersPage() {
         pageSize: pageSize,
     });
     const { data: roles } = useGetUserRolesQuery();
-    console.log(roles)
 
     const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
     const [deleteUser] = useDeleteUserMutation();
@@ -225,7 +224,6 @@ export default function UsersPage() {
                             </SelectTrigger>
                             <SelectContent position="popper" sideOffset={5} className="bg-popover text-popover-foreground rounded-lg border shadow-lg z-[9999]">
                                 {roles?.map((role) => {
-                                    console.log(role.value)
                                     return (
                                         <SelectItem key={role.value} value={role.value.toString()}>
                                             {role.name}

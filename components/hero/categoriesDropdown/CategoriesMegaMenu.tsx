@@ -12,7 +12,6 @@ interface CategoriesMegaMenuProps {
 
 const CategoriesMegaMenu = ({ isOpen, setHoveredLink }: CategoriesMegaMenuProps) => {
     const { data: categories, isLoading: isCatsLoading } = useGetCategoriesQuery();
-    console.log(categories)
     const { data: hotDeals, isLoading: isProductsLoading } = useGetHotDealsQuery();
 
     // Take first 6 root categories for display

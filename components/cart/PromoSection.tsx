@@ -21,7 +21,6 @@ export function PromoSection({ appliedPromoCode, onApply, onRemove, disabled }: 
     try {
       await onApply(promoCode.trim());
     } catch (error: any) {
-      console.log(error)
       toast.error(error?.data?.error || error?.message || "Failed to apply promo code");
     } finally {
       setLoading(false);
@@ -34,7 +33,6 @@ export function PromoSection({ appliedPromoCode, onApply, onRemove, disabled }: 
       await onRemove();
       setPromoCode("");
     } catch (error: any) {
-      console.log(error)
       toast.error(error?.data?.error || error?.data || error?.message || "Failed to remove promo code");
     } finally {
       setLoading(false);

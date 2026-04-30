@@ -75,7 +75,6 @@ export function AdminOrdersTable() {
     pageSize: pagination.pageSize,
     shippingMethod: shippingMethodFilter,
   });
-  console.log(data)
 
   const [updateStatus, { isLoading: isUpdatingStatus }] = useUpdateOrderStatusMutation();
   const [sendToAzerpost, { isLoading: isSendingToAzerpost }] = useSendToAzerpostMutation();

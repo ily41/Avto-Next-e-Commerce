@@ -89,7 +89,6 @@ export default function ProductsPage() {
     }, [editId]);
 
     const { data: productDetails, isLoading: isFetchingDetails } = useGetProductByIdQuery(editingProductId!, { skip: !editingProductId });
-    console.log(productDetails)
     const productSchema = z.object({
         name: z.string().min(2, "Ad tələb olunur").refine((val) => !val.startsWith("#"), "Məhsul adı '#' ilə başlaya bilməz"),
         sku: z.string(),

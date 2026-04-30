@@ -16,7 +16,6 @@ interface CartItemCardProps {
 }
 
 export function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardProps) {
-  console.log(item)
   const imageUrl = item.product?.primaryImageUrl || item.product?.imageUrl || item.productImageUrl;
   const fullImageUrl = imageUrl ? fullUrl(imageUrl) : "/logos/logo3.svg";
   const unitPrice = item.unitPrice || item.product?.discountedPrice || item.product?.price || 0;

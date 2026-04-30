@@ -16,7 +16,6 @@ export default function ProfilePage() {
   const { isAuth } = useAuth();
   const { data: user } = useGetMeQuery(undefined, { skip: !isAuth });
   const { data: favsData, isLoading: isFavsLoading } = useGetFavoritesCountQuery(undefined, { skip: !isAuth });
-  console.log(favsData)
   const { data: orders, isLoading: isOrdersLoading } = useGetMyOrdersQuery(undefined, { skip: !isAuth });
 
   const activeOrdersCount = orders?.filter(o => o.status !== "Completed" && o.status !== "Cancelled").length || 0;
