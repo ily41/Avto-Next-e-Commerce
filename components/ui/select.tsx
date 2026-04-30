@@ -41,11 +41,6 @@ function SelectTrigger({
         className
       )}
       {...props}
-      onClick={(e) => {
-        console.log("SelectTrigger clicked", e);
-        props.onClick?.(e);
-
-      }}
     >
       {children}
       <SelectPrimitive.Icon asChild>
