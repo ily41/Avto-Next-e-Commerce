@@ -158,7 +158,15 @@ export default function UsersPage() {
                 }
             `}} />
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-black tracking-tight">İstifadəçilər</h1>
+                <div className="flex items-center gap-4">
+                    <h1 className="text-3xl font-black tracking-tight">İstifadəçilər</h1>
+                    {usersData?.totalCount !== undefined && (
+                        <div className="flex items-center gap-2 bg-blue-500/5 border border-blue-500/10 px-4 py-1.5 rounded-2xl shadow-sm">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-blue-500/70">Ümumi:</span>
+                            <span className="text-sm font-black text-blue-600">{usersData.totalCount}</span>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {isFetchingUsers ? (

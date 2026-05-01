@@ -270,6 +270,13 @@ export function AdminOrdersTable() {
             </SelectContent>
           </Select>
 
+          {data?.totalCount !== undefined && (
+            <div className="flex items-center gap-2 bg-indigo-500/5 border border-indigo-500/10 px-4 py-1.5 rounded-2xl shadow-sm">
+              <span className="text-[10px] font-black uppercase tracking-widest text-indigo-500/70">Ümumi Sifariş:</span>
+              <span className="text-sm font-black text-indigo-600">{data.totalCount}</span>
+            </div>
+          )}
+
           {isFetching && <RefreshCcw className="h-4 w-4 animate-spin text-gray-500" />}
         </div>
       </div>

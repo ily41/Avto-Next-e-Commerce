@@ -112,7 +112,15 @@ export default function AssignFiltersPage() {
     return (
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-6 md:px-10 h-full">
             <div className="flex justify-between items-center">
-                <h1 className="text-base md:text-xl lg:text-2xl font-bold">Məhsullara Filter Təyin Et</h1>
+                <div className="flex items-center gap-4">
+                    <h1 className="text-base md:text-xl lg:text-2xl font-bold">Məhsullara Filter Təyin Et</h1>
+                    {productsData?.totalCount !== undefined && (
+                        <div className="flex items-center gap-2 bg-blue-500/5 border border-blue-500/10 px-4 py-1.5 rounded-2xl shadow-sm">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-blue-500/70">Ümumi:</span>
+                            <span className="text-sm font-black text-blue-600">{productsData.totalCount}</span>
+                        </div>
+                    )}
+                </div>
                 <Button
                     onClick={() => setIsAssignModalOpen(true)}
                     disabled={selectedProductIds.length === 0}

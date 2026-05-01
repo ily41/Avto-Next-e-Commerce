@@ -326,33 +326,42 @@ export default function AdminOrderDetailPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-8 space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-gray-500">
-                    <CreditCard className="h-5 w-5" />
+              {order.payment ? (
+                <>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-gray-500">
+                        <CreditCard className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest leading-none mb-1">Method</p>
+                        <p className="text-sm font-black text-white uppercase">{order.payment.paymentMethod}</p>
+                      </div>
+                    </div>
+                    <Badge className={order.payment.status === "Success" ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : "bg-amber-500/10 text-amber-500 border-amber-500/20"}>
+                      {order.payment.status}
+                    </Badge>
                   </div>
-                  <div>
-                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest leading-none mb-1">Method</p>
-                    <p className="text-sm font-black text-white uppercase">{order.payment.paymentMethod}</p>
-                  </div>
-                </div>
-                <Badge className={order.payment.status === "Success" ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : "bg-amber-500/10 text-amber-500 border-amber-500/20"}>
-                  {order.payment.status}
-                </Badge>
-              </div>
 
-              <div className="space-y-4 pt-6 border-t border-white/5 text-sm">
-                <div className="flex justify-between font-bold text-gray-500">
-                  <span>Amount Paid</span>
-                  <span className="text-white font-black">₼{order.payment.amount.toFixed(2)}</span>
-                </div>
-                {order.payment.epointTransactionId && (
-                  <div className="pt-2">
-                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2">Transaction ID</p>
-                    <p className="text-xs font-mono text-gray-500 break-all leading-tight">{order.payment.epointTransactionId}</p>
+                  <div className="space-y-4 pt-6 border-t border-white/5 text-sm">
+                    <div className="flex justify-between font-bold text-gray-500">
+                      <span>Amount Paid</span>
+                      <span className="text-white font-black">₼{order.payment.amount.toFixed(2)}</span>
+                    </div>
+                    {order.payment.epointTransactionId && (
+                      <div className="pt-2">
+                        <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2">Transaction ID</p>
+                        <p className="text-xs font-mono text-gray-500 break-all leading-tight">{order.payment.epointTransactionId}</p>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
+                </>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-4 gap-2 text-muted-foreground">
+                  <AlertCircle className="h-8 w-8 opacity-20" />
+                  <p className="text-xs font-bold uppercase tracking-widest">Ödəniş məlumatı yoxdur</p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
