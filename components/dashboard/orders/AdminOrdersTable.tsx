@@ -286,7 +286,7 @@ export function AdminOrdersTable() {
                 disabled={isDownloadingPdf}
               >
                 {isDownloadingPdf ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
-                İnvoys (PDF)
+                Qaimə (PDF)
               </DropdownMenuItem>
               <DropdownMenuItem 
                 className="cursor-pointer gap-2"
@@ -294,7 +294,7 @@ export function AdminOrdersTable() {
                 disabled={isDownloadingLabel}
               >
                 {isDownloadingLabel ? <Loader2 className="h-4 w-4 animate-spin" /> : <Tag className="h-4 w-4" />}
-                Etiket (PDF)
+                İnvoys (PDF)
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem

@@ -1,22 +1,22 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { 
-  useGetOrderByIdQuery, 
-  useUpdateOrderStatusMutation, 
+import {
+  useGetOrderByIdQuery,
+  useUpdateOrderStatusMutation,
   useSendToAzerpostMutation,
   useGetAzerpostStatusQuery
 } from "@/lib/store/order/orderApiSlice";
-import { 
-  ArrowLeft, 
-  Package, 
-  User, 
-  MapPin, 
-  CreditCard, 
-  Truck, 
-  Calendar, 
-  Hash, 
-  Mail, 
+import {
+  ArrowLeft,
+  Package,
+  User,
+  MapPin,
+  CreditCard,
+  Truck,
+  Calendar,
+  Hash,
+  Mail,
   Phone,
   Weight,
   AlertCircle,
@@ -42,15 +42,15 @@ import {
 
 // ── Status Mapping ─────────────────────────────────────────────────────────────
 const STATUS_OPTIONS = [
-  { value: 0, label: "Pending",          color: "bg-zinc-500  text-white    border-transparent" },
+  { value: 0, label: "Pending", color: "bg-zinc-500  text-white    border-transparent" },
   { value: 1, label: "PaymentInitiated", color: "bg-blue-400    text-white    border-transparent" },
-  { value: 2, label: "Paid",             color: "bg-blue-600   text-white       border-transparent" },
-  { value: 3, label: "Processing",       color: "bg-indigo-500    text-white    border-transparent" },
-  { value: 4, label: "Shipped",          color: "bg-amber-500   text-white   border-transparent" },
-  { value: 5, label: "Delivered",        color: "bg-emerald-500 text-white border-transparent" },
-  { value: 6, label: "Cancelled",        color: "bg-rose-500    text-white    border-transparent" },
-  { value: 7, label: "Refunded",         color: "bg-zinc-400    text-white    border-transparent" },
-  { value: 8, label: "Failed",           color: "bg-red-600    text-white    border-transparent" },
+  { value: 2, label: "Paid", color: "bg-blue-600   text-white       border-transparent" },
+  { value: 3, label: "Processing", color: "bg-indigo-500    text-white    border-transparent" },
+  { value: 4, label: "Shipped", color: "bg-amber-500   text-white   border-transparent" },
+  { value: 5, label: "Delivered", color: "bg-emerald-500 text-white border-transparent" },
+  { value: 6, label: "Cancelled", color: "bg-rose-500    text-white    border-transparent" },
+  { value: 7, label: "Refunded", color: "bg-zinc-400    text-white    border-transparent" },
+  { value: 8, label: "Failed", color: "bg-red-600    text-white    border-transparent" },
 ];
 
 const getStatusByName = (name: string) => STATUS_OPTIONS.find(s => s.label.toLowerCase() === name.toLowerCase()) || STATUS_OPTIONS[0];
@@ -124,9 +124,9 @@ export default function AdminOrderDetailPage() {
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
-          <Button 
-            variant="outline" 
-            size="icon" 
+          <Button
+            variant="outline"
+            size="icon"
             className="rounded-full h-11 w-11 shadow-sm border-white/5 hover:bg-white/5 bg-[#141414]"
             onClick={() => router.push("/dashboard/orders")}
           >
@@ -159,7 +159,7 @@ export default function AdminOrderDetailPage() {
           </Select>
 
           {!order.azerpostOrderId && ["Paid", "Processing", "Shipped"].includes(order.status) && (
-            <Button 
+            <Button
               className="h-11 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold gap-2"
               onClick={handleAzerpostDispatch}
               disabled={isSending}
@@ -175,10 +175,10 @@ export default function AdminOrderDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* ── Left Column: Items & Details ── */}
         <div className="lg:col-span-2 space-y-8">
-          
+
           {/* Items Table */}
           <Card className="shadow-2xl rounded-[32px] overflow-hidden">
             <CardHeader className="border-b px-8 py-6">
@@ -248,16 +248,16 @@ export default function AdminOrderDetailPage() {
                   <DetailItem label="Passport" value={order.userPassport || "—"} icon={<CreditCard className="text-gray-400" />} isMono />
                 </div>
                 <div className="space-y-6">
-                  <DetailItem 
-                    label="Shipping Method" 
-                    value={order.shippingMethod === "Azerpost" ? "Azərpoçt" : order.shippingMethod} 
-                    icon={<Truck className="text-gray-400" />} 
+                  <DetailItem
+                    label="Shipping Method"
+                    value={order.shippingMethod === "Azerpost" ? "Azərpoçt" : order.shippingMethod}
+                    icon={<Truck className="text-gray-400" />}
                   />
                   {order.shippingMethod === "Azerpost" && (
-                    <DetailItem 
-                      label="Delivery Type" 
-                      value={order.deliveryType === 0 ? "Post Office" : "Home Delivery"} 
-                      icon={<Truck className="text-gray-400" />} 
+                    <DetailItem
+                      label="Delivery Type"
+                      value={order.deliveryType === 0 ? "Post Office" : "Home Delivery"}
+                      icon={<Truck className="text-gray-400" />}
                     />
                   )}
                   <DetailItem label="Package Weight" value={`${order.packageWeight} kg`} icon={<Weight className="text-gray-400" />} />
@@ -278,7 +278,7 @@ export default function AdminOrderDetailPage() {
               {/* Azerpost Section */}
               {order.azerpostOrderId && (
                 <div className="mt-10 pt-10 border-t border-white/5">
-                   {/* ... (Azerpost section logic remains same but with updated colors) ... */}
+                  {/* ... (Azerpost section logic remains same but with updated colors) ... */}
                 </div>
               )}
             </CardContent>
@@ -287,7 +287,7 @@ export default function AdminOrderDetailPage() {
 
         {/* ── Right Column: Customer & Payment ── */}
         <div className="space-y-8 text-white">
-          
+
           {/* Customer Card */}
           <Card className="shadow-2xl rounded-[32px] overflow-hidden">
             <CardHeader className="bg-muted/50 border-b px-8 py-6">
@@ -370,13 +370,13 @@ export default function AdminOrderDetailPage() {
             <Card className="border-white/5 shadow-2xl rounded-[32px] overflow-hidden bg-[#141414] text-white">
               <CardHeader className="bg-white/5 border-b border-white/5 px-8 py-6">
                 <CardTitle className="text-[11px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-2">
-                   Notes
+                  Notes
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-8">
-                 <p className="text-sm text-gray-400 italic bg-white/[0.02] p-6 rounded-[24px] border border-white/5">
-                   "{order.notes}"
-                 </p>
+                <p className="text-sm text-gray-400 italic bg-white/[0.02] p-6 rounded-[24px] border border-white/5">
+                  "{order.notes}"
+                </p>
               </CardContent>
             </Card>
           )}
@@ -388,10 +388,10 @@ export default function AdminOrderDetailPage() {
 }
 
 // ── Shared UI Components ───────────────────────────────────────────────────────
-function DetailItem({ label, value, icon, isMono = false, className = "" }: { 
-  label: string; 
-  value: string; 
-  icon: React.ReactNode; 
+function DetailItem({ label, value, icon, isMono = false, className = "" }: {
+  label: string;
+  value: string;
+  icon: React.ReactNode;
   isMono?: boolean;
   className?: string;
 }) {
