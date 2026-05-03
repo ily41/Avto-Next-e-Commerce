@@ -26,10 +26,29 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { FormLabel } from "@/components/ui/form";
-import { Plus, ImageIcon, Trash2 } from "lucide-react";
+import { Plus, ImageIcon, Trash2, FileDown } from "lucide-react";
 import * as z from "zod";
+import { useLazyExportProductsQuery } from "@/lib/store/products/apislice";
 
 export default function ProductsPage() {
+    const [exportProducts, { isFetching: isExporting }] = useLazyExportProductsQuery();
+    
+    const handleExport = async () => {
+        try {
+            const blob = await exportProducts().unwrap();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `products-export-${new Date().toISOString().split('T')[0]}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            toast.success("Məhsullar uğurla eksport edildi");
+        } catch (err) {
+            toast.error("Eksport zamanı xəta baş verdi");
+        }
+    };
     const [{ pageIndex, pageSize }, setPagination] = useState({
         pageIndex: 0,
         pageSize: 10,
@@ -310,32 +329,47 @@ export default function ProductsPage() {
                         </div>
                     )}
                 </div>
-                <DynamicAddPopup
-                    title="Məhsul Əlavə Et"
-                    triggerText="Məhsul Əlavə Et"
-                    schema={productSchema}
-                    defaultValues={{
-                        name: "", sku: "", shortDescription: "", description: "",
-                        categoryId: "", brandId: "", price: 0, discountedPrice: 0,
-                        stockQuantity: 0, weightKg: 0, isHotDeal: false, isActive: true, imageFile: null, detailImageFiles: []
-                    }}
-                    fields={productFields}
-                    isLoading={isCreating}
-                    onSubmit={async (values) => {
-                        if (!values.imageFile) {
-                            toast.error("Əsas şəkil tələb olunur");
-                            return;
-                        }
-                        await createProduct({
-                            ...values,
-                            discountedPrice: values.discountedPrice || values.price,
-                            shortDescription: values.shortDescription || "",
-                            primaryImageUrl: values.imageFile,
-                            detailImageFiles: values.detailImageFiles || [],
-                        }).unwrap();
-                        toast.success("Məhsul yaradıldı!");
-                    }}
-                />
+                <div className="flex items-center gap-2">
+                    <Button 
+                        variant="outline" 
+                        onClick={handleExport} 
+                        disabled={isExporting}
+                        className="font-bold gap-2"
+                    >
+                        {isExporting ? (
+                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+                        ) : (
+                            <FileDown size={18} />
+                        )}
+                        Eksport
+                    </Button>
+                    <DynamicAddPopup
+                        title="Məhsul Əlavə Et"
+                        triggerText="Məhsul Əlavə Et"
+                        schema={productSchema}
+                        defaultValues={{
+                            name: "", sku: "", shortDescription: "", description: "",
+                            categoryId: "", brandId: "", price: 0, discountedPrice: 0,
+                            stockQuantity: 0, weightKg: 0, isHotDeal: false, isActive: true, imageFile: null, detailImageFiles: []
+                        }}
+                        fields={productFields}
+                        isLoading={isCreating}
+                        onSubmit={async (values) => {
+                            if (!values.imageFile) {
+                                toast.error("Əsas şəkil tələb olunur");
+                                return;
+                            }
+                            await createProduct({
+                                ...values,
+                                discountedPrice: values.discountedPrice || values.price,
+                                shortDescription: values.shortDescription || "",
+                                primaryImageUrl: values.imageFile,
+                                detailImageFiles: values.detailImageFiles || [],
+                            }).unwrap();
+                            toast.success("Məhsul yaradıldı!");
+                        }}
+                    />
+                </div>
             </div>
 
             <DataTable

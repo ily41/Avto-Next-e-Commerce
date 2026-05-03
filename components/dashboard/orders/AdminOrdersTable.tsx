@@ -12,7 +12,10 @@ import {
   XCircle,
   AlertTriangle,
   RefreshCcw,
-  ExternalLink
+  ExternalLink,
+  FileText,
+  Tag,
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +32,9 @@ import {
   Order,
   useGetAdminOrdersQuery,
   useUpdateOrderStatusMutation,
-  useSendToAzerpostMutation
+  useSendToAzerpostMutation,
+  useLazyGetOrderPdfQuery,
+  useLazyGetOrderLabelQuery
 } from "@/lib/store/order/orderApiSlice";
 import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
@@ -94,6 +99,43 @@ export function AdminOrdersTable() {
       toast.success(result.message);
     } catch (err: any) {
       toast.error(err?.data?.error || "Azərpoçt göndərişi uğursuz oldu");
+    }
+  };
+
+  const [getOrderPdf, { isFetching: isDownloadingPdf }] = useLazyGetOrderPdfQuery();
+  const [getOrderLabel, { isFetching: isDownloadingLabel }] = useLazyGetOrderLabelQuery();
+
+  const handleDownloadPdf = async (order: Order) => {
+    try {
+      const blob = await getOrderPdf(order.id).unwrap();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `invoice-${order.orderNumber}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      toast.success("İnvoys yükləndi");
+    } catch (err) {
+      toast.error("İnvoys yüklənərkən xəta baş verdi");
+    }
+  };
+
+  const handleDownloadLabel = async (order: Order) => {
+    try {
+      const blob = await getOrderLabel(order.id).unwrap();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `label-${order.orderNumber}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      toast.success("Etiket yükləndi");
+    } catch (err) {
+      toast.error("Etiket yüklənərkən xəta baş verdi");
     }
   };
 
@@ -230,12 +272,29 @@ export function AdminOrdersTable() {
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[160px]">
+            <DropdownMenuContent align="end" className="w-[180px]">
               <DropdownMenuLabel>Fəaliyyətlər</DropdownMenuLabel>
               <DropdownMenuItem asChild>
                 <Link href={`/dashboard/orders/${order.id}`} className="flex items-center gap-2 cursor-pointer">
                   <Eye className="h-4 w-4" /> Detallara bax
                 </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem 
+                className="cursor-pointer gap-2"
+                onClick={() => handleDownloadPdf(order)}
+                disabled={isDownloadingPdf}
+              >
+                {isDownloadingPdf ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
+                İnvoys (PDF)
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="cursor-pointer gap-2"
+                onClick={() => handleDownloadLabel(order)}
+                disabled={isDownloadingLabel}
+              >
+                {isDownloadingLabel ? <Loader2 className="h-4 w-4 animate-spin" /> : <Tag className="h-4 w-4" />}
+                Etiket (PDF)
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem

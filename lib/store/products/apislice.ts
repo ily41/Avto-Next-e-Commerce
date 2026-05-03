@@ -263,6 +263,12 @@ export const productApi = api.injectEndpoints({
       }),
       providesTags: ["Product"],
     }),
+    exportProducts: builder.query<Blob, void>({
+      query: () => ({
+        url: "Products/export",
+        responseHandler: (response: Response) => response.blob(),
+      }),
+    }),
   }),
 });
 
@@ -278,4 +284,6 @@ export const {
   useDeleteProductFilterMutation,
   useGetHotDealsQuery,
   useGetRecommendationsQuery,
+  useExportProductsQuery,
+  useLazyExportProductsQuery,
 } = productApi;

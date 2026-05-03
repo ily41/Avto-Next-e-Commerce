@@ -5,10 +5,12 @@ import {
   useGetCartMinimumAmountQuery, 
   useUpdateCartMinimumAmountMutation,
   useGetLoyaltySettingsQuery,
-  useUpdateLoyaltySettingsMutation,
-  useGetInstallmentConfigurationQuery,
-  useUpdateInstallmentConfigurationMutation
+  useUpdateLoyaltySettingsMutation
 } from "@/lib/store/settings/apislice"
+import {
+    useGetInstallmentConfigurationQuery,
+    useUpdateInstallmentConfigurationMutation
+} from "@/lib/store/installment/installmentApiSlice"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"

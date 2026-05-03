@@ -230,7 +230,7 @@ export function CreditRequestsTable() {
         <DataTable
           columns={columns}
           data={data?.items || []}
-          pageCount={Math.ceil((data?.totalCount || 0) / pagination.pageSize)}
+          pageCount={data?.totalPages || 0}
           manualPagination={true}
           pagination={pagination}
           onPaginationChange={setPagination}
@@ -269,10 +269,38 @@ export function CreditRequestsTable() {
                     <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Müştəri</p>
                     <p className="text-sm font-black">{selectedRequest.fullName}</p>
                     <p className="text-[11px] font-bold text-blue-500">{selectedRequest.phoneNumber}</p>
+                    {selectedRequest.userPassport && (
+                        <p className="text-[10px] font-bold text-gray-500 mt-1">Passport: {selectedRequest.userPassport}</p>
+                    )}
                 </div>
                 <div className="space-y-1 text-right">
                     <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Yekun Məbləğ</p>
                     <p className="text-2xl font-black">₼{selectedRequest.totalAmount.toFixed(2)}</p>
+                    <p className="text-[10px] font-bold text-gray-500">
+                        Sifariş: ₼{selectedRequest.cartAmount.toFixed(2)} + Çatdırılma: ₼{selectedRequest.deliveryFee.toFixed(2)}
+                    </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1 bg-muted/30 p-4 rounded-xl border">
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Çatdırılma Ünvanı</p>
+                    <p className="text-xs font-bold">{selectedRequest.shippingAddress}</p>
+                    {selectedRequest.deliveryPostCode && (
+                         <p className="text-[10px] font-bold text-gray-500">Poçt kodu: {selectedRequest.deliveryPostCode}</p>
+                    )}
+                </div>
+                <div className="space-y-1 bg-muted/30 p-4 rounded-xl border">
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Çatdırılma Növü</p>
+                    <p className="text-xs font-bold uppercase tracking-tight">{selectedRequest.shippingMethod}</p>
+                    <div className="flex gap-2 mt-1">
+                        {selectedRequest.fragile && (
+                            <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-[9px] font-black uppercase tracking-widest">Kövrək</span>
+                        )}
+                        {selectedRequest.packageWeight > 0 && (
+                             <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-[9px] font-black uppercase tracking-widest">{selectedRequest.packageWeight} KG</span>
+                        )}
+                    </div>
                 </div>
               </div>
 

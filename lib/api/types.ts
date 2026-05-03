@@ -239,12 +239,22 @@ export type CreditRequestItem = {
 
 export type CreditRequest = {
   id: string;
+  userId: string;
   fullName: string;
   phoneNumber: string;
+  cartAmount: number;
+  deliveryFee: number;
   totalAmount: number;
+  shippingMethod: string;
+  shippingAddress: string;
+  deliveryPostCode: string;
+  userPassport: string;
+  packageWeight: number;
+  fragile: boolean;
   status: string; // Label from backend
   statusValue?: CreditRequestStatus; // Enum value if needed
   notes: string;
+  convertedOrderId: string | null;
   createdAt: string;
   updatedAt: string;
   items: CreditRequestItem[];
@@ -253,6 +263,11 @@ export type CreditRequest = {
 export type CreditRequestCreateRequest = {
   fullName: string;
   phoneNumber: string;
+  shippingMethod: string;
+  shippingAddress: string;
+  deliveryPostCode: string;
+  userPassport: string;
+  fragile: boolean;
 };
 
 export type CreditRequestStatusUpdateRequest = {
@@ -263,5 +278,13 @@ export type CreditRequestStatusUpdateRequest = {
 export type CreditRequestListResponse = {
   items: CreditRequest[];
   totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  count: number;
+  startIndex: number;
+  endIndex: number;
 };
 

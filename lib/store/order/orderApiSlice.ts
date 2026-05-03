@@ -133,6 +133,18 @@ export const orderApiSlice = api.injectEndpoints({
       }),
       invalidatesTags: ["Order"],
     }),
+    getOrderPdf: builder.query<Blob, string>({
+      query: (id) => ({
+        url: `/Order/${id}/pdf`,
+        responseHandler: (response: Response) => response.blob(),
+      }),
+    }),
+    getOrderLabel: builder.query<Blob, string>({
+      query: (id) => ({
+        url: `/Order/${id}/label`,
+        responseHandler: (response: Response) => response.blob(),
+      }),
+    }),
   }),
 });
 
@@ -144,4 +156,8 @@ export const {
   useSendToAzerpostMutation,
   useGetAzerpostStatusQuery,
   useUpdateOrderStatusMutation,
+  useGetOrderPdfQuery,
+  useGetOrderLabelQuery,
+  useLazyGetOrderPdfQuery,
+  useLazyGetOrderLabelQuery,
 } = orderApiSlice;

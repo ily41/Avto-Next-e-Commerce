@@ -6,6 +6,7 @@ import {
 } from "@/lib/api/types";
 
 export const installmentApi = api.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     // Public Endpoints
     getInstallmentOptions: builder.query<InstallmentOption[], { amount: number }>({

@@ -6,6 +6,7 @@ import {
 } from "@/lib/api/types";
 
 export const settingsApi = api.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     getCartMinimumAmount: builder.query<CartMinimumAmountSetting, void>({
       query: () => "Settings/cart-minimum-amount",
@@ -31,18 +32,6 @@ export const settingsApi = api.injectEndpoints({
       }),
       invalidatesTags: ["Settings"],
     }),
-    getInstallmentConfiguration: builder.query<InstallmentConfiguration, void>({
-      query: () => "Installment/configuration",
-      providesTags: ["Settings"],
-    }),
-    updateInstallmentConfiguration: builder.mutation<InstallmentConfiguration, InstallmentConfiguration>({
-      query: (body) => ({
-        url: "Installment/configuration",
-        method: "PUT",
-        body,
-      }),
-      invalidatesTags: ["Settings"],
-    }),
   }),
 });
 
@@ -51,6 +40,4 @@ export const {
   useUpdateCartMinimumAmountMutation,
   useGetLoyaltySettingsQuery,
   useUpdateLoyaltySettingsMutation,
-  useGetInstallmentConfigurationQuery,
-  useUpdateInstallmentConfigurationMutation,
 } = settingsApi;
