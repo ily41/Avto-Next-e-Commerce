@@ -5,6 +5,7 @@ import PopularBrands from "@/components/home/PopularBrands";
 import ShopByCategories from "@/components/shop-by-categories/ShopByCategories";
 import MiddleBanners from "@/components/home/MiddleBanners";
 import RecentlyLaunched from "@/components/home/RecentlyLaunched";
+import BottomCampaignBanner from "@/components/home/BottomCampaignBanner";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
         <MiddleBanners />
         <MonthlyDealsSection />
         <RecentlyLaunched />
+        <BottomCampaignBanner />
         <PopularBrands />
         <TechGadgets />
       </div>

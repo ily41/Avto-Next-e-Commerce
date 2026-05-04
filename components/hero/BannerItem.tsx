@@ -54,7 +54,7 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
     const finalPaddingY = banner.buttonPaddingY ?? 10;
     const finalFontSize = banner.buttonFontSize ?? 14;
 
-    const objectFitClass = banner.type === 2 ? "object-cover" : "object-contain";
+    const objectFitClass = (banner.type === 2 || banner.type === 5) ? "object-cover" : "object-contain";
 
     return (
         <div className="relative w-full h-full overflow-hidden rounded-lg  group cursor-pointer">

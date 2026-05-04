@@ -18,6 +18,7 @@ import {
     useDeleteBannerMutation,
     useDeleteBannerImageMutation,
     useUploadBannerImagesMutation,
+    useUploadMobileBannerImageMutation,
     type Banner,
 } from "@/lib/store/banners/apislice";
 
@@ -33,6 +34,7 @@ export default function BannersPage() {
     const [createBanner, { isLoading: isCreating }] = useCreateBannerWithImagesMutation();
     const [updateBanner, { isLoading: isUpdating }] = useUpdateBannerMutation();
     const [uploadBannerImages, { isLoading: isUploadingImages }] = useUploadBannerImagesMutation();
+    const [uploadMobileBannerImage, { isLoading: isUploadingMobile }] = useUploadMobileBannerImageMutation();
     const [deleteBanner] = useDeleteBannerMutation();
     const [deleteBannerImage, { isLoading: isDeletingImage }] = useDeleteBannerImageMutation();
 
@@ -350,7 +352,7 @@ export default function BannersPage() {
                         mobileImageFile: undefined,
                     }}
                     fields={bannerEditFields}
-                    isLoading={isUpdating || isUploadingImages}
+                    isLoading={isUpdating || isUploadingImages || isUploadingMobile}
                     onSubmit={async (values) => {
                         const dataToUpdate = { ...editingBanner, ...values };
                         delete (dataToUpdate as any).imageFile;
@@ -362,11 +364,17 @@ export default function BannersPage() {
                         const updatePromise = updateBanner({ id: editingBanner.id, data: dataToUpdate as any }).unwrap();
 
                         const uploads = [];
-                        if (values.imageFile instanceof File || values.mobileImageFile instanceof File) {
+                        if (values.imageFile instanceof File) {
                             uploads.push(uploadBannerImages({
                                 id: editingBanner.id,
-                                imageFile: values.imageFile instanceof File ? values.imageFile : undefined,
-                                mobileImageFile: values.mobileImageFile instanceof File ? values.mobileImageFile : undefined
+                                imageFile: values.imageFile,
+                            }).unwrap());
+                        }
+
+                        if (values.mobileImageFile instanceof File) {
+                            uploads.push(uploadMobileBannerImage({
+                                id: editingBanner.id,
+                                mobileImageFile: values.mobileImageFile,
                             }).unwrap());
                         }
 

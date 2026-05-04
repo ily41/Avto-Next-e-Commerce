@@ -98,6 +98,18 @@ export const bannersApiSlice = api.enhanceEndpoints({ addTagTypes: ['Banner'] })
             },
             invalidatesTags: (result, error, { id }) => ['Banner', { type: 'Banner' as const, id }],
         }),
+        uploadMobileBannerImage: builder.mutation<void, { id: string; mobileImageFile: File }>({
+            query: ({ id, mobileImageFile }) => {
+                const formData = new FormData();
+                formData.append("imageFile", mobileImageFile);
+                return {
+                    url: `/Admin/banners/${id}/upload-mobile-image`,
+                    method: "POST",
+                    body: formData,
+                };
+            },
+            invalidatesTags: (result, error, { id }) => ['Banner', { type: 'Banner' as const, id }],
+        }),
     }),
 });
 
@@ -109,4 +121,5 @@ export const {
     useDeleteBannerMutation,
     useDeleteBannerImageMutation,
     useUploadBannerImagesMutation,
+    useUploadMobileBannerImageMutation,
 } = bannersApiSlice;
