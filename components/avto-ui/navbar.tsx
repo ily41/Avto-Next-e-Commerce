@@ -82,10 +82,10 @@ export function Navbar() {
             {/* 2. Top Bar (Desktop only) */}
             <TopBar />
 
-            {/* 3. Mobile Header Sub-info */}
+            {/* 3. Mobile Header Sub-info
             <div className="w-full bg-white py-2 px-4 text-center lg:hidden text-[13px] font-medium text-gray-700 border-b border-gray-100">
                 200 manatdan yuxarı alış-verişə çatdırılma pulsuz
-            </div>
+            </div> */}
 
             {/* 4. Main Navbar Row */}
             <div className="w-full flex justify-center py-3  border-gray-100">

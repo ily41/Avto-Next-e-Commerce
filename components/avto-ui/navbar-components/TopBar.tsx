@@ -26,9 +26,9 @@ export function TopBar() {
                         </Link>
                     ))}
                 </div>
-                <div className="font-medium text-gray-700">
+                {/* <div className="font-medium text-gray-700">
                     200 manatdan yuxarı alış-verişə çatdırılma pulsuz
-                </div>
+                </div> */}
             </div>
         </div>
     );
