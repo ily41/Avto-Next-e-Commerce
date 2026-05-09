@@ -21,12 +21,12 @@ const NavLinks = () => {
     }
 
     const links: NavLink[] = [
-        { name: "Home", href: "/" },
-        { name: "Shop", href: "/shop", hasDropdown: true },
-        { name: "Categories", href: "/categories", label: "SALE", labelColor: "bg-green-50 text-green-500", hasDropdown: true },
-        { name: "Products", href: "/shop", label: "HOT", labelColor: "bg-red-50 text-red-500", hasDropdown: true },
-        { name: "Top deals", href: "/shop?isHotDeal=true", hasDropdown: true },
-        { name: "Elements", href: "#", hasDropdown: true },
+        { name: "Ana Səhifə", href: "/" },
+        { name: "Mağaza", href: "/shop", hasDropdown: true },
+        { name: "Kateqoriyalar", href: "/categories", label: "ENDİRİM", labelColor: "bg-green-50 text-green-500", hasDropdown: true },
+        { name: "Məhsullar", href: "/shop", label: "YENİ", labelColor: "bg-red-50 text-red-500", hasDropdown: true },
+        { name: "Təkliflər", href: "/shop?isHotDeal=true", hasDropdown: true },
+        { name: "Elementlər", href: "#", hasDropdown: true },
     ];
 
     return (
@@ -42,7 +42,7 @@ const NavLinks = () => {
                         <div className={`flex items-center gap-1.5 py-4 ${link.nonClickable ? "cursor-default" : "cursor-pointer"}`}>
                             {link.nonClickable ? (
                                 <span
-                                    className={`text-[12px] min-[1150px]:text-[14px] font-bold transition-colors whitespace-nowrap ${link.name === "Home" || hoveredLink === link.name ? "text-blue-600" : "text-gray-800"
+                                    className={`text-[12px] min-[1150px]:text-[14px] font-bold transition-colors whitespace-nowrap ${link.name === "Ana Səhifə" || hoveredLink === link.name ? "text-blue-600" : "text-gray-800"
                                         }`}
                                 >
                                     {link.name}
@@ -50,14 +50,14 @@ const NavLinks = () => {
                             ) : (
                                 <Link
                                     href={link.href}
-                                    className={`text-[12px] min-[1150px]:text-[14px] font-bold transition-colors whitespace-nowrap ${link.name === "Home" || hoveredLink === link.name ? "text-blue-600" : "text-gray-800"
+                                    className={`text-[12px] min-[1150px]:text-[14px] font-bold transition-colors whitespace-nowrap ${link.name === "Ana Səhifə" || hoveredLink === link.name ? "text-blue-600" : "text-gray-800"
                                         }`}
                                 >
                                     {link.name}
                                 </Link>
                             )}
                             {link.label && (
-                                <span className={`text-[8px] font-bold px-1 py-0.5 rounded uppercase leading-none border ${link.labelColor} ${link.label === "SALE" ? "border-green-200" : "border-red-200"}`}>
+                                <span className={`text-[8px] font-bold px-1 py-0.5 rounded uppercase leading-none border ${link.labelColor} ${link.label === "ENDİRİM" ? "border-green-200" : "border-red-200"}`}>
                                     {link.label}
                                 </span>
                             )}
@@ -71,33 +71,33 @@ const NavLinks = () => {
                         </div>
 
                         {/* Mega Menu Dropdown for Products */}
-                        {link.name === "Products" && (
+                        {link.name === "Məhsullar" && (
                             <ProductsMegaMenu 
-                                isOpen={hoveredLink === "Products"} 
+                                isOpen={hoveredLink === "Məhsullar"} 
                                 setHoveredLink={setHoveredLink} 
                             />
                         )}
 
                         {/* Mega Menu Dropdown for Categories */}
-                        {link.name === "Categories" && (
+                        {link.name === "Kateqoriyalar" && (
                             <CategoriesMegaMenu 
-                                isOpen={hoveredLink === "Categories"} 
+                                isOpen={hoveredLink === "Kateqoriyalar"} 
                                 setHoveredLink={setHoveredLink} 
                             />
                         )}
  
                         {/* Mega Menu Dropdown for Brands */}
-                        {link.name === "Brands" && (
+                        {link.name === "Brendlər" && (
                             <BrandsMegaMenu 
-                                isOpen={hoveredLink === "Brands"} 
+                                isOpen={hoveredLink === "Brendlər"} 
                                 setHoveredLink={setHoveredLink} 
                             />
                         )}
 
                         {/* Mega Menu Dropdown for Top Deals */}
-                        {link.name === "Top deals" && (
+                        {link.name === "Təkliflər" && (
                             <TopDealsMegaMenu 
-                                isOpen={hoveredLink === "Top deals"} 
+                                isOpen={hoveredLink === "Təkliflər"} 
                                 setHoveredLink={setHoveredLink} 
                             />
                         )}

@@ -20,7 +20,7 @@ const CategoryMenu = () => {
         <div className="relative w-full h-full min-h-0 flex flex-col bg-white border border-gray-200 rounded-lg">
             <div className="bg-blue-600 text-white px-6 h-[64px] font-bold flex items-center lg:hidden rounded-t-lg">
                 <LayoutGrid size={22} className="mr-3" />
-                <span className="uppercase text-sm tracking-widest font-extrabold">All Categories</span>
+                <span className="uppercase text-sm tracking-widest font-extrabold">Bütün kateqoriyalar</span>
             </div>
             <ul
                 onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
@@ -28,7 +28,7 @@ const CategoryMenu = () => {
             >
                 <li className="bg-blue-600 text-white px-6 py-2 h-[64px] font-bold hidden lg:flex items-center rounded-t-lg">
                     <LayoutGrid size={22} className="mr-3" />
-                    <span className="uppercase text-sm tracking-widest font-extrabold">All Categories</span>
+                    <span className="uppercase text-sm tracking-widest font-extrabold">Bütün kateqoriyalar</span>
                 </li>
                 <li
                     onMouseEnter={(e) => {
@@ -39,7 +39,7 @@ const CategoryMenu = () => {
                     className="group px-5 py-5 hover:bg-gray-50 cursor-pointer flex justify-between items-center transition-all border-b border-gray-100 flex-1"
                 >
                     <Link href="/shop" className="text-gray-700 font-medium text-[14px] flex items-center group-hover:text-blue-600">
-                        Our Store
+                        Mağazamız
                     </Link>
                     <ChevronRight size={14} className="text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-transform" />
                 </li>

@@ -99,7 +99,7 @@ const HeroClient = ({ banners }: HeroClientProps) => {
                 <span className="w-6 h-6 bg-red-600 text-white flex items-center justify-center rounded-full text-[12px] font-bold">
                   %
                 </span>
-                Super Discount
+                Super Endirim
               </div>
             </div>
 
