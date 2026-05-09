@@ -131,14 +131,21 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                 )}
 
                 {/* Product image */}
-                <div className="absolute inset-0 flex items-center justify-center p-5">
+                <div className="flex-1 flex items-center justify-center p-5 min-h-[180px]">
                     <img
                         src={fullPrimaryUrl}
                         alt={product.name}
                         onError={(e) => (e.currentTarget.src = PLACEHOLDER_IMAGE)}
                         className="max-h-full max-w-full object-contain"
-                        style={{ maxHeight: "160px" }}
+                        style={{ maxHeight: "var(--card-img-max-height, 224px)" }}
                     />
+                    <style jsx>{`
+                        @media (max-width: 1000px) {
+                            img {
+                                max-height: 160px !important;
+                            }
+                        }
+                    `}</style>
                 </div>
 
                 {/* Discount badge — bottom left of image area */}

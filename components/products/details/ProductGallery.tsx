@@ -42,30 +42,9 @@ export default function ProductGallery({ images, primaryUrl }: ProductGalleryPro
   const scrollNext = () => scrollToImage(Math.min(images.length - 1, activeIndex + 1));
 
   return (
-    <div className="w-full flex flex-col md:flex-row gap-6">
-      {/* Thumbnails (Vertical on MD+, Horizontal on Mobile) */}
-      <div className="flex flex-row md:flex-col gap-3 order-2 md:order-1 no-scrollbar overflow-x-auto md:overflow-y-auto max-h-[100px] md:max-h-none min-w-[70px]">
-        {images.map((img, idx) => (
-          <button
-            key={img.id}
-            onClick={() => scrollToImage(idx)}
-            className={`w-16 h-16 md:w-20 md:h-20 rounded-xl border-2 transition-all flex-shrink-0 p-2 flex items-center justify-center bg-white ${
-              activeIndex === idx 
-                ? "border-blue-600 shadow-md scale-105 ring-4 ring-blue-50" 
-                : "border-gray-100 hover:border-blue-200"
-            }`}
-          >
-            <img 
-              src={fullUrl(img.url || "")} 
-              className="max-h-full max-w-full object-contain" 
-              alt={`şəkil ${idx + 1}`} 
-            />
-          </button>
-        ))}
-      </div>
-
-      {/* Main Image Slider Area */}
-      <div className="flex-1 order-1 md:order-2 relative group min-w-0">
+    <div className="w-full flex flex-col md:flex-row gap-6 relative">
+      {/* Main Image Slider Area — This determines the height of the parent */}
+      <div className="flex-1 order-1 md:order-2 relative group min-w-0 md:ml-[104px] lg:ml-[124px]">
         {/* Navigation Arrows (Visible on Hover/Touch) */}
         <button 
           onClick={scrollPrev}
@@ -121,6 +100,27 @@ export default function ProductGallery({ images, primaryUrl }: ProductGalleryPro
             />
           ))}
         </div>
+      </div>
+
+      {/* Thumbnails (Vertical on MD+, Horizontal on Mobile) — Absolute on desktop to match main image height */}
+      <div className="flex flex-row md:flex-col gap-3 order-2 md:order-1 no-scrollbar overflow-x-auto md:overflow-y-auto h-[100px] md:h-full md:absolute md:left-0 md:top-0 md:bottom-0 md:w-[80px] lg:w-[100px] min-h-0 min-w-0">
+        {images.map((img, idx) => (
+          <button
+            key={img.id}
+            onClick={() => scrollToImage(idx)}
+            className={`w-16 h-16 md:w-full aspect-square rounded-xl border-2 transition-all flex-shrink-0 p-2 flex items-center justify-center bg-white ${
+              activeIndex === idx 
+                ? "border-blue-600 shadow-md scale-105 ring-4 ring-blue-50" 
+                : "border-gray-100 hover:border-blue-200"
+            }`}
+          >
+            <img 
+              src={fullUrl(img.url || "")} 
+              className="max-h-full max-w-full object-contain" 
+              alt={`şəkil ${idx + 1}`} 
+            />
+          </button>
+        ))}
       </div>
     </div>
   );

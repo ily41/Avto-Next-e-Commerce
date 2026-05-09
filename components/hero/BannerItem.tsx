@@ -13,7 +13,9 @@ interface BannerItemProps {
 const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
     const {
         title,
+        titleVisible = true,
         description,
+        descriptionVisible = true,
         buttonText,
         buttonVisible,
         imageUrl,
@@ -40,8 +42,8 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
     // Function to scale font size responsively
     const getResponsiveStyle = (baseSize: number): string => {
         // Base size is desktop, scale down for smaller screens using clamp
-        const minSize = Math.max(baseSize * 0.6, 12); // Don't go below 12px or 60% of original
-        return `clamp(${minSize}px, ${baseSize * 0.08}vw + ${baseSize * 0.5}px, ${baseSize}px)`;
+        const minSize = Math.max(baseSize * 0.5, 10); // Don't go below 10px or 50% of original
+        return `clamp(${minSize}px, ${baseSize * 0.1}vw + ${baseSize * 0.4}px, ${baseSize}px)`;
     };
     const desktopSrc = fullUrl(imageUrl);
     const mobileSrc = mobileImageUrl ? fullUrl(mobileImageUrl) : desktopSrc;
@@ -54,10 +56,10 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
     const finalPaddingY = banner.buttonPaddingY ?? 10;
     const finalFontSize = banner.buttonFontSize ?? 14;
 
-    const objectFitClass = (banner.type === 2 || banner.type === 5) ? "object-cover" : "object-contain";
+    const objectFitClass = "object-cover";
 
     return (
-        <div className="relative w-full h-full overflow-hidden rounded-lg  group cursor-pointer">
+        <div className="relative w-full h-full overflow-hidden rounded-lg group cursor-pointer bg-gray-50">
             <div className="absolute inset-0 w-full h-full">
                 {/* Desktop image — hidden on small screens if a mobile version exists */}
                 <Image
@@ -90,8 +92,8 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
             </div>
 
             {/* Content Overlay */}
-            <div className="absolute inset-0 p-6 md:p-12 pointer-events-none">
-                {title && (
+            <div className={`absolute inset-0 pointer-events-none ${variant === "main" ? "p-6 md:p-12" : "p-4 md:p-6"}`}>
+                {titleVisible && title && (
                     <h2
                         className="absolute font-bold leading-tight"
                         style={{
@@ -100,22 +102,22 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
                             fontSize: getResponsiveStyle(titleFontSize),
                             color: titleColor || "#000",
                             textAlign: (titleAlign as any) || "left",
-                            maxWidth: "80%",
+                            maxWidth: "85%",
                         }}
                     >
                         {title}
                     </h2>
                 )}
 
-                {description && (
+                {descriptionVisible && description && (
                     <p
-                        className="absolute font-medium opacity-90"
+                        className="absolute font-medium opacity-90 leading-snug"
                         style={{
                             left: `${descriptionPositionX}%`,
                             top: `${descriptionPositionY}%`,
                             fontSize: getResponsiveStyle(descriptionFontSize),
                             color: descriptionColor || "#333",
-                            maxWidth: "70%",
+                            maxWidth: "80%",
                         }}
                     >
                         {description}

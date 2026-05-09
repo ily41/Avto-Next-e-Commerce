@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { useState } from "react";
+import Link from "next/link";
+import SoldNotification from "./SoldNotification";
 import { useToggleFavoriteMutation } from "@/lib/store/favorites/apislice";
 import {
   IconHeart,
@@ -12,6 +14,7 @@ import {
   IconHeartFilled,
   IconCreditCard,
   IconCheck,
+  IconMessageCircle,
 } from "@tabler/icons-react";
 import { Product } from "@/lib/api/types";
 import { useCart } from "@/hooks/useCart";
@@ -82,15 +85,39 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
 
   return (
     <div className="flex flex-col gap-6 font-sans">
-      <div className="flex flex-col gap-2">
-        <span className="text-[12px] md:text-[14px] text-blue-600 font-bold uppercase tracking-widest">{product.categoryName || product.brandName}</span>
-        <h1 className="text-[24px] md:text-[32px] font-bold text-gray-900 leading-tight">{product.name}</h1>
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-center gap-1.5 text-[14px]">
+          <span className="text-gray-500">Brand:</span>
+          <Link 
+            href={`/shop?brand=${product.brandId}`} 
+            className="text-blue-600 font-bold hover:underline transition-all"
+          >
+            {product.brandName || "Brend yoxdur"}
+          </Link>
+        </div>
+        <h1 className="text-[24px] md:text-[32px] font-bold text-gray-900 leading-tight">
+          {product.name}
+        </h1>
       </div>
 
-      <div className="flex items-center gap-4">
-        {discount > 0 && <span className="text-[18px] md:text-[22px] text-gray-400 line-through decoration-gray-300 font-medium">₼{product.price.toFixed(2)}</span>}
-        <span className="text-[28px] md:text-[36px] font-bold text-[#1a1a1a]">₼{(product.discountedPrice || product.price).toFixed(2)}</span>
-        {discount > 0 && <span className="bg-red-50 text-red-600 text-[12px] font-bold px-2 py-1 rounded-md">-{discount}% ENDİRİM</span>}
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-4">
+          {discount > 0 && (
+            <span className="text-[18px] md:text-[22px] text-gray-400 line-through decoration-gray-300 font-medium">
+              ₼{product.price.toFixed(2)}
+            </span>
+          )}
+          <span className="text-[28px] md:text-[36px] font-bold text-[#1a1a1a]">
+            ₼{(product.discountedPrice || product.price).toFixed(2)}
+          </span>
+          {discount > 0 && (
+            <span className="bg-red-50 text-red-600 text-[12px] font-bold px-2 py-1 rounded-md">
+              -{discount}% ENDİRİM
+            </span>
+          )}
+        </div>
+        
+        <SoldNotification />
       </div>
 
       <div className="text-[14px] leading-relaxed text-gray-600 border-b border-gray-100 pb-6 line-clamp-4">
@@ -143,7 +170,7 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
           </button>
         )}
 
-        <div className="flex items-center gap-8 justify-center mt-2 border-t border-gray-50 pt-4">
+        <div className="flex items-center gap-6 justify-center mt-2 border-t border-gray-50 pt-4">
           {isAuth ? (
             <button
               onClick={handleFavoriteClick}
@@ -160,6 +187,14 @@ export default function ProductInfo({ product, discount }: ProductInfoProps) {
               </button>
             </LoginPopup>
           )}
+          
+          <Link
+            href="/contact-us"
+            className="flex items-center gap-2 text-[13px] font-bold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-tight"
+          >
+            <IconMessageCircle size={18} /> Sual ver
+          </Link>
+
           <button 
             onClick={handleShare}
             className="flex items-center gap-2 text-[13px] font-bold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-tight cursor-pointer"

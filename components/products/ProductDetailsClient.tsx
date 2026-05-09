@@ -7,6 +7,7 @@ import { useGetProductBySlugQuery } from "@/lib/store/productDetails/apislice";
 import { useGetRecommendationsQuery } from "@/lib/store/products/apislice";
 import { useGetProductSpecificationsQuery } from "@/lib/store/products/specifications/apislice";
 import ProductGallery from "./details/ProductGallery";
+import ProductTrustBadges from "./details/ProductTrustBadges";
 import ProductInfo from "./details/ProductInfo";
 import ProductTabs from "./details/ProductTabs";
 import RelatedProductsSection from "./details/RelatedProductsSection";
@@ -46,8 +47,9 @@ export default function ProductDetailsClient({ slug }: { slug: string }) {
 
       <div className="max-w-[1240px] mx-auto mt-12 px-4">
         <div className="flex flex-col lg:flex-row gap-16">
-          <div className="w-full lg:w-1/2">
+          <div className="w-full lg:w-1/2 flex flex-col gap-6">
             <ProductGallery images={images} primaryUrl={product.primaryImageUrl || product.imageUrl || ""} />
+            <ProductTrustBadges />
           </div>
           <div className="w-full lg:w-1/2">
             <ProductInfo product={product} discount={discount} />

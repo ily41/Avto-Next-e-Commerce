@@ -19,7 +19,7 @@ export default function CategoriesPage() {
     }
 
     return (
-        <div className="max-w-[90%] mx-auto px-4 sm:px-6 lg:px-0 w-[calc(100%-2.5rem)] py-12">
+        <div className="max-w-[80%] mx-auto px-4 sm:px-6 lg:px-0 w-[calc(100%-2.5rem)] py-12">
             {/* Page heading */}
             <div className="flex items-center gap-3 mb-10 pb-6 border-b border-gray-100">
                 <LayoutGrid className="h-8 w-8 text-blue-600" />

@@ -25,10 +25,10 @@ const FeaturedItemCard = ({ product }: { product: Product }) => {
   return (
     <Link
       href={`/product/${product.slug || product.id}`}
-      className="bg-white border border-[#f2f2f2] rounded-xl p-4 flex items-stretch gap-4 h-full transition-all duration-300 cursor-pointer group max-h-[160px] hover:border-blue-100"
+      className="bg-white border border-[#f2f2f2] rounded-xl p-4 flex items-stretch gap-3 h-[224px] transition-all duration-300 cursor-pointer group hover:border-blue-100 shadow-sm"
     >
       {/* Image on Left */}
-      <div className="w-[110px] shrink-0 flex items-center justify-center rounded-lg overflow-hidden transition-colors group-hover:bg-white text-[10px]">
+      <div className="w-[120px] max-[1000px]:w-[85px] shrink-0 flex items-center justify-center rounded-lg overflow-hidden transition-colors group-hover:bg-white text-[10px]">
         <img
           src={fullPrimaryUrl}
           alt={product.name}
@@ -45,12 +45,12 @@ const FeaturedItemCard = ({ product }: { product: Product }) => {
 
         {/* Price & Installment */}
         <div className="flex flex-col gap-1 mb-1">
-          <div className="flex items-center gap-2">
-            <span className="text-[16px] font-bold text-[#e52e2e]">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[16px] font-bold text-[#e52e2e] whitespace-nowrap">
               ₼{(product.discountedPrice || product.price).toFixed(2)}
             </span>
             {product.discountedPrice && product.discountedPrice < product.price && (
-              <span className="text-[12px] text-gray-400 line-through">
+              <span className="text-[12px] text-gray-400 line-through whitespace-nowrap">
                 ₼{product.price.toFixed(2)}
               </span>
             )}
@@ -205,9 +205,9 @@ const HotDealsSlider = ({ products }: { products: Product[] }) => {
   };
 
   return (
-    <div className="flex flex-col border border-blue-600 rounded-lg px-1">
+    <div className="flex flex-col border border-blue-600 rounded-lg px-1 h-full">
       <div className="flex items-center justify-between mb-2 pb-2 px-2 pt-2 border-b border-gray-100">
-        <h2 className="text-lg font-semibold text-[#1a1a1a]">Qaynar Təkliflər</h2>
+        <h2 className="text-lg font-semibold text-[#1a1a1a]">Hot Deals</h2>
         <div className="flex">
           <button
             onClick={() => scroll("left")}
@@ -228,12 +228,19 @@ const HotDealsSlider = ({ products }: { products: Product[] }) => {
 
       <div
         ref={scrollRef}
-        className="flex overflow-hidden snap-x snap-mandatory"
+        onScroll={() => {
+          if (scrollRef.current) {
+            const { scrollLeft, clientWidth } = scrollRef.current;
+            const index = Math.round(scrollLeft / clientWidth) * step;
+            if (index !== currentIndex) setCurrentIndex(index);
+          }
+        }}
+        className="flex flex-1 overflow-x-auto no-scrollbar snap-x snap-mandatory"
       >
         {products.map((product) => (
           <div
             key={product.id}
-            className="w-full min-[400px]:w-1/2 md:w-full shrink-0 snap-start"
+            className="w-full min-[400px]:w-1/2 md:w-full shrink-0 snap-start h-full"
           >
             <ProductCard product={product} noBorder={true} />
           </div>
@@ -251,9 +258,9 @@ interface MonthlyDealsClientProps {
 
 const MonthlyDealsClient = ({ hotDeals, featuredItems }: MonthlyDealsClientProps) => {
   return (
-    <div className="flex flex-col md:flex-row items-stretch gap-10">
-      {/* Hot Deals Column (~27%) */}
-      <div className="w-full md:w-[23%] shrink-0">
+    <div className="flex flex-col md:flex-row items-stretch gap-6 lg:gap-10">
+      {/* Hot Deals Column (~30% on md, ~23% on lg) */}
+      <div className="w-full md:w-[30%] lg:w-[23%] shrink-0">
         <HotDealsSlider products={hotDeals} />
       </div>
 

@@ -21,8 +21,8 @@ const RecentlyLaunched = async () => {
   const activeBanner = banners.find((b) => b.isCurrentlyActive);
 
   return (
-    <section className="w-full bg-white py-14">
-      <div className="max-w-[90%] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
+    <section className="w-full bg-white py-9">
+      <div className="max-w-[80%] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
         {/* Header */}
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100">
           <h2 className="text-xl font-bold text-[#1a1a1a]">Yeni Təqdim Olunmuşlar</h2>
