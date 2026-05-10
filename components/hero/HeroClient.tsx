@@ -87,12 +87,12 @@ const HeroClient = ({ banners }: HeroClientProps) => {
   return (
     <section className="w-full bg-white pb-10 mt-5">
       <div className="max-w-[80%] mx-auto sm:px-6 lg:px-0 w-[calc(100%-2.5rem)]">
-        <div className="flex flex-col relative min-[1000px]:grid min-[1000px]:grid-cols-[280px_auto] lg:grid-cols-[306px_auto] mb-3  gap-4 xl:gap-6 min-[1000px]:[height:clamp(300px,40vw,700px)]">
+        <div className="flex flex-col relative min-[1000px]:grid min-[1000px]:grid-cols-[280px_auto] lg:grid-cols-[306px_auto] mb-6 sm:mb-3 gap-4 xl:gap-6 min-[1000px]:[height:clamp(300px,40vw,700px)]">
           <div className="hidden min-[1000px]:flex min-[1000px]:flex-col h-full min-h-0 relative z-30">
             <CategoryMenu />
           </div>
 
-          <div className="flex flex-col h-full min-h-0">
+          <div className="flex flex-col min-[1000px]:h-full min-h-0">
             <div className="hidden lg:flex shrink-0 items-center justify-between h-[64px]">
               <NavLinks />
               <div className="hidden xl:flex items-center gap-2 text-gray-800 font-bold text-[13px] uppercase tracking-wider">
@@ -103,7 +103,7 @@ const HeroClient = ({ banners }: HeroClientProps) => {
               </div>
             </div>
 
-            <div className="flex-1 min-h-0 relative h-[250px] sm:h-[400px] min-[1000px]:h-full aspect-[1.45/1] min-[1000px]:aspect-auto group/main-slider">
+            <div className="flex-1 min-h-0 relative h-[210px] xs:h-[250px] sm:h-[400px] min-[1000px]:h-full aspect-[1.45/1] min-[1000px]:aspect-auto group/main-slider">
               <div
                 ref={mainScrollRef}
                 onScroll={handleMainScroll}
@@ -136,7 +136,7 @@ const HeroClient = ({ banners }: HeroClientProps) => {
           </div>
         </div>
 
-        <div className="w-full mt-6 lg:mt-8 relative group/slider">
+        <div className="w-full mt-8 sm:mt-6 lg:mt-8 relative group/slider">
           <div
             ref={scrollRef}
             className="flex overflow-x-auto gap-4 xl:gap-6 no-scrollbar snap-x snap-mandatory"
