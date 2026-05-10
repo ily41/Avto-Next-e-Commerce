@@ -87,7 +87,7 @@ const HeroClient = ({ banners }: HeroClientProps) => {
   return (
     <section className="w-full bg-white pb-[var(--section-py)] mt-3 md:mt-5">
       <div className="max-w-[80%] mx-auto sm:px-6 lg:px-0 w-[calc(100%-2.5rem)]">
-        <div className="flex flex-col relative min-[1000px]:grid min-[1000px]:grid-cols-[280px_auto] lg:grid-cols-[306px_auto] mb-4 md:mb-3 gap-3 md:gap-4 xl:gap-6 min-[1000px]:[height:clamp(300px,40vw,700px)]">
+        <div className="flex flex-col relative min-[1000px]:grid min-[1000px]:grid-cols-[280px_auto] lg:grid-cols-[306px_auto] mb-4 md:mb-3 gap-3 md:gap-4 xl:gap-6 min-[1000px]:h-[clamp(300px,40vw,700px)]">
           <div className="hidden min-[1000px]:flex min-[1000px]:flex-col h-full min-h-0 relative z-30">
             <CategoryMenu />
           </div>
@@ -144,7 +144,7 @@ const HeroClient = ({ banners }: HeroClientProps) => {
             {secondaryBanners.map((banner) => (
               <div
                 key={banner.id}
-                className="flex-shrink-0 w-[85%] min-[1000px]:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-3rem)/3)] snap-start h-[120px] xs:h-[150px] md:h-auto md:[height:clamp(150px,15vw,220px)] relative"
+                className="flex-shrink-0 w-[85%] min-[1000px]:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-3rem)/3)] snap-start h-[120px] xs:h-[150px] md:h-[clamp(150px,15vw,220px)] relative"
               >
                 <BannerItem banner={banner} variant="secondary" />
               </div>

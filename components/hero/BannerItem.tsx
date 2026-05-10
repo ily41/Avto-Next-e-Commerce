@@ -42,6 +42,9 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
     // Function to scale font size responsively based on user-defined breakpoints
     const getResponsiveStyle = (baseSize: number): string => {
         // baseSize is the desktop version from backend
+        // If it's a secondary banner (subbanner), we decrease the base size slightly from the start
+        const adjustedBase = variant === "secondary" ? baseSize * 0.8 : baseSize;
+        
         // Reduction rules:
         // Tablet/Desktop: baseSize
         // Under 700px (Tablet-ish): baseSize - 4px (e.g. 19 -> 15)
@@ -49,7 +52,7 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
         // Under 500px: baseSize - 6px (e.g. 19 -> 13)
         // Under 400px: baseSize - 7px (e.g. 19 -> 12)
         
-        return `calc(${baseSize}px - var(--banner-font-reduction, 0px))`;
+        return `calc(${adjustedBase}px - var(--banner-font-reduction, 0px))`;
     };
     const desktopSrc = fullUrl(imageUrl);
     const mobileSrc = mobileImageUrl ? fullUrl(mobileImageUrl) : desktopSrc;

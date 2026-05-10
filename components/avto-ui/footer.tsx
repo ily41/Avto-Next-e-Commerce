@@ -50,27 +50,27 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
             {/* Contact Info */}
             <div className="lg:pr-8">
-              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">BİZİMLƏ ƏLAQƏ</h4>
-              <div className="space-y-6">
+              <h4 className="text-[15px] md:text-lg font-bold text-gray-900 mb-6 md:mb-8 uppercase tracking-tight font-outfit">BİZİMLƏ ƏLAQƏ</h4>
+              <div className="space-y-4 md:space-y-6">
                 <div>
-                  <a href="tel:+994103165103" className="text-xl lg:text-2xl whitespace-nowrap font-bold text-gray-900 hover:text-[#007aff] transition-colors leading-none">
+                  <a href="tel:+994103165103" className="text-[18px] md:text-xl lg:text-2xl whitespace-nowrap font-bold text-gray-900 hover:text-[#007aff] transition-colors leading-none">
                     (+994) 10 316 51 03
                   </a>
-                  <p className="text-gray-500 mt-4 leading-relaxed font-medium">
+                  <p className="text-[13px] md:text-sm lg:text-base text-gray-500 mt-3 md:mt-4 leading-relaxed font-medium">
                     Bakı şəhəri, Azərbaycan. <br />
                   </p>
                 </div>
                 <div>
-                  <a href="mailto:info@avto027.com" className="text-gray-900 font-bold border-b-2 border-gray-900 pb-1 hover:text-[#007aff] hover:border-[#007aff] transition-colors">
+                  <a href="mailto:info@avto027.com" className="text-[13px] md:text-base text-gray-900 font-bold border-b-2 border-gray-900 pb-1 hover:text-[#007aff] hover:border-[#007aff] transition-colors">
                     info@avto027.com
                   </a>
                 </div>
-                <div className="flex items-center gap-4 pt-4">
+                <div className="flex items-center gap-4 pt-2 md:pt-4">
                   <a href="https://www.instagram.com/avto__027?igsh=dzdpbGl0d2FnNncz" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full border border-gray-100 hover:bg-[#e1306c] hover:text-white transition-all text-gray-600">
-                    <IconBrandInstagram size={20} stroke={1.5} />
+                    <IconBrandInstagram size={18} md-size={20} stroke={1.5} />
                   </a>
                   <a href="https://www.tiktok.com/@avto.027?_r=1&_t=ZS-95ZGieLyRHD" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full border border-gray-100 hover:bg-black hover:text-white transition-all text-gray-600">
-                    <IconBrandTiktok size={20} stroke={1.5} />
+                    <IconBrandTiktok size={18} md-size={20} stroke={1.5} />
                   </a>
                 </div>
               </div>
@@ -78,33 +78,33 @@ export default function Footer() {
 
             {/* Footer Column 2 */}
             <div>
-              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">BİZİ TANIYIN</h4>
-              <ul className="space-y-4">
-                <li><Link href="/privacy-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Məxfilik Siyasəti</Link></li>
-                <li><Link href="/terms-and-conditions" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">İstifadə Şərtləri</Link></li>
-                <li><Link href="/refund-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Geri Qaytarılma</Link></li>
-                <li><Link href="/contact-us" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Bizimlə Əlaqə</Link></li>
+              <h4 className="text-[15px] md:text-lg font-bold text-gray-900 mb-6 md:mb-8 uppercase tracking-tight font-outfit">BİZİ TANIYIN</h4>
+              <ul className="space-y-3 md:space-y-4">
+                <li><Link href="/privacy-policy" className="text-[13px] md:text-base text-gray-500 hover:text-[#007aff] font-medium transition-colors">Məxfilik Siyasəti</Link></li>
+                <li><Link href="/terms-and-conditions" className="text-[13px] md:text-base text-gray-500 hover:text-[#007aff] font-medium transition-colors">İstifadə Şərtləri</Link></li>
+                <li><Link href="/refund-policy" className="text-[13px] md:text-base text-gray-500 hover:text-[#007aff] font-medium transition-colors">Geri Qaytarılma</Link></li>
+                <li><Link href="/contact-us" className="text-[13px] md:text-base text-gray-500 hover:text-[#007aff] font-medium transition-colors">Bizimlə Əlaqə</Link></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">MƏLUMAT</h4>
-              <ul className="space-y-4">
-                <li><Link href="/about" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Haqqımızda</Link></li>
-                <li><Link href="/contact-us" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Bizimlə Əlaqə</Link></li>
-                <li><Link href="/privacy-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Məxfilik Siyasəti</Link></li>
-                <li><Link href="/refund-policy" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Geri Qaytarma</Link></li>
+              <h4 className="text-[15px] md:text-lg font-bold text-gray-900 mb-6 md:mb-8 uppercase tracking-tight font-outfit">MƏLUMAT</h4>
+              <ul className="space-y-3 md:space-y-4">
+                <li><Link href="/about" className="text-[13px] md:text-base text-gray-500 hover:text-[#007aff] font-medium transition-colors">Haqqımızda</Link></li>
+                <li><Link href="/contact-us" className="text-[13px] md:text-base text-gray-500 hover:text-[#007aff] font-medium transition-colors">Bizimlə Əlaqə</Link></li>
+                <li><Link href="/privacy-policy" className="text-[13px] md:text-base text-gray-500 hover:text-[#007aff] font-medium transition-colors">Məxfilik Siyasəti</Link></li>
+                <li><Link href="/refund-policy" className="text-[13px] md:text-base text-gray-500 hover:text-[#007aff] font-medium transition-colors">Geri Qaytarma</Link></li>
               </ul>
             </div>
 
             {/* Footer Column 5 */}
             <div>
-              <h4 className="text-lg font-bold text-gray-900 mb-8 uppercase tracking-tight font-outfit">MAĞAZAMIZ</h4>
-              <ul className="space-y-4">
-                <li><Link href="/shop" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Bütün Məhsullar</Link></li>
-                <li><Link href="/shop?isRecommended=true" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Tövsiyə olunanlar</Link></li>
-                <li><Link href="/shop?isNew=true" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Yeni Gələnlər</Link></li>
-                <li><Link href="/shop?isHotDeal=true" className="text-gray-500 hover:text-[#007aff] font-medium transition-colors">Endirimlər</Link></li>
+              <h4 className="text-[15px] md:text-lg font-bold text-gray-900 mb-6 md:mb-8 uppercase tracking-tight font-outfit">MAĞAZAMIZ</h4>
+              <ul className="space-y-3 md:space-y-4">
+                <li><Link href="/shop" className="text-[13px] md:text-base text-gray-500 hover:text-[#007aff] font-medium transition-colors">Bütün Məhsullar</Link></li>
+                <li><Link href="/shop?isRecommended=true" className="text-[13px] md:text-base text-gray-500 hover:text-[#007aff] font-medium transition-colors">Tövsiyə olunanlar</Link></li>
+                <li><Link href="/shop?isNew=true" className="text-[13px] md:text-base text-gray-500 hover:text-[#007aff] font-medium transition-colors">Yeni Gələnlər</Link></li>
+                <li><Link href="/shop?isHotDeal=true" className="text-[13px] md:text-base text-gray-500 hover:text-[#007aff] font-medium transition-colors">Endirimlər</Link></li>
               </ul>
             </div>
           </div>
@@ -112,9 +112,9 @@ export default function Footer() {
       </div>
 
       {/* Copyright Section */}
-      <div className="bg-[#f8f8f8] py-8">
-        <div className="max-w-[80%] mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-[13px] text-gray-500 font-medium text-center w-full">
+      <div className="bg-[#f8f8f8] py-6 md:py-8">
+        <div className="max-w-[80%] mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
+          <p className="text-[11px] md:text-[13px] text-gray-500 font-medium text-center w-full">
             © 2026 Avto027.com. Bütün hüquqlar qorunur.
           </p>
 

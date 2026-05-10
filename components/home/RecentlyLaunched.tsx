@@ -46,23 +46,17 @@ const RecentlyLaunched = async () => {
             ) : null}
           </div>
 
-          {/* Product Cards Column — CSS handles responsive column count */}
-          <div className="flex-1 mt-4 md:mt-0">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-              {products.map((product, i) => {
-                let displayClass = "";
-                // mobile (< md): 2 elements (2 cols, 1 row). indices 2 & 3 are hidden.
-                // tablet (md - lg): 3 elements (3 cols, 1 row). index 3 is hidden.
-                // desktop (lg+): 4 elements (4 cols, 1 row). all visible.
-                if (i === 2) displayClass = "hidden md:block";
-                else if (i === 3) displayClass = "hidden lg:block";
-
-                return (
-                  <div key={product.id} className={cn(displayClass, "h-full")}>
-                    <ProductCard product={product} />
-                  </div>
-                );
-              })}
+          {/* Product Cards Column — Slideable on mobile, Grid on desktop */}
+          <div className="flex-1 mt-4 md:mt-0 min-w-0">
+            <div className="flex md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 overflow-x-auto md:overflow-x-visible no-scrollbar snap-x snap-mandatory md:snap-none pb-1">
+              {products.map((product) => (
+                <div 
+                  key={product.id} 
+                  className="min-w-[48%] xs:min-w-[45%] md:min-w-0 h-full snap-start"
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
             </div>
           </div>
         </div>

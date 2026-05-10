@@ -21,7 +21,7 @@ const BottomCampaignBanner = async () => {
   return (
     <section className="w-full bg-white py-[var(--section-py)]">
       <div className="max-w-[80%] mx-auto sm:px-6 lg:px-0 w-[calc(100%-2.5rem)]">
-        <div className="relative w-full h-[140px] xs:h-[180px] md:h-auto md:aspect-[3/1] lg:aspect-[4/1] xl:aspect-[5/1] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-gray-50">
+        <div className="relative w-full h-[140px] xs:h-[180px] md:aspect-[3/1] lg:aspect-[4/1] xl:aspect-[5/1] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-gray-50">
           <BannerItem banner={activeBanner} />
         </div>
       </div>
