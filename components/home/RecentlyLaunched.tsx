@@ -48,11 +48,11 @@ const RecentlyLaunched = async () => {
 
           {/* Product Cards Column — Slideable on mobile, Grid on desktop */}
           <div className="flex-1 mt-4 md:mt-0 min-w-0">
-            <div className="flex md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 overflow-x-auto md:overflow-x-visible no-scrollbar snap-x snap-mandatory md:snap-none pb-1">
+            <div className="flex items-stretch md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 overflow-x-auto md:overflow-x-visible no-scrollbar snap-x snap-mandatory md:snap-none pb-1">
               {products.map((product) => (
                 <div 
                   key={product.id} 
-                  className="min-w-[48%] xs:min-w-[45%] md:min-w-0 h-full snap-start"
+                  className="min-w-[48%] xs:min-w-[45%] md:min-w-0 flex snap-start"
                 >
                   <ProductCard product={product} />
                 </div>
