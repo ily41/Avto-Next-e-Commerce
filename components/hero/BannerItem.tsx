@@ -39,11 +39,17 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
         buttonFontSize = 14,
     } = banner;
 
-    // Function to scale font size responsively
+    // Function to scale font size responsively based on user-defined breakpoints
     const getResponsiveStyle = (baseSize: number): string => {
-        // Base size is desktop, scale down for smaller screens using clamp
-        const minSize = Math.max(baseSize * 0.5, 10); // Don't go below 10px or 50% of original
-        return `clamp(${minSize}px, ${baseSize * 0.1}vw + ${baseSize * 0.4}px, ${baseSize}px)`;
+        // baseSize is the desktop version from backend
+        // Reduction rules:
+        // Tablet/Desktop: baseSize
+        // Under 700px (Tablet-ish): baseSize - 4px (e.g. 19 -> 15)
+        // Under 600px: baseSize - 5px (e.g. 19 -> 14)
+        // Under 500px: baseSize - 6px (e.g. 19 -> 13)
+        // Under 400px: baseSize - 7px (e.g. 19 -> 12)
+        
+        return `calc(${baseSize}px - var(--banner-font-reduction, 0px))`;
     };
     const desktopSrc = fullUrl(imageUrl);
     const mobileSrc = mobileImageUrl ? fullUrl(mobileImageUrl) : desktopSrc;

@@ -100,10 +100,10 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
             style={{ overflow: "hidden" }}
         >
             {/* ── IMAGE AREA ─────────────────────────────────────── */}
-            <div className="relative  rounded-t-xl" style={{ aspectRatio: "1 / 1" }}>
+            <div className="relative rounded-t-xl shrink-0" >
                 {/* "Yenilik" badge — top left */}
                 {isNew && (
-                    <span className="absolute top-3 left-3 z-10 text-white text-[11px] font-bold px-2.5 py-0.5 rounded bg-blue-600">
+                    <span className="absolute top-2 left-2 md:top-3 md:left-3 z-10 text-white text-[9px] md:text-[11px] font-bold px-2 md:px-2.5 py-0.5 rounded bg-blue-600">
                         Yenilik
                     </span>
                 )}
@@ -112,26 +112,26 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                 {isAuth ? (
                     <button
                         onClick={handleFavoriteClick}
-                        className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 transition-all duration-200 hover:scale-110 cursor-pointer"
+                        className="absolute top-2 right-2 md:top-3 md:right-3 z-10 w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 transition-all duration-200 hover:scale-110 cursor-pointer"
                     >
                         {localIsFavorite ? (
-                            <IconHeartFilled size={18} className="text-red-500" />
+                            <IconHeartFilled size={16} className="text-red-500" />
                         ) : (
-                            <IconHeart size={18} stroke={1.5} className="text-gray-400" />
+                            <IconHeart size={16} stroke={1.5} className="text-gray-400" />
                         )}
                     </button>
                 ) : (
                     <LoginPopup>
                         <button
-                            className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 transition-all duration-200 hover:scale-110 cursor-pointer"
+                            className="absolute top-2 right-2 md:top-3 md:right-3 z-10 w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 transition-all duration-200 hover:scale-110 cursor-pointer"
                         >
-                            <IconHeart size={18} stroke={1.5} className="text-gray-400" />
+                            <IconHeart size={16} stroke={1.5} className="text-gray-400" />
                         </button>
                     </LoginPopup>
                 )}
 
                 {/* Product image */}
-                <div className="flex-1 flex items-center justify-center p-5 min-h-[180px]">
+                <div className="flex-1 flex items-center justify-center p-3 md:p-5 min-h-[140px] md:min-h-[180px]">
                     <img
                         src={fullPrimaryUrl}
                         alt={product.name}
@@ -142,7 +142,12 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                     <style jsx>{`
                         @media (max-width: 1000px) {
                             img {
-                                max-height: 160px !important;
+                                max-height: 140px !important;
+                            }
+                        }
+                        @media (max-width: 500px) {
+                            img {
+                                max-height: 110px !important;
                             }
                         }
                     `}</style>
@@ -150,39 +155,39 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
 
                 {/* Discount badge — bottom left of image area */}
                 {discount > 0 && (
-                    <span className="absolute bottom-3 left-3 z-10 text-red-600 bg-red-50 text-[11px] font-bold px-2 py-0.5 rounded">
+                    <span className="absolute bottom-2 left-2 md:bottom-3 md:left-3 z-10 text-red-600 bg-red-50 text-[9px] md:text-[11px] font-bold px-1.5 md:px-2 py-0.5 rounded">
                         -{discount} %
                     </span>
                 )}
             </div>
 
             {/* ── CONTENT AREA ────────────────────────────────────── */}
-            <div className="flex flex-col flex-1 px-3 pt-3 pb-3 gap-1.5">
+            <div className="flex flex-col flex-1 px-2 md:px-3 pt-2 md:pt-3 pb-2 md:pb-3 gap-1 md:gap-1.5">
                 {/* Price row */}
-                <div className="flex items-baseline gap-2">
+                <div className="flex items-baseline gap-1 md:gap-2">
                     {/* Discounted / main price */}
-                    <span className="text-[17px] font-bold leading-none text-[#1a1a1a]">
+                    <span className="text-[14px] md:text-[17px] font-bold leading-none text-[#1a1a1a]">
                         {(product.discountedPrice ?? product.price).toFixed(2)}
                         {" "}
-                        <span className="text-[13px] font-semibold">₼</span>
+                        <span className="text-[10px] md:text-[13px] font-semibold">₼</span>
                     </span>
 
                     {/* Original price — gray strikethrough */}
                     {discount > 0 && (
-                        <span className="text-[12px] text-gray-400 line-through font-normal">
+                        <span className="text-[10px] md:text-[12px] text-gray-400 line-through font-normal">
                             {product.price.toFixed(2)} ₼
                         </span>
                     )}
                 </div>
 
                 {/* Installment Info - preserved space to maintain uniform card height */}
-                <div className="min-h-[52px] flex flex-col justify-center">
+                <div className="min-h-[44px] md:min-h-[52px] flex flex-col justify-center">
                     {monthlyPayment && productPrice >= 15 ? (
-                        <div className="flex flex-col gap-1.5">
+                        <div className="flex flex-col gap-1 md:gap-1.5">
                             {/* Primary installment pill */}
                             <div className="inline-flex items-center self-start">
                                 <span
-                                    className="text-[12px] font-bold px-2.5 py-1 rounded"
+                                    className="text-[10px] md:text-[12px] font-bold px-2 py-0.5 md:px-2.5 md:py-1 rounded"
                                     style={{ background: "#f5d000", color: "#1a1a1a" }}
                                 >
                                     {monthlyPayment} ₼ x {maxPeriod} ay
@@ -194,7 +199,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                                 {availableMonths.map((m) => (
                                     <span
                                         key={m}
-                                        className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 border border-gray-100 uppercase"
+                                        className="text-[7px] md:text-[9px] font-extrabold px-1 md:px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 border border-gray-100 uppercase"
                                     >
                                         {m} ay
                                     </span>
@@ -207,7 +212,7 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                 {/* Product name */}
                 <Link
                     href={`/product/${product.slug || product.id}`}
-                    className="text-[14px] text-[#1a1a1a] leading-snug line-clamp-2 hover:text-blue-600 transition-colors duration-200 mt-0.5"
+                    className="text-[12px] md:text-[14px] text-[#1a1a1a] leading-snug line-clamp-2 hover:text-blue-600 transition-colors duration-200 mt-0.5"
                     style={{ minHeight: "2.8em" }}
                 >
                     {product.name}
@@ -220,12 +225,12 @@ const ProductCard = ({ product, noBorder }: ProductCardProps) => {
                 <button
                     onClick={handleAddToCart}
                     disabled={isAdded}
-                    className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 cursor-pointer mt-1 active:scale-95 ${isAdded
+                    className={`w-full flex items-center justify-center gap-1 md:gap-2 py-1.5 md:py-2.5 rounded-lg text-[11px] md:text-[13px] font-semibold transition-all duration-200 cursor-pointer mt-1 active:scale-95 ${isAdded
                         ? "bg-green-600 text-white"
                         : "bg-blue-600 hover:bg-black text-white"
                         }`}
                 >
-                    <IconShoppingCart size={17} stroke={1.8} />
+                    <IconShoppingCart size={15} md-size={17} stroke={1.8} />
                     {isAdded ? "Əlavə edildi" : "Səbətə at"}
                 </button>
             </div>

@@ -15,8 +15,8 @@ const MonthlyDealsSection = async () => {
       : (recommendations?.basedOnCategory ?? []);
 
   return (
-    <section className="w-full bg-white py-9">
-      <div className="max-w-[80%] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
+    <section className="w-full bg-white py-[var(--section-py)]">
+      <div className="max-w-[80%] mx-auto sm:px-6 lg:px-0 w-[calc(100%-2.5rem)]">
         <MonthlyDealsClient hotDeals={hotDeals} featuredItems={featuredItems} />
       </div>
     </section>

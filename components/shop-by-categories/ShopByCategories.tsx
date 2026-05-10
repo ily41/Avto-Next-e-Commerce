@@ -13,20 +13,20 @@ const ShopByCategories = async () => {
   return (
     <section
       aria-labelledby="shop-by-categories-heading"
-      className="w-full bg-white py-10"
+      className="w-full bg-white py-[var(--section-py)]"
     >
       <div className="max-w-[80%] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
         {/* Section header */}
-        <div className="flex items-center justify-between mb-2 pb-4 border-b border-gray-100">
+        <div className="flex items-center justify-between mb-2 pb-2 md:pb-4 border-b border-gray-100">
           <h2
             id="shop-by-categories-heading"
-            className="text-base sm:text-2xl font-bold text-gray-900"
+            className="text-[16px] md:text-2xl font-bold text-gray-900"
           >
             Kateqoriyalar üzrə alış-veriş
           </h2>
           <Link
             href="/shop"
-            className="text-sm font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded"
+            className="text-[11px] md:text-sm font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded"
           >
             Hamısını göstər <span aria-hidden="true">→</span>
           </Link>

@@ -89,7 +89,7 @@ const FeaturedItemCard = ({ product }: { product: Product }) => {
   );
 };
 
-// --- Sliding Grid Component ---
+// --- SlidingGrid Component ---
 const SlidingGrid = ({ products }: { products: Product[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -132,22 +132,22 @@ const SlidingGrid = ({ products }: { products: Product[] }) => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-[#1a1a1a]">Ayın Seçilmiş Məhsulları</h2>
+      <div className="flex items-center justify-between mb-2 md:mb-4 pb-2 md:pb-4 border-b border-gray-100">
+        <h2 className="text-[16px] md:text-xl font-bold text-[#1a1a1a]">Ayın Seçilmiş Məhsulları</h2>
         <div className="flex">
           <button
             onClick={() => scroll("left")}
             disabled={!canScrollLeft}
             className={`py-1 cursor-pointer transition-colors ${canScrollLeft ? "text-gray-900 hover:text-blue-600" : "text-gray-300 cursor-not-allowed"}`}
           >
-            <IconChevronLeft size={22} />
+            <IconChevronLeft size={20} />
           </button>
           <button
             onClick={() => scroll("right")}
             disabled={!canScrollRight}
             className={`py-1 cursor-pointer transition-colors ${canScrollRight ? "text-gray-900 hover:text-blue-600" : "text-gray-300 cursor-not-allowed"}`}
           >
-            <IconChevronRight size={22} />
+            <IconChevronRight size={20} />
           </button>
         </div>
       </div>
@@ -161,7 +161,7 @@ const SlidingGrid = ({ products }: { products: Product[] }) => {
           {pages.map((page, pageIdx) => (
             <div
               key={pageIdx}
-              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 gap-x-6 gap-y-4 w-full shrink-0 snap-start pr-1"
+              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 gap-x-4 md:gap-x-6 gap-y-3 md:gap-y-4 w-full shrink-0 snap-start pr-1"
             >
               {page.map((product) => (
                 <FeaturedItemCard key={product.id} product={product} />
@@ -196,32 +196,33 @@ const HotDealsSlider = ({ products }: { products: Product[] }) => {
         left: dir === "left" ? -width : width,
         behavior: "smooth",
       });
-      setCurrentIndex((prev) =>
-        dir === "left"
-          ? Math.max(0, prev - step)
-          : Math.min(products.length - step, prev + step)
-      );
+      setTimeout(() => {
+          if (scrollRef.current) {
+            const { scrollLeft, clientWidth } = scrollRef.current;
+            setCurrentIndex(Math.round(scrollLeft / clientWidth) * step);
+          }
+      }, 500);
     }
   };
 
   return (
-    <div className="flex flex-col border border-blue-600 rounded-lg px-1 h-full">
-      <div className="flex items-center justify-between mb-2 pb-2 px-2 pt-2 border-b border-gray-100">
-        <h2 className="text-lg font-semibold text-[#1a1a1a]">Hot Deals</h2>
+    <div className="flex flex-col border border-blue-600 rounded-lg h-full overflow-hidden">
+      <div className="flex items-center justify-between mb-0 pb-2 px-2 pt-2 border-b border-gray-100">
+        <h2 className="text-[16px] font-semibold text-[#1a1a1a]">Hot Deals</h2>
         <div className="flex">
           <button
             onClick={() => scroll("left")}
             disabled={currentIndex === 0}
             className={`py-1 cursor-pointer transition-colors ${currentIndex > 0 ? "text-gray-900 hover:text-blue-600" : "text-gray-300 cursor-not-allowed"}`}
           >
-            <IconChevronLeft size={22} />
+            <IconChevronLeft size={20} />
           </button>
           <button
             onClick={() => scroll("right")}
             disabled={currentIndex >= products.length - step}
             className={`py-1 cursor-pointer transition-colors ${currentIndex < products.length - step ? "text-gray-900 hover:text-blue-600" : "text-gray-300 cursor-not-allowed"}`}
           >
-            <IconChevronRight size={22} />
+            <IconChevronRight size={20} />
           </button>
         </div>
       </div>
@@ -235,12 +236,12 @@ const HotDealsSlider = ({ products }: { products: Product[] }) => {
             if (index !== currentIndex) setCurrentIndex(index);
           }
         }}
-        className="flex flex-1 overflow-x-auto no-scrollbar snap-x snap-mandatory"
+        className="flex flex-1 overflow-x-auto no-scrollbar snap-x snap-mandatory items-stretch"
       >
         {products.map((product) => (
           <div
             key={product.id}
-            className="w-full min-[400px]:w-1/2 md:w-full shrink-0 snap-start h-full"
+            className="w-full min-[400px]:w-1/2 md:w-full shrink-0 snap-start flex flex-col"
           >
             <ProductCard product={product} noBorder={true} />
           </div>
@@ -258,14 +259,14 @@ interface MonthlyDealsClientProps {
 
 const MonthlyDealsClient = ({ hotDeals, featuredItems }: MonthlyDealsClientProps) => {
   return (
-    <div className="flex flex-col md:flex-row items-stretch gap-6 lg:gap-10">
+    <div className="flex flex-col md:flex-row items-stretch gap-6 md:gap-8 lg:gap-10">
       {/* Hot Deals Column (~30% on md, ~23% on lg) */}
       <div className="w-full md:w-[30%] lg:w-[23%] shrink-0">
         <HotDealsSlider products={hotDeals} />
       </div>
 
       {/* Monthly Featured Item Column (~72%) */}
-      <div className="w-full md:flex-1 flex flex-col">
+      <div className="w-full md:flex-1 flex flex-col mt-4 md:mt-0">
         <SlidingGrid products={featuredItems} />
       </div>
     </div>

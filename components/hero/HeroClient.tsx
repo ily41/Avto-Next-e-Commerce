@@ -85,9 +85,9 @@ const HeroClient = ({ banners }: HeroClientProps) => {
   };
 
   return (
-    <section className="w-full bg-white pb-10 mt-5">
+    <section className="w-full bg-white pb-[var(--section-py)] mt-3 md:mt-5">
       <div className="max-w-[80%] mx-auto sm:px-6 lg:px-0 w-[calc(100%-2.5rem)]">
-        <div className="flex flex-col relative min-[1000px]:grid min-[1000px]:grid-cols-[280px_auto] lg:grid-cols-[306px_auto] mb-6 sm:mb-3 gap-4 xl:gap-6 min-[1000px]:[height:clamp(300px,40vw,700px)]">
+        <div className="flex flex-col relative min-[1000px]:grid min-[1000px]:grid-cols-[280px_auto] lg:grid-cols-[306px_auto] mb-4 md:mb-3 gap-3 md:gap-4 xl:gap-6 min-[1000px]:[height:clamp(300px,40vw,700px)]">
           <div className="hidden min-[1000px]:flex min-[1000px]:flex-col h-full min-h-0 relative z-30">
             <CategoryMenu />
           </div>
@@ -103,7 +103,7 @@ const HeroClient = ({ banners }: HeroClientProps) => {
               </div>
             </div>
 
-            <div className="flex-1 min-h-0 relative h-[210px] xs:h-[250px] sm:h-[400px] min-[1000px]:h-full aspect-[1.45/1] min-[1000px]:aspect-auto group/main-slider">
+            <div className="flex-1 min-h-0 relative h-[180px] xs:h-[220px] sm:h-[400px] min-[1000px]:h-full aspect-[1.45/1] min-[1000px]:aspect-auto group/main-slider">
               <div
                 ref={mainScrollRef}
                 onScroll={handleMainScroll}
@@ -117,15 +117,15 @@ const HeroClient = ({ banners }: HeroClientProps) => {
               </div>
 
               {mainBanners.length > 1 && (
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+                <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex gap-2 md:gap-3 z-20">
                   {mainBanners.map((_, idx) => (
                     <button
                       key={idx}
                       onClick={() => scrollToMain(idx)}
                       className={`transition-all duration-300 rounded-full ${
                         mainIndex === idx
-                          ? "w-8 h-2 bg-blue-600 shadow-lg shadow-blue-500/30"
-                          : "w-2 h-2 bg-white/60 hover:bg-white border border-black/5"
+                          ? "w-6 md:w-8 h-1.5 md:h-2 bg-blue-600 shadow-lg shadow-blue-500/30"
+                          : "w-1.5 md:w-2 h-1.5 md:h-2 bg-white/60 hover:bg-white border border-black/5"
                       }`}
                       aria-label={`Slayd ${idx + 1}`}
                     />
@@ -136,15 +136,15 @@ const HeroClient = ({ banners }: HeroClientProps) => {
           </div>
         </div>
 
-        <div className="w-full mt-8 sm:mt-6 lg:mt-8 relative group/slider">
+        <div className="w-full mt-4 md:mt-8 sm:mt-6 lg:mt-8 relative group/slider">
           <div
             ref={scrollRef}
-            className="flex overflow-x-auto gap-4 xl:gap-6 no-scrollbar snap-x snap-mandatory"
+            className="flex overflow-x-auto gap-3 md:gap-4 xl:gap-6 no-scrollbar snap-x snap-mandatory"
           >
             {secondaryBanners.map((banner) => (
               <div
                 key={banner.id}
-                className="flex-shrink-0 w-[85%] min-[1000px]:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-3rem)/3)] snap-start [height:clamp(150px,15vw,220px)] relative"
+                className="flex-shrink-0 w-[85%] min-[1000px]:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-3rem)/3)] snap-start h-[120px] xs:h-[150px] md:h-auto md:[height:clamp(150px,15vw,220px)] relative"
               >
                 <BannerItem banner={banner} variant="secondary" />
               </div>

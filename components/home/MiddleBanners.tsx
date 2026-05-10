@@ -15,7 +15,7 @@ const MiddleBanners = async () => {
     .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
   return (
-    <section className="w-full py-6">
+    <section className="w-full py-[calc(var(--section-py)/2)]">
       <div className="max-w-[80%] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
         {/* Desktop and Tablet: Side by side (2 columns) */}
         <div className="hidden sm:grid grid-cols-2 gap-4 lg:gap-6">
@@ -27,9 +27,9 @@ const MiddleBanners = async () => {
         </div>
 
         {/* Mobile: Stacked vertically */}
-        <div className="flex sm:hidden flex-col gap-4">
+        <div className="flex sm:hidden flex-col gap-3">
           {activeBanners.slice(0, 2).map((banner) => (
-            <div key={banner.id} className="h-[180px] relative">
+            <div key={banner.id} className="h-[150px] xs:h-[180px] relative">
               <BannerItem banner={banner} variant="secondary" />
             </div>
           ))}

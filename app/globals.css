@@ -80,6 +80,48 @@
   --sidebar-accent-foreground: hsl(240 5.9% 10%);
   --sidebar-border: hsl(220 13% 91%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
+
+  /* Mobile Responsive Tokens */
+  --banner-font-reduction: 0px;
+  --section-py: 2.25rem; /* 9 in tailwind */
+  --container-px: 1.25rem; /* 5 in tailwind */
+  --base-font-size: 1rem;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --banner-font-reduction: 4px;
+    --section-py: 1.5rem;
+    --container-px: 1rem;
+    --base-font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --banner-font-reduction: 5px;
+    --section-py: 1.25rem;
+    --container-px: 0.75rem;
+    --base-font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 500px) {
+  :root {
+    --banner-font-reduction: 6px;
+    --section-py: 1rem;
+    --container-px: 0.5rem;
+    --base-font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 400px) {
+  :root {
+    --banner-font-reduction: 7px;
+    --section-py: 0.75rem;
+    --container-px: 0.5rem;
+    --base-font-size: 0.8rem;
+  }
 }
 
 .dark {

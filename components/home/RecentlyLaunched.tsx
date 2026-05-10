@@ -21,22 +21,22 @@ const RecentlyLaunched = async () => {
   const activeBanner = banners.find((b) => b.isCurrentlyActive);
 
   return (
-    <section className="w-full bg-white py-9">
+    <section className="w-full bg-white py-[var(--section-py)]">
       <div className="max-w-[80%] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100">
-          <h2 className="text-xl font-bold text-[#1a1a1a]">Yeni Təqdim Olunmuşlar</h2>
+        <div className="flex items-center justify-between mb-4 md:mb-8 pb-3 md:pb-4 border-b border-gray-100">
+          <h2 className="text-[16px] md:text-xl font-bold text-[#1a1a1a]">Yeni Təqdim Olunmuşlar</h2>
           <Link
             href="/shop"
-            className="flex items-center gap-1 text-[13px] font-bold text-gray-800 hover:text-blue-600 transition-colors"
+            className="flex items-center gap-1 text-[11px] md:text-[13px] font-bold text-gray-800 hover:text-blue-600 transition-colors"
           >
             Hamısına bax
-            <IconChevronRight size={18} />
+            <IconChevronRight size={16} />
           </Link>
         </div>
 
         {/* Layout Containers */}
-        <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6">
           {/* Banner Column — stretches to match card row height */}
           <div className="w-full md:w-[30%] lg:w-[25%] xl:w-[20%] self-stretch flex flex-col">
             {activeBanner ? (
@@ -47,8 +47,8 @@ const RecentlyLaunched = async () => {
           </div>
 
           {/* Product Cards Column — CSS handles responsive column count */}
-          <div className="flex-1">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="flex-1 mt-4 md:mt-0">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
               {products.map((product, i) => {
                 let displayClass = "";
                 // mobile (< md): 2 elements (2 cols, 1 row). indices 2 & 3 are hidden.
