@@ -63,9 +63,6 @@ export default function ProductDetailsClient({ slug }: { slug: string }) {
       <style jsx global>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        @media (max-width: 768px) {
-          * { font-size: clamp(10px, 14px, 14px) !important; }
-        }
       `}</style>
     </div>
   );

@@ -26,7 +26,7 @@ const TopDealsMegaMenu = ({ isOpen, setHoveredLink }: TopDealsMegaMenuProps) => 
                 ? "opacity-100 translate-y-0 pointer-events-auto"
                 : "opacity-0 translate-y-8 pointer-events-none"
                 }`}
-            onMouseEnter={() => setHoveredLink("Top təkliflər")}
+            onMouseEnter={() => setHoveredLink("Təkliflər")}
             onMouseLeave={() => setHoveredLink(null)}
         >
             {/* Left Side: Shop By Categories Circles */}

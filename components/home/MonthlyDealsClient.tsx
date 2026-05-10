@@ -208,7 +208,7 @@ const HotDealsSlider = ({ products }: { products: Product[] }) => {
   return (
     <div className="flex flex-col border border-blue-600 rounded-lg h-full overflow-hidden">
       <div className="flex items-center justify-between mb-0 pb-2 px-2 pt-2 border-b border-gray-100">
-        <h2 className="text-[16px] font-semibold text-[#1a1a1a]">Hot Deals</h2>
+        <h2 className="text-[16px] font-semibold text-[#1a1a1a]">Qaynar təkliflər</h2>
         <div className="flex">
           <button
             onClick={() => scroll("left")}

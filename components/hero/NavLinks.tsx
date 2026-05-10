@@ -26,7 +26,6 @@ const NavLinks = () => {
         { name: "Kateqoriyalar", href: "/categories", label: "ENDİRİM", labelColor: "bg-green-50 text-green-500", hasDropdown: true },
         { name: "Məhsullar", href: "/shop", label: "YENİ", labelColor: "bg-red-50 text-red-500", hasDropdown: true },
         { name: "Təkliflər", href: "/shop?isHotDeal=true", hasDropdown: true },
-        { name: "Elementlər", href: "#", hasDropdown: true },
     ];
 
     return (

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Banner } from "@/lib/api/types";
 import { fullUrl } from "@/lib/api/url-utils";
@@ -67,7 +68,7 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
 
     const objectFitClass = "object-cover";
 
-    return (
+    const BannerContent = (
         <div className="relative w-full h-full overflow-hidden rounded-lg group cursor-pointer bg-gray-50">
             <div className="absolute inset-0 w-full h-full">
                 {/* Desktop image — hidden on small screens if a mobile version exists */}
@@ -155,6 +156,16 @@ const BannerItem = ({ banner, variant = "main" }: BannerItemProps) => {
             </div>
         </div>
     );
+
+    if (banner.linkUrl) {
+        return (
+            <Link href={banner.linkUrl} className="block w-full h-full">
+                {BannerContent}
+            </Link>
+        );
+    }
+
+    return BannerContent;
 };
 
 export default BannerItem;

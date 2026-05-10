@@ -105,13 +105,14 @@ export default function ProductGallery({ images, primaryUrl }: ProductGalleryPro
       {/* Thumbnails (Vertical on MD+, Horizontal on Mobile) — Absolute on desktop to match main image height */}
       <div className="flex flex-row md:flex-col gap-3 order-2 md:order-1 no-scrollbar overflow-x-auto md:overflow-y-auto h-[100px] md:h-full md:absolute md:left-0 md:top-0 md:bottom-0 md:w-[80px] lg:w-[100px] min-h-0 min-w-0">
         {images.map((img, idx) => (
+          
           <button
             key={img.id}
             onClick={() => scrollToImage(idx)}
-            className={`w-16 h-16 md:w-full aspect-square rounded-xl border-2 transition-all flex-shrink-0 p-2 flex items-center justify-center bg-white ${
+            className={`w-16 h-16 md:w-full  aspect-square rounded-xl border-2 transition-all flex-shrink-0 p-2 flex items-center justify-center bg-white ${
               activeIndex === idx 
-                ? "border-blue-600 shadow-md scale-105 ring-4 ring-blue-50" 
-                : "border-gray-100 hover:border-blue-200"
+                ? "border-white-200 shadow-md scale-105 ring-4 ring-white-50" 
+                : "border-gray-100 hover:border-white-200"
             }`}
           >
             <img 
