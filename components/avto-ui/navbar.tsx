@@ -89,7 +89,7 @@ export function Navbar() {
 
             {/* 4. Main Navbar Row */}
             <div className="w-full flex justify-center py-3  border-gray-100">
-                <div className="w-full px-4 lg:w-[80.3%] lg:px-4 flex items-center justify-between gap-4">
+                <div className="w-full px-4 lg:w-[90%] lg:px-0 flex items-center justify-between gap-4">
                     <div className="flex gap-1 items-center">
                         {/* Mobile Side Menu Trigger */}
                         <div className="flex items-center lg:hidden">

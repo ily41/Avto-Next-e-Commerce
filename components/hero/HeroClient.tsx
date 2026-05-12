@@ -86,7 +86,7 @@ const HeroClient = ({ banners }: HeroClientProps) => {
 
   return (
     <section className="w-full bg-white pb-[var(--section-py)] mt-3 md:mt-5">
-      <div className="max-w-[80%] mx-auto sm:px-6 lg:px-0 w-[calc(100%-2.5rem)]">
+      <div className="max-w-[90%] mx-auto sm:px-6 lg:px-0 w-[calc(100%-2.5rem)]">
         <div className="flex flex-col relative min-[1000px]:grid min-[1000px]:grid-cols-[280px_auto] lg:grid-cols-[306px_auto] mb-4 md:mb-3 gap-3 md:gap-4 xl:gap-6 min-[1000px]:h-[clamp(300px,40vw,700px)]">
           <div className="hidden min-[1000px]:flex min-[1000px]:flex-col h-full min-h-0 relative z-30">
             <CategoryMenu />
@@ -122,11 +122,10 @@ const HeroClient = ({ banners }: HeroClientProps) => {
                     <button
                       key={idx}
                       onClick={() => scrollToMain(idx)}
-                      className={`transition-all duration-300 rounded-full ${
-                        mainIndex === idx
+                      className={`transition-all duration-300 rounded-full ${mainIndex === idx
                           ? "w-6 md:w-8 h-1.5 md:h-2 bg-blue-600 shadow-lg shadow-blue-500/30"
                           : "w-1.5 md:w-2 h-1.5 md:h-2 bg-white/60 hover:bg-white border border-black/5"
-                      }`}
+                        }`}
                       aria-label={`Slayd ${idx + 1}`}
                     />
                   ))}
@@ -153,14 +152,14 @@ const HeroClient = ({ banners }: HeroClientProps) => {
 
           {(secondaryBanners.length > 3 ||
             (typeof window !== "undefined" && window.innerWidth < 1000 && secondaryBanners.length > 1)) && (
-            <SliderArrows
-              onPrev={() => scroll("left")}
-              onNext={() => scroll("right")}
-              canPrev={canPrev}
-              canNext={canNext}
-              variant="blue"
-            />
-          )}
+              <SliderArrows
+                onPrev={() => scroll("left")}
+                onNext={() => scroll("right")}
+                canPrev={canPrev}
+                canNext={canNext}
+                variant="blue"
+              />
+            )}
         </div>
       </div>
     </section>

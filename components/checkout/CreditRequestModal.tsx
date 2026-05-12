@@ -45,7 +45,7 @@ export function CreditRequestModal({ isOpen, onClose, totalAmount }: CreditReque
   } = useForm<CreditRequestFormValues>({
     resolver: zodResolver(creditRequestSchema),
     defaultValues: {
-      shippingMethod: "FreeDelivery",
+      shippingMethod: "Expargo",
       fragile: false,
     }
   });
@@ -165,11 +165,9 @@ export function CreditRequestModal({ isOpen, onClose, totalAmount }: CreditReque
                 </div>
 
                 <InputGroup label="Çatdırılma növü *" error={errors.shippingMethod?.message}>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 gap-3">
                     {[
-                      { id: "FreeDelivery", label: "Pulsuz Çatdırılma" },
                       { id: "Expargo", label: "Expargo" },
-                      { id: "Azerpost", label: "Azərpoçt" },
                     ].map((method) => (
                       <label
                         key={method.id}
@@ -204,42 +202,7 @@ export function CreditRequestModal({ isOpen, onClose, totalAmount }: CreditReque
                   </div>
                 </InputGroup>
 
-                {selectedMethod === "Azerpost" && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2">
-                    <InputGroup label="Poçt kodu *" error={errors.deliveryPostCode?.message}>
-                      <input
-                        {...register("deliveryPostCode")}
-                        placeholder="AZ1000"
-                        className={inputClass(!!errors.deliveryPostCode)}
-                        onChange={(e) => setValue("deliveryPostCode", e.target.value.toUpperCase())}
-                      />
-                    </InputGroup>
 
-                    <InputGroup label="Pasport seriyası *" error={errors.userPassport?.message}>
-                      <input
-                        {...register("userPassport")}
-                        placeholder="AA1234567"
-                        className={inputClass(!!errors.userPassport)}
-                        onChange={(e) => setValue("userPassport", e.target.value.toUpperCase())}
-                      />
-                    </InputGroup>
-
-                    <div className="sm:col-span-2">
-                       <label className="flex items-center gap-3 cursor-pointer">
-                        <div className="relative">
-                          <input
-                            {...register("fragile")}
-                            type="checkbox"
-                            className="peer sr-only"
-                          />
-                          <div className="w-10 h-6 bg-gray-200 peer-checked:bg-blue-600 rounded-full transition-colors" />
-                          <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-4" />
-                        </div>
-                        <span className="text-xs font-bold text-gray-700">Kövrək məhsul?</span>
-                      </label>
-                    </div>
-                  </div>
-                )}
 
                 <Button 
                   type="submit"

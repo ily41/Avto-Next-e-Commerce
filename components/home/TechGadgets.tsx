@@ -26,7 +26,7 @@ const TechGadgets = async () => {
 
   return (
     <section className="w-full bg-white py-[var(--section-py)]">
-      <div className="max-w-[80%] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
+      <div className="max-w-[90%] mx-auto sm:px-6 lg:px-0  w-[calc(100%-2.5rem)]">
         {/* Header */}
         <div className="flex items-center justify-between mb-4 md:mb-8 pb-3 md:pb-4 border-b border-gray-100">
           <h2 className="text-[16px] md:text-xl font-bold text-[#1a1a1a]">Sizin üçün tövsiyyə olunanlar</h2>
@@ -54,8 +54,8 @@ const TechGadgets = async () => {
           <div className="flex-1 mt-4 md:mt-0 min-w-0">
             <div className="flex items-stretch md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 overflow-x-auto md:overflow-x-visible no-scrollbar snap-x snap-mandatory md:snap-none pb-1">
               {products.map((product) => (
-                <div 
-                  key={product.id} 
+                <div
+                  key={product.id}
                   className="min-w-[48%] xs:min-w-[45%] md:min-w-0 flex snap-start"
                 >
                   <ProductCard product={product} />
